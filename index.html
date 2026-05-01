@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INNOVA FACTORY — by Pao Peressotti</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:#07010f;color:#f0e6ff;min-height:100vh}
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px}
+.screen.active{display:flex}
+.wrap{width:100%;max-width:600px}
+input,textarea,select{width:100%;background:rgba(12,4,24,0.85);border:1.5px solid rgba(108,63,197,0.5);border-radius:11px;color:#f0e6ff;padding:13px 15px;font-size:15px;font-family:'Outfit',sans-serif;outline:none;box-sizing:border-box;display:block;margin-top:8px}
+input:focus,textarea:focus{border-color:#e8389a;box-shadow:0 0 16px rgba(232,56,154,0.2)}
+textarea{resize:vertical;min-height:80px}
+.btn{width:100%;background:linear-gradient(135deg,#6c3fc5,#e8389a);color:#fff;border:none;border-radius:11px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:14px;transition:opacity .2s}
+.btn:hover{opacity:.9}
+.btn-back{width:100%;background:transparent;color:#6c3fc5;border:none;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:10px;display:block;text-align:center}
+.btn-outline{width:100%;background:transparent;color:#c4a8e0;border:1px solid rgba(108,63,197,0.4);border-radius:11px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:10px}
+.card{background:rgba(10,3,24,0.92);border:1px solid rgba(108,63,197,0.25);border-radius:16px;padding:24px 20px;width:100%;margin-top:16px}
+.opt{cursor:pointer;padding:12px 15px;border-radius:10px;border:1.5px solid rgba(108,63,197,0.3);margin-bottom:8px;font-size:14px;display:flex;justify-content:space-between;align-items:center;color:#c4a8e0;transition:all .15s;user-select:none}
+.opt:hover{border-color:#6c3fc5;color:#f0e6ff}
+.opt.sel{border-color:#e8389a;background:rgba(232,56,154,0.12);color:#f7c0df}
+.label{font-size:15px;font-weight:600;color:#f0e6ff;margin-bottom:4px;display:block}
+.hint{font-size:11px;color:#6c3fc5;margin-bottom:8px;display:block}
+.prog{background:rgba(108,63,197,0.18);border-radius:99px;height:4px;margin:10px 0 20px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#6c3fc5,#e8389a);border-radius:99px;transition:width .4s}
+.steps{display:flex;gap:3px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.sd{width:26px;height:26px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(108,63,197,0.3);color:#9b7fc0;transition:all .3s}
+.sd.done{background:#6c3fc5;border-color:#6c3fc5;color:#fff}
+.sd.cur{border-color:#e8389a;color:#e8389a;background:rgba(232,56,154,0.1)}
+.sl{width:8px;height:1px;background:rgba(108,63,197,0.2);align-self:center;flex-shrink:0}
+.sl.done{background:#6c3fc5}
+.tab-btns{display:flex;gap:4px;margin-bottom:16px;background:rgba(10,3,24,0.8);border:1px solid rgba(108,63,197,0.22);border-radius:12px;padding:4px}
+.tab-btn{flex:1;padding:9px 6px;border-radius:9px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;background:transparent;color:#9b7fc0}
+.tab-btn.active{background:linear-gradient(135deg,#6c3fc5,#e8389a);color:#fff}
+.output-block{background:rgba(4,1,12,0.8);border:1px solid rgba(108,63,197,0.25);border-radius:12px;padding:16px;margin-bottom:12px;max-height:300px;overflow-y:auto}
+.output-block pre{font-family:'Outfit',sans-serif;font-size:13px;color:#ddd;white-space:pre-wrap;line-height:1.7}
+.loading-dots span{animation:blink 1.4s infinite both}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 20px #e8389a44}50%{box-shadow:0 0 44px #e8389a88}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="s-intro" class="screen active">
+  <div style="text-align:center;max-width:500px;animation:fadeUp .6s ease">
+    <div style="font-size:60px;margin-bottom:12px;filter:drop-shadow(0 0 24px #e8389a)">🏭</div>
+    <div style="font-size:10px;letter-spacing:4px;color:#6c3fc5;margin-bottom:8px;text-transform:uppercase">by INNOVA PRO · Pao Peressotti</div>
+    <h1 style="font-size:clamp(2.4rem,10vw,4rem);font-weight:900;line-height:1.05;margin-bottom:14px;background:linear-gradient(135deg,#fff 30%,#e8389a 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent">INNOVA<br>FACTORY</h1>
+    <p style="color:#c4a8e0;font-size:16px;line-height:1.75;margin-bottom:10px">Respondé <strong style="color:#e8389a">6 preguntas</strong> y la IA genera tu negocio digital completo:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0;text-align:left">
+      <div style="background:rgba(108,63,197,0.1);border:1px solid rgba(108,63,197,0.22);border-radius:12px;padding:14px">
+        <div style="font-size:22px;margin-bottom:6px">📘</div>
+        <div style="font-size:13px;font-weight:700;color:#f0e6ff;margin-bottom:2px">Ebook completo</div>
+        <div style="font-size:11px;color:#6c3fc5">Índice + contenido desarrollado</div>
+      </div>
+      <div style="background:rgba(108,63,197,0.1);border:1px solid rgba(108,63,197,0.22);border-radius:12px;padding:14px">
+        <div style="font-size:22px;margin-bottom:6px">🌐</div>
+        <div style="font-size:13px;font-weight:700;color:#f0e6ff;margin-bottom:2px">Landing HTML</div>
+        <div style="font-size:11px;color:#6c3fc5">Lista para subir a tu hosting</div>
+      </div>
+      <div style="background:rgba(108,63,197,0.1);border:1px solid rgba(108,63,197,0.22);border-radius:12px;padding:14px">
+        <div style="font-size:22px;margin-bottom:6px">✍️</div>
+        <div style="font-size:13px;font-weight:700;color:#f0e6ff;margin-bottom:2px">Copies de venta</div>
+        <div style="font-size:11px;color:#6c3fc5">AIDA + hooks + reels</div>
+      </div>
+      <div style="background:rgba(108,63,197,0.1);border:1px solid rgba(108,63,197,0.22);border-radius:12px;padding:14px">
+        <div style="font-size:22px;margin-bottom:6px">🎯</div>
+        <div style="font-size:13px;font-weight:700;color:#f0e6ff;margin-bottom:2px">Estrategia de tráfico</div>
+        <div style="font-size:11px;color:#6c3fc5">Público + intereses + presupuesto</div>
+      </div>
+    </div>
+    <button class="btn" style="animation:pulse 2.5s infinite;font-size:17px;padding:18px" onclick="showStep(1)">Crear mi negocio digital ✦</button>
+  </div>
+</div>
+
+<!-- WIZARD STEPS -->
+<div id="s-wizard" class="screen">
+  <div class="wrap">
+    <div id="step-indicators" class="steps"></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#9b7fc0;margin-bottom:4px">
+      <span id="step-title" style="font-weight:600"></span>
+      <span id="step-pct"></span>
+    </div>
+    <div class="prog"><div id="prog-fill" class="prog-fill" style="width:0%"></div></div>
+    <div class="card" id="step-card"></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="s-loading" class="screen">
+  <div style="text-align:center">
+    <div style="font-size:72px;animation:spin 3s linear infinite;display:inline-block;filter:drop-shadow(0 0 20px #e8389a);margin-bottom:24px">✦</div>
+    <h2 style="font-size:24px;font-weight:800;background:linear-gradient(135deg,#fff,#e8389a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px">Generando tu kit completo...</h2>
+    <p style="color:#6c3fc5;font-size:14px;margin-bottom:28px">La IA está trabajando en tu negocio digital</p>
+    <div id="loading-phases" style="display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto;text-align:left"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="s-results" class="screen" style="align-items:flex-start;padding-top:20px">
+  <div style="width:100%;max-width:700px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:10px;letter-spacing:3px;color:#6c3fc5;text-transform:uppercase;margin-bottom:6px">Kit completo generado ✓</div>
+      <h1 id="result-nombre" style="font-size:clamp(1.6rem,5vw,2.6rem);font-weight:900;background:linear-gradient(135deg,#fff,#e8389a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:6px"></h1>
+      <p id="result-tagline" style="color:#9b7fc0;font-size:14px"></p>
+    </div>
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="showTab('ebook')">📘 Ebook</button>
+      <button class="tab-btn" onclick="showTab('landing')">🌐 Landing</button>
+      <button class="tab-btn" onclick="showTab('copies')">✍️ Copies</button>
+      <button class="tab-btn" onclick="showTab('creativos')">🎨 Creativos</button>
+      <button class="tab-btn" onclick="showTab('trafico')">🎯 Tráfico</button>
+    </div>
+    <div id="tab-ebook" class="tab-content">
+      <div class="output-block"><pre id="out-ebook"></pre></div>
+    </div>
+    <div id="tab-landing" class="tab-content" style="display:none">
+      <button class="btn" onclick="downloadLanding()" style="margin-bottom:12px">⬇️ Descargar Landing HTML</button>
+      <div class="output-block"><pre id="out-landing" style="font-size:11px"></pre></div>
+    </div>
+    <div id="tab-copies" class="tab-content" style="display:none">
+      <div class="output-block"><pre id="out-copies"></pre></div>
+    </div>
+    <div id="tab-creativos" class="tab-content" style="display:none">
+      <div class="output-block"><pre id="out-creativos"></pre></div>
+    </div>
+    <div id="tab-trafico" class="tab-content" style="display:none">
+      <div class="output-block"><pre id="out-trafico"></pre></div>
+    </div>
+    <button class="btn-outline" onclick="reset()" style="margin-top:8px">🔄 Crear otro producto</button>
+  </div>
+</div>
+
+<style>@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+
+<script>
+const STEPS = [
+  {
+    id: 'producto', title: 'Tu producto', icon: '📦',
+    fields: [
+      { id: 'nicho', label: '¿En qué nicho está tu producto?', type: 'choice', req: true,
+        opts: ['Repostería y emprendimiento', 'Marketing digital', 'Tarot y espiritualidad', 'Fitness y bienestar', 'Finanzas personales', 'Moda y belleza', 'Desarrollo personal', 'Otro'] },
+      { id: 'tipo', label: '¿Qué tipo de producto querés crear?', type: 'choice', req: true,
+        opts: ['Ebook / Guía paso a paso', 'Mega Pack / Bundle', 'Mini curso escrito', 'Recetario / Plantillas', 'Kit de herramientas'] },
+      { id: 'nombre', label: '¿Cómo se llama tu producto?', ph: 'Ej: Dulce Negocio — Postres en Vaso', req: true },
+    ]
+  },
+  {
+    id: 'avatar', title: 'Tu cliente', icon: '👤',
+    fields: [
+      { id: 'avatar', label: '¿Quién es tu cliente ideal?', type: 'textarea', ph: 'Ej: Mujeres 28-45 que quieren emprender desde casa, sin experiencia, con poco tiempo...', req: true },
+      { id: 'problema', label: '¿Qué problema principal resuelve tu producto?', type: 'textarea', ph: 'Ej: No saben cómo generar ingresos desde casa sin invertir mucho...', req: true },
+      { id: 'resultado', label: '¿Qué resultado concreto promete?', type: 'textarea', ph: 'Ej: Ganar $500 semanales vendiendo postres en vaso desde su cocina...', req: true },
+    ]
+  },
+  {
+    id: 'oferta', title: 'Tu oferta', icon: '💰',
+    fields: [
+      { id: 'precio', label: '¿Cuánto va a costar?', type: 'choice', req: true,
+        opts: ['$7–$27 USD (accesible)', '$47–$97 USD (mid-ticket)', '$147–$297 USD (premium)'] },
+      { id: 'bonos', label: '¿Qué bonos va a incluir?', type: 'textarea', ph: 'Ej: Checklist de ingredientes, plantilla Canva, guía de primeros clientes...', req: true },
+      { id: 'plataforma', label: '¿Dónde vas a venderlo?', type: 'choice', req: true,
+        opts: ['Hotmart', 'Shopify', 'Systeme.io', 'Mercado Pago directo', 'WordPress', 'Otro'] },
+    ]
+  },
+  {
+    id: 'marca', title: 'Tu marca', icon: '🎨',
+    fields: [
+      { id: 'estilo', label: '¿Qué estilo de marca querés?', type: 'choice', req: true,
+        opts: ['Femenino y cálido (rosa, coral)', 'Místico y elegante (violeta, dorado)', 'Fresco y moderno (blanco, verde)', 'Oscuro y premium (negro, fucsia)', 'Vibrante y colorido (multicolor)'] },
+      { id: 'tono', label: '¿Cuál es el tono de comunicación?', type: 'choice', req: true,
+        opts: ['Cercano y motivador (como una amiga)', 'Profesional y experto', 'Divertido y descontracturado', 'Inspirador y aspiracional'] },
+      { id: 'marca', label: '¿Cómo se llama tu marca?', ph: 'Ej: Pao Peressotti · INNOVA PRO', req: true },
+    ]
+  },
+  {
+    id: 'urgencia', title: 'Urgencia', icon: '⏰',
+    fields: [
+      { id: 'urgencia', label: '¿Qué tipo de urgencia vas a usar?', type: 'choice', req: true,
+        opts: ['Cupos limitados', 'Oferta por tiempo limitado', 'Precio sube pronto', 'Sin urgencia por ahora'] },
+      { id: 'garantia', label: '¿Vas a ofrecer garantía?', type: 'choice', req: true,
+        opts: ['7 días de garantía total', '14 días de garantía', '30 días de garantía', 'Sin garantía'] },
+      { id: 'extra', label: '¿Algo más que quieras incluir?', type: 'textarea', ph: 'Ej: quiero que el tono sea muy latinoamericano, mencionar que es para mamás...', req: false },
+    ]
+  },
+];
+
+let currentStep = 0;
+let currentField = 0;
+let answers = {};
+let generatedData = {};
+let landingHTML = '';
+
+function totalFields() { return STEPS.reduce((a,s) => a + s.fields.length, 0); }
+function doneFields() { return STEPS.slice(0, currentStep).reduce((a,s) => a + s.fields.length, 0) + currentField; }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showStep(step) {
+  currentStep = step - 1;
+  currentField = 0;
+  showScreen('s-wizard');
+  renderStep();
+}
+
+function renderStep() {
+  const step = STEPS[currentStep];
+  const field = step.fields[currentField];
+  const pct = Math.round(doneFields() / totalFields() * 100);
+
+  // Step indicators
+  let stepsHTML = '';
+  STEPS.forEach((s, i) => {
+    const cls = i < currentStep ? 'sd done' : i === currentStep ? 'sd cur' : 'sd';
+    const lbl = i < currentStep ? '✓' : s.icon;
+    stepsHTML += `<div class="${cls}">${lbl}</div>`;
+    if (i < STEPS.length - 1) stepsHTML += `<div class="sl${i < currentStep ? ' done' : ''}"></div>`;
+  });
+  document.getElementById('step-indicators').innerHTML = stepsHTML;
+  document.getElementById('step-title').textContent = step.title;
+  document.getElementById('step-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  // Field
+  let fieldHTML = `<span class="label">${field.label}</span>`;
+  if (!field.req) fieldHTML += `<span class="hint">Opcional — podés saltear</span>`;
+
+  if (field.type === 'choice') {
+    fieldHTML += field.opts.map(o =>
+      `<div class="opt${answers[field.id] === o ? ' sel' : ''}" onclick="selectOpt('${field.id}','${o.replace(/'/g,"\\'")}',this)">${o}${answers[field.id] === o ? ' <span>✓</span>' : ''}</div>`
+    ).join('');
+  } else if (field.type === 'textarea') {
+    fieldHTML += `<textarea id="field-input" rows="3" placeholder="${field.ph || ''}">${answers[field.id] || ''}</textarea>`;
+  } else {
+    fieldHTML += `<input type="text" id="field-input" value="${(answers[field.id] || '').replace(/"/g,'&quot;')}" placeholder="${field.ph || ''}">`;
+  }
+
+  const isLast = currentStep === STEPS.length - 1 && currentField === step.fields.length - 1;
+  fieldHTML += `<button class="btn" onclick="nextField()">${isLast ? '✦ Generar mi kit completo' : 'Continuar →'}</button>`;
+  if (currentStep > 0 || currentField > 0) {
+    fieldHTML += `<button class="btn-back" onclick="prevField()">← Volver</button>`;
+  }
+
+  document.getElementById('step-card').innerHTML = fieldHTML;
+
+  if (field.type !== 'choice') {
+    const el = document.getElementById('field-input');
+    if (el) {
+      el.addEventListener('input', e => { answers[field.id] = e.target.value; });
+      if (field.type !== 'textarea') {
+        el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nextField(); } });
+      }
+      setTimeout(() => el.focus(), 50);
+    }
+  }
+}
+
+function selectOpt(id, val, el) {
+  answers[id] = val;
+  document.querySelectorAll('.opt').forEach(o => {
+    o.classList.remove('sel');
+    o.innerHTML = o.innerHTML.replace(' <span>✓</span>', '');
+  });
+  el.classList.add('sel');
+  el.innerHTML = el.innerHTML + ' <span>✓</span>';
+}
+
+function canNext() {
+  const field = STEPS[currentStep].fields[currentField];
+  if (!field.req) return true;
+  return (answers[field.id] || '').trim().length > 0;
+}
+
+function nextField() {
+  if (!canNext()) { alert('Por favor completá este campo.'); return; }
+  const step = STEPS[currentStep];
+  if (currentField < step.fields.length - 1) {
+    currentField++;
+    renderStep();
+  } else if (currentStep < STEPS.length - 1) {
+    currentStep++;
+    currentField = 0;
+    renderStep();
+  } else {
+    generateKit();
+  }
+}
+
+function prevField() {
+  if (currentField > 0) { currentField--; }
+  else if (currentStep > 0) { currentStep--; currentField = STEPS[currentStep].fields.length - 1; }
+  renderStep();
+}
+
+const PHASES = [
+  { icon: '🧠', text: 'Analizando tu mercado y avatar...' },
+  { icon: '📘', text: 'Escribiendo el ebook completo...' },
+  { icon: '🌐', text: 'Diseñando la landing page...' },
+  { icon: '✍️', text: 'Redactando copies de venta...' },
+  { icon: '🎨', text: 'Generando creativos y redes...' },
+  { icon: '🎯', text: 'Armando estrategia de tráfico...' },
+];
+
+async function generateKit() {
+  showScreen('s-loading');
+  let phaseIdx = 0;
+
+  const renderPhases = () => {
+    document.getElementById('loading-phases').innerHTML = PHASES.map((p, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;
+        background:${i === phaseIdx ? 'rgba(232,56,154,0.1)' : 'transparent'};
+        border:1px solid ${i === phaseIdx ? '#e8389a44' : 'transparent'}">
+        <span style="font-size:18px">${p.icon}</span>
+        <span style="font-size:13px;color:${i === phaseIdx ? '#f0c0dd' : i < phaseIdx ? '#6c3fc5' : '#3a2060'};font-weight:${i === phaseIdx ? '600' : '400'}">${p.text}</span>
+        ${i < phaseIdx ? '<span style="margin-left:auto;color:#6c3fc5">✓</span>' : ''}
+        ${i === phaseIdx ? '<span style="margin-left:auto;color:#e8389a;animation:blink 1s infinite">●</span>' : ''}
+      </div>`).join('');
+  };
+
+  renderPhases();
+  const interval = setInterval(() => {
+    if (phaseIdx < PHASES.length - 1) { phaseIdx++; renderPhases(); }
+  }, 1500);
+
+  const prompt = buildPrompt();
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || '').join('') || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    clearInterval(interval);
+    generatedData = parsed;
+    landingHTML = buildLandingHTML(parsed);
+    showResults(parsed);
+  } catch (err) {
+    clearInterval(interval);
+    alert('Ocurrió un error. Por favor intentá de nuevo.');
+    showScreen('s-wizard');
+    renderStep();
+  }
+}
+
+function buildPrompt() {
+  return `Sos INNOVA FACTORY, experta en marketing digital para Latinoamérica. Creá un kit completo de producto digital con estos datos:
+
+NICHO: ${answers.nicho}
+TIPO: ${answers.tipo}
+NOMBRE: ${answers.nombre}
+CLIENTE IDEAL: ${answers.avatar}
+PROBLEMA: ${answers.problema}
+RESULTADO PROMETIDO: ${answers.resultado}
+PRECIO: ${answers.precio}
+BONOS: ${answers.bonos}
+PLATAFORMA DE VENTA: ${answers.plataforma}
+ESTILO DE MARCA: ${answers.estilo}
+TONO: ${answers.tono}
+NOMBRE DE MARCA: ${answers.marca}
+URGENCIA: ${answers.urgencia}
+GARANTÍA: ${answers.garantia}
+EXTRA: ${answers.extra || 'Ninguno'}
+
+Respondé SOLO con JSON válido sin markdown:
+
+{
+  "nombre_producto": "Nombre atractivo",
+  "subtitulo": "Subtítulo complementario",
+  "tagline": "Frase corta máx 8 palabras",
+
+  "ebook": {
+    "introduccion": "Título introducción",
+    "capitulos": [
+      {"num": 1, "titulo": "Título capítulo 1", "resumen": "Qué aprende en 2 líneas", "contenido": "Desarrollá este capítulo con 4 párrafos de 80-100 palabras cada uno. Con ejemplos prácticos latinoamericanos y pasos concretos."},
+      {"num": 2, "titulo": "Título capítulo 2", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."},
+      {"num": 3, "titulo": "Título capítulo 3", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."},
+      {"num": 4, "titulo": "Título capítulo 4", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."},
+      {"num": 5, "titulo": "Título capítulo 5", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."},
+      {"num": 6, "titulo": "Título capítulo 6", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."},
+      {"num": 7, "titulo": "Título capítulo 7", "resumen": "Qué aprende en 2 líneas", "contenido": "4 párrafos de 80-100 palabras con ejemplos y pasos prácticos."}
+    ],
+    "conclusion": "Título conclusión",
+    "paginas": 55
+  },
+
+  "bonos": [
+    {"num": 1, "nombre": "Nombre bono 1", "descripcion": "Descripción 2 líneas", "contenido": "Contenido base del bono"},
+    {"num": 2, "nombre": "Nombre bono 2", "descripcion": "Descripción 2 líneas", "contenido": "Contenido base del bono"},
+    {"num": 3, "nombre": "Nombre bono 3", "descripcion": "Descripción 2 líneas", "contenido": "Contenido base del bono"}
+  ],
+
+  "landing": {
+    "headline": "HEADLINE PODEROSO EN MAYÚSCULAS",
+    "subheadline": "Subtítulo que amplía el headline",
+    "historia": "Historia emocional de conexión 80-100 palabras",
+    "beneficios": ["Beneficio 1 con resultado concreto", "Beneficio 2", "Beneficio 3", "Beneficio 4", "Beneficio 5"],
+    "objeciones": [
+      {"q": "Objeción 1", "a": "Respuesta persuasiva"},
+      {"q": "Objeción 2", "a": "Respuesta persuasiva"},
+      {"q": "Objeción 3", "a": "Respuesta persuasiva"}
+    ],
+    "cta": "Texto botón compra",
+    "precio_anclaje": "~~$97~~ → $27 USD",
+    "urgencia_txt": "Texto de urgencia concreto",
+    "cierre": "Párrafo cierre emocional 60-80 palabras"
+  },
+
+  "copies": {
+    "aida_1": "Copy AIDA completo estilo 1 (200 palabras)",
+    "aida_2": "Copy AIDA completo estilo 2 (200 palabras)",
+    "aida_3": "Copy AIDA completo estilo 3 (200 palabras)",
+    "hooks": ["Hook viral 1", "Hook viral 2", "Hook viral 3", "Hook viral 4", "Hook viral 5"],
+    "ideas_reels": ["Idea reel 1", "Idea reel 2", "Idea reel 3"],
+    "anuncio_fb": "Texto anuncio Facebook Ads listo para usar"
+  },
+
+  "creativos": {
+    "paleta": ["#hex1", "#hex2", "#hex3"],
+    "estilo_visual": "Descripción estilo visual detallado",
+    "portada_descripcion": "Cómo debe verse la portada del ebook",
+    "prompt_dalle": "Prompt en inglés para generar el mockup en DALL-E/ChatGPT",
+    "ig_feed": "Copy Instagram feed máx 150 chars",
+    "ig_stories": "Texto Instagram Stories",
+    "tiktok_hook": "Hook apertura TikTok/Reels",
+    "whatsapp": "Mensaje promo WhatsApp natural"
+  },
+
+  "trafico": {
+    "publico_objetivo": "Descripción detallada del público",
+    "intereses": ["Interés 1", "Interés 2", "Interés 3", "Interés 4", "Interés 5"],
+    "tipo_campana": "Tipo de campaña recomendada y por qué",
+    "presupuesto_sugerido": "Presupuesto diario/mensual sugerido",
+    "plataforma_recomendada": "Facebook/Instagram Ads o TikTok Ads y por qué",
+    "estrategia_organica": "Estrategia de contenido orgánico para los primeros 30 días",
+    "meta_ventas": "Meta realista de ventas en el primer mes"
+  }
+}`;
+}
+
+function buildLandingHTML(d) {
+  const l = d.landing || {};
+  const estilos = {
+    'Femenino y cálido (rosa, coral)': { bg:'#fff0f5', hero:'linear-gradient(160deg,#fce4ec,#ffd6e7)', p1:'#e91e8c', p2:'#f06292', text:'#3a0020', sub:'#7a3050' },
+    'Místico y elegante (violeta, dorado)': { bg:'#0d0520', hero:'linear-gradient(160deg,#1a0a35,#0d0520)', p1:'#b039e8', p2:'#7b1fa2', text:'#f3e5ff', sub:'#ce93d8' },
+    'Fresco y moderno (blanco, verde)': { bg:'#f4faf4', hero:'linear-gradient(160deg,#e8f5e9,#f4faf4)', p1:'#2e7d32', p2:'#66bb6a', text:'#1a2e1a', sub:'#4a6a4a' },
+    'Oscuro y premium (negro, fucsia)': { bg:'#07010f', hero:'linear-gradient(160deg,#1a0633,#07010f)', p1:'#e8389a', p2:'#6c3fc5', text:'#f0e6ff', sub:'#c4a8e0' },
+    'Vibrante y colorido (multicolor)': { bg:'#fffaf7', hero:'linear-gradient(160deg,#fff0eb,#ffe0d0)', p1:'#e8563a', p2:'#ff8c6b', text:'#2a1a10', sub:'#6b4a3a' },
+  };
+  const t = estilos[answers.estilo] || estilos['Oscuro y premium (negro, fucsia)'];
+  const btn = `<a href="#comprar" style="display:block;width:100%;max-width:500px;margin:0 auto;background:linear-gradient(135deg,${t.p1},${t.p2});padding:22px 40px;border-radius:50px;font-size:20px;font-weight:900;color:#fff;text-decoration:none;text-align:center;box-shadow:0 8px 32px ${t.p1}66">${l.cta || 'QUIERO ACCEDER AHORA'}</a>`;
+
+  return `<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${d.nombre_producto || 'Producto Digital'}</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:${t.bg};color:${t.text};overflow-x:hidden}
+@keyframes pulse{0%,100%{box-shadow:0 8px 32px ${t.p1}66}50%{box-shadow:0 8px 52px ${t.p1}99}}
+details summary::-webkit-details-marker{display:none}
+</style></head><body>
+
+<div style="background:linear-gradient(90deg,${t.p1},${t.p2});padding:10px;overflow:hidden;white-space:nowrap">
+  <div style="animation:mq 20s linear infinite;display:inline-block;font-size:13px;color:#fff;font-weight:700">
+    ${Array(8).fill(`🔥 ${d.nombre_producto || 'PRODUCTO'} ✦ ${l.urgencia_txt || 'OFERTA ESPECIAL'} ✦ ACCESO INMEDIATO ✦ `).join('')}
+  </div>
+</div>
+<style>@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}</style>
+
+<section style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;background:${t.hero}">
+  <div style="font-size:11px;letter-spacing:3px;color:${t.p1};text-transform:uppercase;margin-bottom:14px;font-weight:700">✦ ${answers.tipo || 'Producto Digital'} ✦</div>
+  <h1 style="font-size:clamp(2rem,6vw,4rem);font-weight:900;line-height:1.06;margin-bottom:16px;color:${t.text};max-width:800px">${l.headline || d.nombre_producto}</h1>
+  <p style="font-size:clamp(1rem,2.5vw,1.2rem);color:${t.sub};max-width:620px;line-height:1.65;margin-bottom:28px">${l.subheadline || d.subtitulo}</p>
+  <div style="margin-bottom:20px">
+    <p style="font-size:16px;color:${t.sub};text-decoration:line-through;margin-bottom:4px">${(l.precio_anclaje || '').split('→')[0] || ''}</p>
+    <p style="font-size:3rem;font-weight:900;color:${t.p1}">${(l.precio_anclaje || '').split('→')[1] || answers.precio || ''}</p>
+  </div>
+  ${btn}
+  <p style="margin-top:12px;font-size:12px;color:${t.sub}">🔒 Pago seguro · Acceso inmediato · ${answers.garantia || '7 días de garantía'}</p>
+</section>
+
+<section style="padding:72px 20px;background:linear-gradient(135deg,${t.p1},${t.p2});text-align:center">
+  <div style="max-width:800px;margin:0 auto">
+    <p style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:20px">${answers.resultado || ''}</p>
+    <p style="color:rgba(255,255,255,.85);font-size:16px;margin-bottom:28px">${l.historia || ''}</p>
+    <a href="#comprar" style="display:inline-block;background:#fff;color:${t.p1};padding:18px 44px;border-radius:50px;font-size:17px;font-weight:900;text-decoration:none">${l.cta || 'QUIERO ACCEDER AHORA'}</a>
+  </div>
+</section>
+
+<section style="padding:72px 20px;background:${t.bg}">
+  <div style="max-width:820px;margin:0 auto">
+    <h2 style="font-size:2rem;font-weight:900;text-align:center;color:${t.text};margin-bottom:36px">✨ Lo que vas a lograr</h2>
+    ${(l.beneficios || []).map(b => `<div style="display:flex;align-items:flex-start;gap:14px;background:${t.p1}11;border:1px solid ${t.p1}22;border-radius:14px;padding:18px;margin-bottom:12px"><span style="color:${t.p1};font-size:20px;flex-shrink:0">✓</span><span style="font-size:15px;color:${t.sub};line-height:1.6">${b}</span></div>`).join('')}
+  </div>
+</section>
+
+<section style="padding:40px 20px;text-align:center;background:${t.p1}11">
+  <div style="margin-bottom:16px">
+    <p style="font-size:16px;color:${t.sub};text-decoration:line-through">${(l.precio_anclaje || '').split('→')[0] || ''}</p>
+    <p style="font-size:3rem;font-weight:900;color:${t.p1}">${(l.precio_anclaje || '').split('→')[1] || answers.precio || ''}</p>
+  </div>
+  ${btn}
+</section>
+
+<section style="padding:72px 20px;background:${t.bg}">
+  <div style="max-width:700px;margin:0 auto">
+    <h2 style="font-size:2rem;font-weight:900;text-align:center;color:${t.text};margin-bottom:36px">Preguntas frecuentes</h2>
+    ${(l.objeciones || []).map(o => `<details style="background:${t.p1}08;border:1px solid ${t.p1}22;border-radius:14px;margin-bottom:10px;overflow:hidden"><summary style="padding:18px 22px;cursor:pointer;font-weight:700;font-size:15px;color:${t.text};list-style:none;display:flex;justify-content:space-between"><span>❓ ${o.q}</span><span style="color:${t.p1}">+</span></summary><div style="padding:4px 22px 18px;font-size:14px;color:${t.sub};line-height:1.75;border-top:1px solid ${t.p1}22">✅ ${o.a}</div></details>`).join('')}
+  </div>
+</section>
+
+<section style="padding:80px 20px;text-align:center;background:${t.hero}" id="comprar">
+  <h2 style="font-size:2.5rem;font-weight:900;color:${t.text};margin-bottom:10px">¿Estás lista para empezar?</h2>
+  <p style="color:${t.sub};font-size:16px;max-width:520px;margin:0 auto 24px;line-height:1.7">${l.cierre || ''}</p>
+  <div style="display:flex;align-items:center;gap:16px;background:${t.p1}10;border:2px dashed ${t.p1}55;border-radius:16px;padding:20px 24px;max-width:480px;margin:0 auto 28px;text-align:left">
+    <div style="font-size:44px">🔒</div>
+    <div><p style="font-weight:800;font-size:15px;color:${t.text};margin-bottom:4px">${answers.garantia || '7 días de garantía'}</p><p style="font-size:13px;color:${t.sub}">Si no estás satisfecha, te devolvemos el 100% de tu dinero.</p></div>
+  </div>
+  <div style="margin-bottom:20px">
+    <p style="font-size:16px;color:${t.sub};text-decoration:line-through">${(l.precio_anclaje || '').split('→')[0] || ''}</p>
+    <p style="font-size:3.5rem;font-weight:900;color:${t.p1}">${(l.precio_anclaje || '').split('→')[1] || answers.precio || ''}</p>
+  </div>
+  ${btn}
+</section>
+
+<footer style="background:#030008;padding:32px 20px;text-align:center">
+  <p style="color:#4a3570;font-size:13px">© 2025 ${d.nombre_producto || ''} · ${answers.marca || ''}</p>
+  <p style="color:#2a1550;font-size:11px;margin-top:6px;opacity:.5">Creado con INNOVA FACTORY · by Pao Peressotti</p>
+</footer>
+
+</body></html>`;
+}
+
+function showResults(data) {
+  document.getElementById('result-nombre').textContent = data.nombre_producto || '';
+  document.getElementById('result-tagline').textContent = data.tagline || '';
+
+  // Ebook
+  const eb = data.ebook || {};
+  let ebookTxt = `📘 ${data.nombre_producto}\n${data.subtitulo || ''}\n\n`;
+  ebookTxt += `INTRODUCCIÓN: ${eb.introduccion || ''}\n\n`;
+  (eb.capitulos || []).forEach(c => {
+    ebookTxt += `CAPÍTULO ${c.num}: ${c.titulo}\n${c.resumen || ''}\n\n${c.contenido || ''}\n\n---\n\n`;
+  });
+  ebookTxt += `CONCLUSIÓN: ${eb.conclusion || ''}\n📄 Páginas estimadas: ${eb.paginas || 55}`;
+  document.getElementById('out-ebook').textContent = ebookTxt;
+
+  // Landing
+  document.getElementById('out-landing').textContent = landingHTML;
+
+  // Copies
+  const cp = data.copies || {};
+  let copiesTxt = `━━ COPY AIDA #1 ━━\n${cp.aida_1 || ''}\n\n━━ COPY AIDA #2 ━━\n${cp.aida_2 || ''}\n\n━━ COPY AIDA #3 ━━\n${cp.aida_3 || ''}\n\n`;
+  copiesTxt += `━━ HOOKS VIRALES ━━\n${(cp.hooks || []).map((h,i) => `${i+1}. ${h}`).join('\n')}\n\n`;
+  copiesTxt += `━━ IDEAS DE REELS ━━\n${(cp.ideas_reels || []).map((r,i) => `${i+1}. ${r}`).join('\n')}\n\n`;
+  copiesTxt += `━━ ANUNCIO FACEBOOK ADS ━━\n${cp.anuncio_fb || ''}`;
+  document.getElementById('out-copies').textContent = copiesTxt;
+
+  // Creativos
+  const cr = data.creativos || {};
+  let creativosTxt = `🎨 PALETA DE COLORES\n${(cr.paleta || []).join(' · ')}\n\n`;
+  creativosTxt += `🖼️ ESTILO VISUAL\n${cr.estilo_visual || ''}\n\n`;
+  creativosTxt += `📚 PORTADA DEL EBOOK\n${cr.portada_descripcion || ''}\n\n`;
+  creativosTxt += `🤖 PROMPT PARA DALL-E/CHATGPT\n${cr.prompt_dalle || ''}\n\n`;
+  creativosTxt += `📸 INSTAGRAM FEED\n${cr.ig_feed || ''}\n\n`;
+  creativosTxt += `📲 INSTAGRAM STORIES\n${cr.ig_stories || ''}\n\n`;
+  creativosTxt += `🎵 TIKTOK/REELS HOOK\n${cr.tiktok_hook || ''}\n\n`;
+  creativosTxt += `💬 WHATSAPP PROMO\n${cr.whatsapp || ''}`;
+  document.getElementById('out-creativos').textContent = creativosTxt;
+
+  // Tráfico
+  const tr = data.trafico || {};
+  let traficoTxt = `👥 PÚBLICO OBJETIVO\n${tr.publico_objetivo || ''}\n\n`;
+  traficoTxt += `🎯 INTERESES PARA SEGMENTAR\n${(tr.intereses || []).map((i,n) => `${n+1}. ${i}`).join('\n')}\n\n`;
+  traficoTxt += `📢 TIPO DE CAMPAÑA\n${tr.tipo_campana || ''}\n\n`;
+  traficoTxt += `💰 PRESUPUESTO SUGERIDO\n${tr.presupuesto_sugerido || ''}\n\n`;
+  traficoTxt += `📱 PLATAFORMA RECOMENDADA\n${tr.plataforma_recomendada || ''}\n\n`;
+  traficoTxt += `🌱 ESTRATEGIA ORGÁNICA (30 días)\n${tr.estrategia_organica || ''}\n\n`;
+  traficoTxt += `🏆 META DE VENTAS MES 1\n${tr.meta_ventas || ''}`;
+  document.getElementById('out-trafico').textContent = traficoTxt;
+
+  showScreen('s-results');
+}
+
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).style.display = 'block';
+  event.target.classList.add('active');
+}
+
+function downloadLanding() {
+  const b = new Blob([landingHTML], { type: 'text/html' });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a');
+  a.href = u;
+  a.download = (generatedData.nombre_producto || 'landing').replace(/\s+/g, '_') + '.html';
+  a.click();
+  URL.revokeObjectURL(u);
+}
+
+function reset() {
+  answers = {};
+  generatedData = {};
+  landingHTML = '';
+  currentStep = 0;
+  currentField = 0;
+  showScreen('s-intro');
+}
+</script>
+</body>
+</html>
