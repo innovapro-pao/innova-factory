@@ -10,10 +10,10 @@ export default async function handler(req, res) {
     if (!key) return res.status(500).json({ error: 'OpenAI API key not configured' });
     if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
     const prompts = {
-      mockup: `Professional digital product mockup for: ${prompt}. Clean dark background with gold accents, 3D book or course mockup, premium quality, photorealistic, marketing image style. No text overlays.`,
-      logros: `Motivational infographic image showing transformation and success for: ${prompt}. Dark elegant background, gold and pink accent colors, icons showing achievement and growth, modern design style. No text.`,
-      bonos: `Premium bonus pack digital products image for: ${prompt}. Dark luxury background, multiple digital books and guides stacked, golden glowing effects, premium marketing style. No text.`,
-      hero: `Stunning hero banner background for: ${prompt}. Dark galaxy aesthetic, purple and pink gradient bokeh lights, premium digital marketing visual, abstract elegant background. No people, no text.`,
+      mockup: `Professional 3D digital product mockup for: ${prompt}. Clean dark background, gold and white accents, premium quality hardcover book or ebook displayed at an angle, photorealistic rendering, soft studio lighting, no text overlays, marketing product shot style.`,
+      logros: `Abstract dark luxury background image representing transformation and success for: ${prompt}. Black background, soft gold and pink bokeh lights, upward arrows and stars made of light, premium elegant atmosphere, no text, no people, cinematic lighting.`,
+      bonos: `Dark premium flat lay of multiple digital books and guides stacked together for: ${prompt}. Black background, gold metallic accents, soft dramatic lighting on book covers, luxury product photography style, no text overlays, rich shadows and highlights.`,
+      hero: `Stunning dark hero banner background for: ${prompt}. Deep black and dark purple gradient, soft pink and gold light orbs, galaxy stars, premium digital product atmosphere, abstract elegant bokeh, cinematic wide format, no people, no text.`,
       custom: prompt,
     };
     const finalPrompt = prompts[type] || prompts.custom;
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
         prompt: finalPrompt,
         n: 1,
         size: '1024x1024',
-        
       }),
     });
     const json = await r.json();
