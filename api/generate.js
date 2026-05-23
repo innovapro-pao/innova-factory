@@ -141,7 +141,7 @@ Incluye:
       },
       body: JSON.stringify({
         model: 'claude-opus-4-5',
-        max_tokens: 3000,
+        max_tokens: 4096,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
