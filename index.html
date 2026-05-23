@@ -1,1193 +1,556 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INNOVA FACTORY — by Pao Peressotti</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --black:    #05050a;
-      --deep:     #0d0d1a;
-      --surface:  #12121f;
-      --card:     #17172a;
-      --border:   #2a2a45;
-      --fuchsia:  #ff006e;
-      --fuchsia2: #ff4d9e;
-      --violet:   #7c3aed;
-      --violet2:  #a855f7;
-      --cyan:     #06b6d4;
-      --text:     #e8e8f0;
-      --muted:    #7c7c9a;
-      --success:  #10b981;
-      --font-head: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-weight: 400;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── GALAXY BACKGROUND ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% -10%, rgba(124,58,237,.18) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 90% 110%, rgba(255,0,110,.12) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 50%,  rgba(6,182,212,.06) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-    }
-
-    /* Noise texture */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0; opacity: .5;
-    }
-
-    /* Stars */
-    .stars {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 40% 8%,  rgba(255,255,255,.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 60% 25%, rgba(255,255,255,.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 85% 12%, rgba(255,255,255,.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 92% 75%, rgba(255,255,255,.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 5%  80%, rgba(255,255,255,.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 50% 90%, rgba(255,255,255,.4) 0%, transparent 100%),
-        radial-gradient(2px 2px at 30% 55%, rgba(168,85,247,.7) 0%, transparent 100%),
-        radial-gradient(2px 2px at 70% 35%, rgba(255,0,110,.5) 0%, transparent 100%),
-        radial-gradient(2px 2px at 15% 65%, rgba(6,182,212,.6) 0%, transparent 100%);
-    }
-
-    /* ── LAYOUT ── */
-    #app { position: relative; z-index: 1; }
-
-    /* ── HEADER ── */
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 2rem;
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(20px);
-      background: rgba(5,5,10,.7);
-      position: sticky; top: 0; z-index: 100;
-    }
-
-    .logo {
-      font-family: var(--font-head);
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: .06em;
-      background: linear-gradient(135deg, var(--fuchsia), var(--violet2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .logo span {
-      background: linear-gradient(135deg, var(--violet2), var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .tagline {
-      font-size: .72rem;
-      color: var(--muted);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-      max-width: 780px;
-      margin: 0 auto;
-    }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(124,58,237,.15);
-      border: 1px solid rgba(124,58,237,.4);
-      border-radius: 100px;
-      padding: .35rem 1rem;
-      font-size: .72rem;
-      color: var(--violet2);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-badge::before { content: '✦'; color: var(--fuchsia); }
-
-    h1 {
-      font-family: var(--font-head);
-      font-size: clamp(2.2rem, 6vw, 3.8rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -.02em;
-      margin-bottom: 1rem;
-    }
-
-    h1 .accent-f {
-      background: linear-gradient(135deg, var(--fuchsia) 0%, var(--fuchsia2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    h1 .accent-v {
-      background: linear-gradient(135deg, var(--violet) 0%, var(--violet2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
-      font-weight: 300;
-    }
-
-    /* ── WIZARD ── */
-    .wizard-container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 1.5rem 6rem;
-    }
-
-    /* Progress bar */
-    .progress-wrap {
-      margin-bottom: 2.5rem;
-    }
-
-    .progress-steps {
-      display: flex;
-      gap: .5rem;
-      margin-bottom: 1rem;
-      overflow-x: auto;
-      padding-bottom: .5rem;
-      scrollbar-width: none;
-    }
-    .progress-steps::-webkit-scrollbar { display: none; }
-
-    .step-dot {
-      flex-shrink: 0;
-      display: flex; flex-direction: column; align-items: center; gap: .35rem;
-      cursor: pointer;
-      transition: opacity .2s;
-    }
-    .step-dot:hover { opacity: .8; }
-
-    .dot-icon {
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      display: grid; place-items: center;
-      font-size: 1.1rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      transition: all .3s ease;
-      position: relative;
-    }
-
-    .step-dot.active .dot-icon {
-      background: linear-gradient(135deg, var(--fuchsia), var(--violet));
-      border-color: transparent;
-      box-shadow: 0 0 20px rgba(255,0,110,.4);
-    }
-
-    .step-dot.completed .dot-icon {
-      background: rgba(16,185,129,.15);
-      border-color: var(--success);
-    }
-    .step-dot.completed .dot-icon::after {
-      content: '✓';
-      position: absolute; inset: 0;
-      display: grid; place-items: center;
-      color: var(--success);
-      font-size: .9rem;
-      background: rgba(16,185,129,.15);
-      border-radius: 11px;
-    }
-
-    .dot-label {
-      font-size: .62rem;
-      color: var(--muted);
-      text-align: center;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      max-width: 60px;
-      line-height: 1.2;
-    }
-    .step-dot.active .dot-label { color: var(--fuchsia2); }
-
-    .progress-bar {
-      height: 3px;
-      background: var(--border);
-      border-radius: 100px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--fuchsia), var(--violet2));
-      border-radius: 100px;
-      transition: width .5s cubic-bezier(.4,0,.2,1);
-    }
-
-    /* Cards */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      margin-bottom: 1.5rem;
-      animation: fadeSlide .4s ease both;
-    }
-
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .card-title {
-      font-family: var(--font-head);
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: .4rem;
-      display: flex; align-items: center; gap: .6rem;
-    }
-
-    .card-sub {
-      color: var(--muted);
-      font-size: .88rem;
-      margin-bottom: 2rem;
-      font-weight: 300;
-    }
-
-    /* Form fields */
-    .field { margin-bottom: 1.4rem; }
-
-    label {
-      display: block;
-      font-size: .82rem;
-      font-weight: 500;
-      color: var(--violet2);
-      margin-bottom: .45rem;
-      letter-spacing: .04em;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: .85rem 1rem;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: .95rem;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--violet);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.15);
-    }
-
-    textarea { resize: vertical; min-height: 100px; }
-
-    select option { background: var(--deep); }
-
-    .field-hint {
-      font-size: .75rem;
-      color: var(--muted);
-      margin-top: .35rem;
-    }
-
-    /* Row 2 cols */
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    @media (max-width: 580px) { .row-2 { grid-template-columns: 1fr; } }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-      padding: .85rem 2rem;
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: .95rem;
-      cursor: pointer;
-      border: none;
-      transition: all .25s ease;
-      letter-spacing: .02em;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--fuchsia), var(--violet));
-      color: #fff;
-      box-shadow: 0 4px 24px rgba(255,0,110,.3);
-    }
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(255,0,110,.4);
-    }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
-
-    .btn-actions {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 2rem; gap: 1rem;
-    }
-
-    /* ── GENERATION PANEL ── */
-    .gen-panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .gen-header {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-    }
-
-    .gen-title {
-      font-family: var(--font-head);
-      font-size: 1rem;
-      font-weight: 700;
-      display: flex; align-items: center; gap: .5rem;
-    }
-
-    .gen-badge {
-      font-size: .7rem;
-      padding: .25rem .7rem;
-      border-radius: 100px;
-      font-weight: 500;
-      letter-spacing: .06em;
-    }
-    .badge-generating {
-      background: rgba(255,0,110,.15);
-      color: var(--fuchsia2);
-      border: 1px solid rgba(255,0,110,.3);
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    .badge-done {
-      background: rgba(16,185,129,.15);
-      color: var(--success);
-      border: 1px solid rgba(16,185,129,.3);
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50% { opacity: .5; }
-    }
-
-    .gen-body { padding: 2rem; }
-
-    /* Module grid */
-    .module-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .module-card {
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.2rem;
-      cursor: pointer;
-      transition: all .25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .module-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,0,110,.08), rgba(124,58,237,.08));
-      opacity: 0;
-      transition: opacity .25s;
-    }
-
-    .module-card:hover::before { opacity: 1; }
-    .module-card:hover { border-color: rgba(124,58,237,.5); transform: translateY(-2px); }
-
-    .module-card.generating {
-      border-color: var(--fuchsia);
-      box-shadow: 0 0 20px rgba(255,0,110,.15);
-    }
-    .module-card.generating::before { opacity: 1; }
-
-    .module-card.done {
-      border-color: var(--success);
-    }
-    .module-card.done::before {
-      background: linear-gradient(135deg, rgba(16,185,129,.06), rgba(6,182,212,.06));
-      opacity: 1;
-    }
-
-    .module-icon { font-size: 1.6rem; margin-bottom: .5rem; }
-    .module-name {
-      font-family: var(--font-head);
-      font-size: .85rem;
-      font-weight: 700;
-      margin-bottom: .2rem;
-    }
-    .module-desc { font-size: .72rem; color: var(--muted); line-height: 1.4; }
-    .module-status {
-      font-size: .68rem;
-      margin-top: .5rem;
-      font-weight: 500;
-    }
-    .status-pending  { color: var(--muted); }
-    .status-running  { color: var(--fuchsia2); }
-    .status-done     { color: var(--success); }
-
-    /* Output area */
-    .output-tabs {
-      display: flex; gap: .5rem;
-      overflow-x: auto;
-      padding-bottom: .5rem;
-      margin-bottom: 1.5rem;
-      scrollbar-width: none;
-    }
-    .output-tabs::-webkit-scrollbar { display: none; }
-
-    .tab {
-      flex-shrink: 0;
-      padding: .5rem 1.1rem;
-      border-radius: 100px;
-      font-size: .78rem;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      transition: all .2s;
-    }
-    .tab.active {
-      background: linear-gradient(135deg, var(--fuchsia), var(--violet));
-      border-color: transparent;
-      color: #fff;
-    }
-    .tab.has-content { color: var(--text); border-color: rgba(124,58,237,.4); }
-
-    .output-content {
-      background: rgba(0,0,0,.3);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.8rem;
-      min-height: 300px;
-      font-size: .88rem;
-      line-height: 1.8;
-      white-space: pre-wrap;
-      word-break: break-word;
-      color: var(--text);
-      position: relative;
-      font-family: var(--font-body);
-    }
-
-    .output-placeholder {
-      color: var(--muted);
-      font-style: italic;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 1rem;
-      min-height: 200px; text-align: center;
-    }
-
-    .output-placeholder .big-icon { font-size: 3rem; opacity: .4; }
-
-    /* Spinner */
-    .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid var(--border);
-      border-top-color: var(--fuchsia);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Copy button */
-    .copy-btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      padding: .5rem 1rem;
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      color: var(--muted);
-      font-size: .75rem;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .copy-btn:hover { color: var(--text); border-color: var(--violet); }
-
-    .output-actions {
-      display: flex; justify-content: flex-end; gap: .75rem;
-      margin-top: 1rem; flex-wrap: wrap;
-    }
-
-    /* ── LANDING PREVIEW ── */
-    .landing-preview-wrap {
-      background: rgba(0,0,0,.4);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .preview-bar {
-      background: var(--surface);
-      padding: .75rem 1rem;
-      display: flex; align-items: center; gap: .75rem;
-    }
-    .preview-dots { display: flex; gap: .4rem; }
-    .preview-dots span {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
-    .preview-dots span:nth-child(1) { background: #ff5f57; }
-    .preview-dots span:nth-child(2) { background: #febc2e; }
-    .preview-dots span:nth-child(3) { background: #28c840; }
-
-    .preview-url {
-      flex: 1; text-align: center;
-      font-size: .75rem; color: var(--muted);
-      background: rgba(255,255,255,.05);
-      border-radius: 6px;
-      padding: .25rem .75rem;
-    }
-
-    iframe.landing-frame {
-      width: 100%; height: 600px;
-      border: none; display: block;
-    }
-
-    /* ── DONE SCREEN ── */
-    .done-screen {
-      text-align: center; padding: 3rem 2rem;
-    }
-
-    .done-icon {
-      width: 80px; height: 80px;
-      background: linear-gradient(135deg, var(--fuchsia), var(--violet));
-      border-radius: 24px;
-      display: grid; place-items: center;
-      font-size: 2.2rem;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 0 40px rgba(255,0,110,.3);
-    }
-
-    .done-title {
-      font-family: var(--font-head);
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: .75rem;
-    }
-
-    .done-sub {
-      color: var(--muted);
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-      font-weight: 300;
-    }
-
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 2rem 0;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 2rem; right: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.4rem;
-      display: flex; align-items: center; gap: .75rem;
-      font-size: .85rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.4);
-      z-index: 1000;
-      transform: translateX(120%);
-      transition: transform .3s cubic-bezier(.4,0,.2,1);
-    }
-    .toast.show { transform: translateX(0); }
-    .toast-icon { font-size: 1.2rem; }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--muted);
-      font-size: .78rem;
-      border-top: 1px solid var(--border);
-    }
-
-    footer a {
-      color: var(--violet2);
-      text-decoration: none;
-    }
-    footer a:hover { color: var(--fuchsia2); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INNOVA FACTORY — by Pao Peressotti INNOVA PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --black: #05050a; --deep: #0d0d1a; --surface: #12121f; --card: #17172a;
+  --border: #2a2a45; --fuchsia: #ff006e; --fuchsia2: #ff4d9e;
+  --violet: #7c3aed; --violet2: #a855f7; --cyan: #06b6d4;
+  --text: #e8e8f0; --muted: #7c7c9a; --success: #10b981;
+  --font-h: 'Syne', sans-serif; --font-b: 'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(124,58,237,.18),transparent 60%),radial-gradient(ellipse 60% 50% at 90% 110%,rgba(255,0,110,.12),transparent 55%);pointer-events:none;z-index:0}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:var(--o)}50%{opacity:1}}
+#app{position:relative;z-index:1}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;background:rgba(5,5,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{font-family:var(--font-h);font-weight:800;font-size:1.3rem;letter-spacing:.04em;background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--font-b);-webkit-text-fill-color:var(--muted)}
+.nav-links{display:flex;gap:.75rem}
+.nav-btn{padding:.55rem 1.2rem;border-radius:100px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--font-b);font-size:.82rem;cursor:pointer;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-color:transparent;color:#fff}
+
+/* VIEWS */
+.view{display:none;padding:2.5rem;max-width:1300px;margin:0 auto}
+.view.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* DASHBOARD */
+.dash-hero{text-align:center;padding:3rem 0 2rem}
+.dash-hero h1{font-family:var(--font-h);font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:.5rem}
+.dash-hero h1 span{background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dash-hero p{color:var(--muted);font-size:1rem;margin-bottom:2rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center}
+.stat .num{font-family:var(--font-h);font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{color:var(--muted);font-size:.8rem;margin-top:.25rem}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.proj-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all .25s}
+.proj-card:hover{border-color:var(--violet);transform:translateY(-3px)}
+.proj-card h3{font-family:var(--font-h);margin-bottom:.4rem}
+.proj-card .meta{color:var(--muted);font-size:.82rem}
+.proj-badge{display:inline-block;background:rgba(124,58,237,.15);color:var(--violet2);border:1px solid rgba(124,58,237,.3);padding:.2rem .7rem;border-radius:100px;font-size:.72rem;margin-top:.75rem}
+.empty-state{grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);border:2px dashed var(--border);border-radius:20px}
+.empty-state .big{font-size:3rem;margin-bottom:1rem}
+
+/* WIZARD */
+.wiz-wrap{max-width:680px;margin:0 auto}
+.wiz-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:3rem}
+.wiz-card h2{font-family:var(--font-h);font-size:1.8rem;text-align:center;margin-bottom:.5rem}
+.wiz-card .sub{color:var(--muted);text-align:center;margin-bottom:2rem;font-size:.9rem}
+.field{margin-bottom:1.3rem}
+.field label{display:block;font-size:.82rem;color:var(--violet2);margin-bottom:.4rem;font-weight:500;letter-spacing:.03em}
+.field input,.field textarea,.field select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;color:var(--text);font-family:var(--font-b);font-size:.95rem;outline:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.field textarea{resize:vertical;min-height:90px}
+.field select option{background:var(--deep)}
+.wiz-btns{display:flex;gap:1rem;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 2rem;border-radius:100px;font-family:var(--font-b);font-weight:500;font-size:.95rem;cursor:pointer;border:none;transition:all .25s;flex:1}
+.btn-primary{background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;box-shadow:0 4px 20px rgba(255,0,110,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,0,110,.35)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--muted)}
+
+/* MODULES */
+.gen-header{text-align:center;margin-bottom:2rem}
+.gen-header h2{font-family:var(--font-h);font-size:2rem;margin-bottom:.4rem}
+.gen-header p{color:var(--muted)}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;margin-bottom:2rem}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.mod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--fuchsia),var(--violet));transform:scaleX(0);transition:transform .3s}
+.mod-card:hover{border-color:rgba(124,58,237,.5);transform:translateY(-3px)}
+.mod-card:hover::before{transform:scaleX(1)}
+.mod-card.done{border-color:var(--success)}
+.mod-card.done::before{transform:scaleX(1);background:var(--success)}
+.mod-icon{font-size:2rem;margin-bottom:.75rem}
+.mod-name{font-family:var(--font-h);font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.mod-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+.mod-status{font-size:.72rem;margin-top:.6rem;font-weight:500}
+.s-pending{color:var(--muted)}.s-running{color:var(--fuchsia2)}.s-done{color:var(--success)}
+
+/* RESULT */
+.result-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:1.5rem}
+.result-top{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.result-title{font-family:var(--font-h);font-size:1rem;font-weight:700}
+.result-acts{display:flex;gap:.6rem;flex-wrap:wrap}
+.act-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem 1rem;border-radius:100px;font-size:.78rem;cursor:pointer;transition:all .2s;font-weight:500;border:none}
+.act-copy{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
+.act-copy:hover{color:var(--text);border-color:var(--violet)}
+.act-txt{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--success)}
+.act-txt:hover{background:rgba(16,185,129,.2)}
+.act-pdf{background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;box-shadow:0 3px 12px rgba(255,0,110,.25)}
+.act-pdf:hover{transform:translateY(-1px)}
+.result-body{padding:2rem;max-height:580px;overflow-y:auto}
+.md h1{font-family:var(--font-h);font-size:1.5rem;font-weight:800;margin:1.2rem 0 .6rem;background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.md h2{font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--violet2);margin:1.2rem 0 .5rem}
+.md h3{font-size:1rem;font-weight:600;color:var(--fuchsia2);margin:1rem 0 .4rem}
+.md p{color:#c8c8d8;line-height:1.8;margin-bottom:.8rem}
+.md strong{color:var(--text);font-weight:600}
+.md em{color:var(--violet2);font-style:italic}
+.md ul,.md ol{padding-left:1.5rem;margin-bottom:.8rem}
+.md li{color:#c8c8d8;margin-bottom:.35rem;line-height:1.7}
+.md hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.md blockquote{border-left:3px solid var(--fuchsia);padding-left:1rem;color:var(--muted);font-style:italic;margin:1rem 0}
+.md table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.85rem}
+.md th{background:rgba(124,58,237,.2);color:var(--violet2);padding:.6rem 1rem;text-align:left;border:1px solid var(--border)}
+.md td{padding:.6rem 1rem;border:1px solid var(--border);color:#c8c8d8}
+.md tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.md code{background:rgba(124,58,237,.15);color:var(--violet2);padding:.1rem .35rem;border-radius:4px;font-size:.85em}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;min-height:200px;color:var(--muted);font-style:italic;text-align:center}
+.placeholder .big{font-size:3rem;opacity:.35}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--fuchsia);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LOADING */
+#loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
+#loading.on{display:flex}
+.ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
+.ld-txt{color:var(--fuchsia2);font-size:1rem}
+
+/* TOAST */
+#toasts{position:fixed;bottom:2rem;right:2rem;z-index:1001;display:flex;flex-direction:column;gap:.6rem}
+.toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.3rem;display:flex;align-items:center;gap:.7rem;font-size:.85rem;box-shadow:0 8px 30px rgba(0,0,0,.4);animation:slideIn .3s ease}
+.toast.ok{border-color:var(--success)}.toast.err{border-color:#ef4444}
+@keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* FAB */
+.fab{position:fixed;bottom:2rem;left:2rem;width:56px;height:56px;background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-radius:50%;display:grid;place-items:center;font-size:1.6rem;cursor:pointer;border:none;color:#fff;box-shadow:0 8px 24px rgba(255,0,110,.4);transition:transform .25s;z-index:100}
+.fab:hover{transform:scale(1.1)}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .view{padding:1.5rem}
+  .wiz-card{padding:1.5rem}
+  .modules-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-
 <body>
-<div class="stars"></div>
+<div id="stars"></div>
 <div id="app">
 
-  <!-- HEADER -->
-  <header>
-    <div>
-      <div class="logo">INNOVA <span>FACTORY</span></div>
-      <div class="tagline">by Pao Peressotti · INNOVA PRO</div>
-    </div>
-    <div style="font-size:.78rem; color:var(--muted);">IA · Infoproductos · Lanzamientos</div>
-  </header>
+<nav>
+  <div>
+    <div class="logo">INNOVA FACTORY</div>
+    <div class="logo-sub">by Pao Peressotti · INNOVA PRO</div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showView('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showView('generator')">Generador</button>
+  </div>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-badge">Generador de Infoproductos con IA</div>
-    <h1>Tu <span class="accent-f">infoproducto</span> completo<br>en <span class="accent-v">minutos</span>, no en meses</h1>
-    <p>Responde algunas preguntas sobre tu producto y INNOVA FACTORY generará todo lo que necesitas para lanzar: ebook, bonos, landing, copies, creativos y estrategia de tráfico.</p>
-  </section>
+<!-- DASHBOARD -->
+<div id="dashboard" class="view active">
+  <div class="dash-hero">
+    <h1>Bienvenida a <span>INNOVA FACTORY</span></h1>
+    <p>Tu infoproducto completo generado con IA en minutos</p>
+    <button class="btn btn-primary" style="flex:none;width:auto" onclick="startNew()">✨ Crear Nuevo Infoproducto</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num" id="s-total">0</div><div class="lbl">Proyectos Creados</div></div>
+    <div class="stat"><div class="num" id="s-ebooks">0</div><div class="lbl">Ebooks Generados</div></div>
+    <div class="stat"><div class="num" id="s-copies">0</div><div class="lbl">Copies Escritos</div></div>
+  </div>
+  <h2 style="font-family:var(--font-h);margin-bottom:1.2rem">Proyectos Recientes</h2>
+  <div class="projects-grid" id="projects-grid"></div>
+</div>
 
-  <!-- WIZARD -->
-  <div class="wizard-container">
+<!-- GENERATOR -->
+<div id="generator" class="view">
 
-    <!-- PROGRESS -->
-    <div class="progress-wrap">
-      <div class="progress-steps" id="progressSteps"></div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  <!-- STEP 1 -->
+  <div id="step1" class="wiz-wrap">
+    <div class="wiz-card">
+      <h2>📝 Tu Infoproducto</h2>
+      <p class="sub">Contanos sobre lo que querés crear y tu público ideal</p>
+      <div class="field"><label>Nombre de tu producto o servicio</label><input id="f-product" type="text" placeholder="Ej: Curso de Repostería para Emprendedoras"></div>
+      <div class="field"><label>Tu público objetivo</label><input id="f-audience" type="text" placeholder="Ej: Mujeres de 40+ que quieren emprender desde casa"></div>
+      <div class="field"><label>¿Qué problema principal resuelve?</label><textarea id="f-problem" placeholder="Ej: No saben cómo monetizar su pasión por la cocina"></textarea></div>
+      <div class="field"><label>¿Qué transformación logra tu cliente?</label><textarea id="f-transform" placeholder="Ej: Generan sus primeros $500 mensuales vendiendo postres"></textarea></div>
+      <div class="wiz-btns">
+        <button class="btn btn-ghost" onclick="showView('dashboard')">Cancelar</button>
+        <button class="btn btn-primary" onclick="goStep2()">Siguiente →</button>
       </div>
     </div>
-
-    <!-- STEP CONTENT -->
-    <div id="stepContent"></div>
-
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>Hecho con 💜 por <a href="#">Pao Peressotti · INNOVA PRO</a> · INNOVA FACTORY © 2025</p>
-  </footer>
+  <!-- STEP 2 -->
+  <div id="step2" class="wiz-wrap" style="display:none">
+    <div class="wiz-card">
+      <h2>💰 Precio y Plataforma</h2>
+      <p class="sub">Últimos datos para personalizar todo el contenido</p>
+      <div class="field"><label>Precio de tu producto</label><input id="f-price" type="text" placeholder="Ej: USD 97 / $15.000 ARS"></div>
+      <div class="field"><label>Presupuesto para publicidad (opcional)</label><input id="f-budget" type="text" placeholder="Ej: USD 200/mes o sin presupuesto"></div>
+      <div class="field"><label>Plataforma principal de venta</label>
+        <select id="f-platform">
+          <option>Instagram/Facebook</option><option>TikTok</option><option>Email Marketing</option>
+          <option>WhatsApp/Telegram</option><option>Sitio Web propio</option>
+          <option>Hotmart/Kiwify</option><option>Mixto</option>
+        </select>
+      </div>
+      <div class="wiz-btns">
+        <button class="btn btn-ghost" onclick="goStep1()">← Atrás</button>
+        <button class="btn btn-primary" onclick="goModules()">Continuar al Generador →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULES -->
+  <div id="modules-panel" style="display:none">
+    <div class="gen-header">
+      <h2>🚀 Generá tu Contenido</h2>
+      <p id="prod-name"></p>
+    </div>
+    <div class="modules-grid" id="mods-grid"></div>
+    <div class="result-panel" id="result-panel" style="display:none">
+      <div class="result-top">
+        <div class="result-title" id="r-title">Resultado</div>
+        <div class="result-acts">
+          <button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>
+          <button class="act-btn act-txt" onclick="doTxt()">📄 TXT</button>
+          <button class="act-btn act-pdf" onclick="doPDF()">📥 PDF</button>
+        </div>
+      </div>
+      <div class="result-body" id="r-body"></div>
+    </div>
+  </div>
 
 </div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <span class="toast-icon" id="toastIcon">✓</span>
-  <span id="toastMsg">Copiado al portapapeles</span>
 </div>
+
+<div id="loading"><div class="ld-spinner"></div><div class="ld-txt" id="ld-msg">Generando con IA...</div></div>
+<div id="toasts"></div>
+<button class="fab" onclick="startNew()">+</button>
 
 <script>
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
-const state = {
-  currentStep: 0,
-  data: {},
-  results: {}
-};
-
-// ══════════════════════════════════════════
-//  WIZARD STEPS CONFIG
-// ══════════════════════════════════════════
-const STEPS = [
-  {
-    id: 'info',
-    label: 'Tu Producto',
-    icon: '🎯',
-    title: '¿Qué estás vendiendo?',
-    subtitle: 'Contanos sobre tu infoproducto para que la IA pueda crear contenido personalizado.',
-    fields: [
-      { id: 'product',        label: 'Nombre de tu producto o servicio',      type: 'input',    placeholder: 'Ej: Curso de Marketing Digital para Emprendedoras' },
-      { id: 'audience',       label: 'Tu público objetivo ideal',              type: 'input',    placeholder: 'Ej: Mujeres emprendedoras 30-45 años que quieren vender online' },
-      { id: 'problem',        label: '¿Qué problema principal resuelve?',      type: 'textarea', placeholder: 'Ej: No saben cómo conseguir clientes en redes sociales sin gastar en publicidad' },
-      { id: 'transformation', label: '¿Qué transformación logra tu cliente?', type: 'textarea', placeholder: 'Ej: Pasan de tener 0 ventas a generar sus primeros $1000 mensuales con sus redes' },
-    ]
-  },
-  {
-    id: 'details',
-    label: 'Detalles',
-    icon: '💰',
-    title: 'Precio y audiencia',
-    subtitle: 'Esta información ayuda a la IA a calibrar el tono y la estrategia correctos.',
-    fields: [
-      { id: 'price',    label: 'Precio de tu producto',       type: 'input', placeholder: 'Ej: USD 97 / $15.000 ARS' },
-      { id: 'budget',   label: 'Presupuesto para publicidad (opcional)', type: 'input', placeholder: 'Ej: USD 200/mes, sin presupuesto, etc.' },
-      { id: 'platform', label: 'Plataforma principal de venta', type: 'select', options: ['Instagram/Facebook', 'TikTok', 'Email Marketing', 'WhatsApp/Telegram', 'Sitio Web propio', 'Hotmart/Kiwify', 'Udemy/Teachable', 'Mixto'] },
-      { id: 'level',    label: 'Nivel de experiencia de tu cliente', type: 'select', options: ['Principiante (nunca lo hizo)', 'Intermedio (algo de experiencia)', 'Avanzado (busca perfeccionarse)', 'Mixto'] },
-    ]
-  },
-  {
-    id: 'generate',
-    label: 'Generar',
-    icon: '🚀',
-    type: 'generation',
-    title: '¡A generar tu infoproducto!',
-    subtitle: 'Seleccioná qué querés generar. Podés hacerlo todo junto o de a uno.',
-  },
-  {
-    id: 'done',
-    label: 'Listo',
-    icon: '✨',
-    type: 'done',
-  }
+// ── STATE ──
+const MODS = [
+  {id:'ebook',    icon:'📘', name:'Ebook Completo',        desc:'Títulos, índice y capítulos — descargá en PDF'},
+  {id:'bonos',    icon:'🎁', name:'Pack de Bonos',         desc:'5 bonos irresistibles con copy incluido'},
+  {id:'landing',  icon:'🌐', name:'Copy de Landing',       desc:'Todo el contenido para tu página de ventas'},
+  {id:'copies',   icon:'✍️',  name:'Copies AIDA',          desc:'Emails, posts, stories y ads completos'},
+  {id:'creativos',icon:'🎨', name:'Creativos & Diseño',    desc:'Briefs y prompts para Midjourney/DALL-E'},
+  {id:'trafico',  icon:'📈', name:'Estrategia de Tráfico', desc:'Plan orgánico, paid y cronograma 30 días'},
 ];
 
-const MODULES = [
-  { id: 'ebook',    icon: '📘', name: 'Ebook Completo',         desc: 'Título, índice y 3 capítulos completos' },
-  { id: 'bonos',    icon: '🎁', name: 'Pack de Bonos',          desc: 'Bonos irresistibles con copy incluido' },
-  { id: 'landing',  icon: '🌐', name: 'Landing HTML',           desc: 'Página de ventas lista para deployar' },
-  { id: 'copies',   icon: '✍️',  name: 'Copies AIDA',           desc: 'Emails, posts, stories y ads completos' },
-  { id: 'creativos',icon: '🎨', name: 'Creativos & Diseño',     desc: 'Briefs y prompts para diseñadores/IA' },
-  { id: 'trafico',  icon: '📈', name: 'Estrategia de Tráfico',  desc: 'Plan orgánico, paid y cronograma 30 días' },
-];
+let projects = JSON.parse(localStorage.getItem('innova_projects') || '[]');
+let curProject = {};
+let curResult = '';
+let curMod = '';
 
-// ══════════════════════════════════════════
-//  RENDER HELPERS
-// ══════════════════════════════════════════
-function renderProgress() {
-  const stepsEl = document.getElementById('progressSteps');
-  const fillEl  = document.getElementById('progressFill');
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderStars();
+  renderDash();
+  renderMods();
+});
 
-  stepsEl.innerHTML = STEPS.map((s, i) => `
-    <div class="step-dot ${i === state.currentStep ? 'active' : ''} ${i < state.currentStep ? 'completed' : ''}"
-         onclick="goToStep(${i})">
-      <div class="dot-icon">${s.icon}</div>
-      <div class="dot-label">${s.label}</div>
-    </div>
-  `).join('');
-
-  const pct = (state.currentStep / (STEPS.length - 1)) * 100;
-  fillEl.style.width = pct + '%';
-}
-
-function renderStep() {
-  renderProgress();
-  const step = STEPS[state.currentStep];
-  const el = document.getElementById('stepContent');
-
-  if (step.type === 'generation') {
-    el.innerHTML = renderGenerationStep(step);
-    initGeneration();
-  } else if (step.type === 'done') {
-    el.innerHTML = renderDoneStep();
-  } else {
-    el.innerHTML = renderFormStep(step);
+// ── STARS ──
+function renderStars() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2 + 1;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--o:${Math.random()*.7+.2};--d:${Math.random()*4+2}s`;
+    c.appendChild(s);
   }
 }
 
-function renderFormStep(step) {
-  const fields = step.fields.map(f => {
-    const val = state.data[f.id] || '';
-    if (f.type === 'select') {
-      const opts = f.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('');
-      return `<div class="field">
-        <label>${f.label}</label>
-        <select id="field_${f.id}">${opts}</select>
-      </div>`;
-    } else if (f.type === 'textarea') {
-      return `<div class="field">
-        <label>${f.label}</label>
-        <textarea id="field_${f.id}" placeholder="${f.placeholder}">${val}</textarea>
-      </div>`;
-    } else {
-      return `<div class="field">
-        <label>${f.label}</label>
-        <input type="text" id="field_${f.id}" placeholder="${f.placeholder}" value="${val}" />
-      </div>`;
-    }
-  }).join('');
-
-  const isFirst = state.currentStep === 0;
-
-  return `
-    <div class="card">
-      <div class="card-title">${STEPS[state.currentStep].icon} ${step.title}</div>
-      <div class="card-sub">${step.subtitle}</div>
-      ${fields}
-      <div class="btn-actions">
-        ${isFirst
-          ? '<div></div>'
-          : `<button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>`
-        }
-        <button class="btn btn-primary" onclick="nextStep()">
-          Continuar →
-        </button>
-      </div>
-    </div>
-  `;
+// ── VIEWS ──
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id === 'dashboard' ? 0 : 1;
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
 }
 
-function renderGenerationStep(step) {
-  const modules = MODULES.map(m => `
-    <div class="module-card" id="mod_${m.id}" onclick="toggleModule('${m.id}')">
-      <div class="module-icon">${m.icon}</div>
-      <div class="module-name">${m.name}</div>
-      <div class="module-desc">${m.desc}</div>
-      <div class="module-status status-pending" id="status_${m.id}">· Pendiente</div>
-    </div>
-  `).join('');
-
-  const tabs = MODULES.map(m => `
-    <button class="tab" id="tab_${m.id}" onclick="showTab('${m.id}')">${m.icon} ${m.name}</button>
-  `).join('');
-
-  return `
-    <div class="card">
-      <div class="card-title">🚀 ${step.title}</div>
-      <div class="card-sub">${step.subtitle}</div>
-
-      <div class="module-grid" id="moduleGrid">
-        ${modules}
-      </div>
-
-      <div class="btn-actions" style="margin-top:0">
-        <button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>
-        <div style="display:flex;gap:.75rem;">
-          <button class="btn btn-ghost" onclick="generateAll()" id="btnGenAll">
-            ⚡ Generar Todo
-          </button>
-          <button class="btn btn-primary" id="btnGenSelected" onclick="generateSelected()">
-            🚀 Generar Seleccionados
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="gen-panel" id="genPanel" style="display:none;">
-      <div class="gen-header">
-        <div class="gen-title" id="genTitle">Generando...</div>
-        <div class="gen-badge badge-generating" id="genBadge">Procesando</div>
-      </div>
-      <div class="gen-body">
-        <div class="output-tabs" id="outputTabs">${tabs}</div>
-        <div class="output-content" id="outputContent">
-          <div class="output-placeholder">
-            <div class="big-icon">✨</div>
-            <div>Seleccioná un módulo y generá para ver el resultado aquí</div>
-          </div>
-        </div>
-        <div class="output-actions" id="outputActions" style="display:none">
-          <button class="copy-btn" onclick="copyContent()">📋 Copiar</button>
-          <button class="copy-btn" onclick="downloadContent()">⬇️ Descargar</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderDoneStep() {
-  const completed = Object.keys(state.results).length;
-  return `
-    <div class="card done-screen">
-      <div class="done-icon">🎉</div>
-      <div class="done-title">¡Tu infoproducto está listo!</div>
-      <div class="done-sub">
-        Generaste ${completed} módulo${completed !== 1 ? 's' : ''} con éxito.
-        Todo el contenido quedó guardado en esta sesión.
-      </div>
-      <div class="divider"></div>
-      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.5rem;">
-        ¿Querés generar más módulos o modificar alguno? Volvé al paso anterior.
-      </p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <button class="btn btn-ghost" onclick="goToStep(2)">← Volver a Generar</button>
-        <button class="btn btn-primary" onclick="goToStep(0)">✨ Nuevo Producto</button>
-      </div>
-    </div>
-  `;
-}
-
-// ══════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════
-function saveCurrentFields() {
-  const step = STEPS[state.currentStep];
-  if (!step.fields) return;
-  step.fields.forEach(f => {
-    const el = document.getElementById('field_' + f.id);
-    if (el) state.data[f.id] = el.value;
-  });
-}
-
-function nextStep() {
-  saveCurrentFields();
-  if (state.currentStep < STEPS.length - 1) {
-    state.currentStep++;
-    renderStep();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-function prevStep() {
-  if (state.currentStep > 0) {
-    state.currentStep--;
-    renderStep();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-function goToStep(i) {
-  if (i <= state.currentStep) {
-    saveCurrentFields();
-    state.currentStep = i;
-    renderStep();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-// ══════════════════════════════════════════
-//  GENERATION
-// ══════════════════════════════════════════
-let selectedModules = new Set();
-let activeTab = null;
-
-function initGeneration() {
-  MODULES.forEach(m => {
-    if (state.results[m.id]) {
-      markModuleDone(m.id);
-    }
-  });
-}
-
-function toggleModule(id) {
-  const card = document.getElementById('mod_' + id);
-  if (card.classList.contains('generating') || card.classList.contains('done')) return;
-
-  if (selectedModules.has(id)) {
-    selectedModules.delete(id);
-    card.style.borderColor = '';
-    card.style.transform = '';
-  } else {
-    selectedModules.add(id);
-    card.style.borderColor = 'rgba(168,85,247,.7)';
-    card.style.transform = 'translateY(-2px)';
-  }
-}
-
-async function generateSelected() {
-  if (selectedModules.size === 0) {
-    showToast('⚠️', 'Seleccioná al menos un módulo');
+// ── DASHBOARD ──
+function renderDash() {
+  document.getElementById('s-total').textContent = projects.length;
+  document.getElementById('s-ebooks').textContent = projects.filter(p => p.hasEbook).length;
+  document.getElementById('s-copies').textContent = projects.length * 4;
+  const g = document.getElementById('projects-grid');
+  if (!projects.length) {
+    g.innerHTML = `<div class="empty-state"><div class="big">🚀</div><p>No tenés proyectos aún.</p><p style="font-size:.85rem;margin-top:.5rem">¡Creá tu primer infoproducto con el botón +!</p></div>`;
     return;
   }
-  await generateModules([...selectedModules]);
-  selectedModules.clear();
+  g.innerHTML = projects.map((p,i) => `
+    <div class="proj-card" onclick="openProject(${i})">
+      <h3>${p.product}</h3>
+      <div class="meta">${p.audience}</div>
+      <div class="meta" style="margin-top:.3rem">Precio: ${p.price}</div>
+      <div class="proj-badge">✓ Creado</div>
+      <div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date}</div>
+    </div>`).join('');
 }
 
-async function generateAll() {
-  const pending = MODULES.filter(m => !state.results[m.id]).map(m => m.id);
-  if (pending.length === 0) {
-    showToast('✓', 'Ya generaste todos los módulos');
-    return;
-  }
-  await generateModules(pending);
+function openProject(i) {
+  curProject = {...projects[i]};
+  document.getElementById('prod-name').textContent = curProject.product;
+  showModulesPanel();
+  showView('generator');
 }
 
-async function generateModules(ids) {
-  const panel = document.getElementById('genPanel');
-  panel.style.display = 'block';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  for (const id of ids) {
-    await generateModule(id);
-  }
-
-  // After all done
-  document.getElementById('genBadge').className = 'gen-badge badge-done';
-  document.getElementById('genBadge').textContent = 'Completado';
-  document.getElementById('genTitle').textContent = '✨ Generación completa';
-
-  showToast('🎉', `${ids.length} módulo${ids.length > 1 ? 's' : ''} generado${ids.length > 1 ? 's' : ''}`);
+// ── WIZARD ──
+function startNew() {
+  ['f-product','f-audience','f-problem','f-transform','f-price','f-budget'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('f-platform').selectedIndex = 0;
+  showStep(1);
+  showView('generator');
 }
 
-async function generateModule(id) {
-  const mod = MODULES.find(m => m.id === id);
-  const card = document.getElementById('mod_' + id);
-  const statusEl = document.getElementById('status_' + id);
+function showStep(n) {
+  document.getElementById('step1').style.display = n===1 ? 'block' : 'none';
+  document.getElementById('step2').style.display = n===2 ? 'block' : 'none';
+  document.getElementById('modules-panel').style.display = 'none';
+}
 
-  // Mark as generating
-  card.classList.add('generating');
-  card.style.borderColor = '';
-  card.style.transform = '';
-  statusEl.className = 'module-status status-running';
-  statusEl.textContent = '⟳ Generando...';
+function goStep1() { showStep(1); }
 
-  // Update panel header
-  const badge = document.getElementById('genBadge');
-  badge.className = 'gen-badge badge-generating';
-  badge.textContent = 'Procesando';
-  document.getElementById('genTitle').textContent = `${mod.icon} Generando ${mod.name}...`;
+function goStep2() {
+  const product = document.getElementById('f-product').value.trim();
+  const audience = document.getElementById('f-audience').value.trim();
+  if (!product || !audience) { toast('Completá al menos el producto y el público 😊', 'err'); return; }
+  curProject.product = product;
+  curProject.audience = audience;
+  curProject.problem = document.getElementById('f-problem').value;
+  curProject.transformation = document.getElementById('f-transform').value;
+  showStep(2);
+}
 
-  // Show spinner in output
-  showTab(id, true);
+function goModules() {
+  const price = document.getElementById('f-price').value.trim();
+  if (!price) { toast('Ingresá el precio de tu producto 😊', 'err'); return; }
+  curProject.price = price;
+  curProject.budget = document.getElementById('f-budget').value;
+  curProject.platform = document.getElementById('f-platform').value;
+  curProject.date = new Date().toLocaleDateString('es-AR');
+  curProject.hasEbook = false;
+
+  // Save project
+  const exists = projects.findIndex(p => p.product === curProject.product);
+  if (exists >= 0) projects[exists] = curProject;
+  else projects.unshift(curProject);
+  localStorage.setItem('innova_projects', JSON.stringify(projects));
+  renderDash();
+
+  document.getElementById('prod-name').textContent = curProject.product;
+  showModulesPanel();
+  toast('¡Proyecto guardado! Seleccioná qué generar 🎉', 'ok');
+}
+
+function showModulesPanel() {
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('modules-panel').style.display = 'block';
+  document.getElementById('result-panel').style.display = 'none';
+  renderMods();
+}
+
+// ── MODULES ──
+function renderMods() {
+  const g = document.getElementById('mods-grid');
+  if (!g) return;
+  g.innerHTML = MODS.map(m => `
+    <div class="mod-card" id="mc-${m.id}" onclick="generate('${m.id}')">
+      <div class="mod-icon">${m.icon}</div>
+      <div class="mod-name">${m.name}</div>
+      <div class="mod-desc">${m.desc}</div>
+      <div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div>
+    </div>`).join('');
+}
+
+async function generate(modId) {
+  curMod = modId;
+  const mod = MODS.find(m => m.id === modId);
+  setModStatus(modId, 'running', '⟳ Generando...');
+  setLoading(true, `Generando ${mod.name}...`);
+  showResult(true);
 
   try {
-    const response = await fetch('/api/generate', {
+    const res = await fetch('/api/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ step: id, data: state.data })
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({step: modId, data: curProject})
     });
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
 
-    const result = await response.json();
-
-    if (result.error) throw new Error(result.error);
-
-    state.results[id] = result.content;
-    markModuleDone(id);
-    showTab(id);
-
-  } catch (err) {
-    card.classList.remove('generating');
-    statusEl.className = 'module-status';
-    statusEl.style.color = '#ef4444';
-    statusEl.textContent = '✕ Error';
-    document.getElementById('outputContent').innerHTML = `
-      <div class="output-placeholder">
-        <div class="big-icon">❌</div>
-        <div>Error al generar: ${err.message}</div>
-        <button class="btn btn-ghost" style="margin-top:1rem" onclick="generateModules(['${id}'])">Reintentar</button>
-      </div>
-    `;
+    curResult = json.content;
+    setModStatus(modId, 'done', '✓ Listo');
+    if (modId === 'ebook') { curProject.hasEbook = true; saveCur(); }
+    renderResult(curResult, mod.name);
+    setLoading(false);
+    toast(`${mod.name} generado 🎉`, 'ok');
+  } catch(e) {
+    setModStatus(modId, 'pending', '✕ Error');
+    setLoading(false);
+    document.getElementById('r-body').innerHTML = `<div class="placeholder"><div class="big">❌</div><div>Error: ${e.message}</div><button class="btn btn-ghost" style="flex:none;margin-top:1rem" onclick="generate('${modId}')">Reintentar</button></div>`;
+    toast('Error al generar. Reintentá 😓', 'err');
   }
 }
 
-function markModuleDone(id) {
-  const card = document.getElementById('mod_' + id);
-  const statusEl = document.getElementById('status_' + id);
-  if (!card) return;
-  card.classList.remove('generating');
-  card.classList.add('done');
-  statusEl.className = 'module-status status-done';
-  statusEl.textContent = '✓ Listo';
-
-  // Update tab
-  const tab = document.getElementById('tab_' + id);
-  if (tab) tab.classList.add('has-content');
+function setModStatus(id, cls, txt) {
+  const el = document.getElementById('ms-'+id);
+  const card = document.getElementById('mc-'+id);
+  if (!el || !card) return;
+  el.className = `mod-status s-${cls}`;
+  el.textContent = txt;
+  card.className = `mod-card ${cls === 'done' ? 'done' : ''}`;
 }
 
-function showTab(id, loading = false) {
-  activeTab = id;
-
-  // Update tab styles
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab_' + id);
-  if (tab) tab.classList.add('active');
-
-  const content = document.getElementById('outputContent');
-  const actions = document.getElementById('outputActions');
-
+function showResult(loading) {
+  const panel = document.getElementById('result-panel');
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
   if (loading) {
-    content.innerHTML = `
-      <div class="output-placeholder">
-        <div class="spinner"></div>
-        <div>Generando con IA...</div>
-      </div>
-    `;
-    actions.style.display = 'none';
-    return;
+    document.getElementById('r-body').innerHTML = `<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
   }
-
-  const result = state.results[id];
-  if (!result) {
-    content.innerHTML = `
-      <div class="output-placeholder">
-        <div class="big-icon">⌛</div>
-        <div>Este módulo aún no fue generado</div>
-      </div>
-    `;
-    actions.style.display = 'none';
-    return;
-  }
-
-  // Special handling for landing page
-  if (id === 'landing' && result.includes('<html')) {
-    content.innerHTML = `
-      <div class="landing-preview-wrap">
-        <div class="preview-bar">
-          <div class="preview-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="preview-url">innova-factory.vercel.app · Vista previa</div>
-        </div>
-        <iframe class="landing-frame" id="landingFrame" srcdoc="" sandbox="allow-scripts allow-same-origin"></iframe>
-      </div>
-    `;
-    setTimeout(() => {
-      const frame = document.getElementById('landingFrame');
-      if (frame) frame.srcdoc = result;
-    }, 50);
-  } else {
-    content.textContent = result;
-  }
-
-  actions.style.display = 'flex';
 }
 
-// ══════════════════════════════════════════
-//  COPY / DOWNLOAD
-// ══════════════════════════════════════════
-function copyContent() {
-  if (!activeTab || !state.results[activeTab]) return;
-  navigator.clipboard.writeText(state.results[activeTab]).then(() => {
-    showToast('📋', 'Copiado al portapapeles');
-  });
+function renderResult(md, title) {
+  document.getElementById('r-title').textContent = title || 'Resultado';
+  document.getElementById('r-body').innerHTML = `<div class="md">${marked.parse(md)}</div>`;
 }
 
-function downloadContent() {
-  if (!activeTab || !state.results[activeTab]) return;
-  const mod = MODULES.find(m => m.id === activeTab);
-  const ext = activeTab === 'landing' ? 'html' : 'txt';
-  const blob = new Blob([state.results[activeTab]], { type: 'text/plain' });
+// ── ACTIONS ──
+function doCopy() {
+  if (!curResult) return;
+  navigator.clipboard.writeText(curResult).then(() => toast('Copiado al portapapeles 📋', 'ok'));
+}
+
+function doTxt() {
+  if (!curResult) return;
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `innova_factory_${activeTab}_${Date.now()}.${ext}`;
+  a.href = URL.createObjectURL(new Blob([curResult], {type:'text/plain'}));
+  a.download = `innova_${curMod}_${(curProject.product||'').replace(/\s+/g,'_')}.txt`;
   a.click();
-  showToast('⬇️', `${mod.name} descargado`);
+  toast('TXT descargado 📄', 'ok');
 }
 
-// ══════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════
-let toastTimeout;
-function showToast(icon, msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toastIcon').textContent = icon;
-  document.getElementById('toastMsg').textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+function doPDF() {
+  if (!curResult) return;
+  toast('Generando PDF...', 'ok');
+  try {
+    const {jsPDF} = window.jspdf;
+    const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+    const W = doc.internal.pageSize.getWidth();
+    const H = doc.internal.pageSize.getHeight();
+    const mg = 18;
+    const mxW = W - mg*2;
+
+    const addBg = () => {
+      doc.setFillColor(5,5,10); doc.rect(0,0,W,H,'F');
+      doc.setFillColor(255,0,110); doc.rect(0,0,W,10,'F');
+      doc.setFillColor(255,0,110); doc.rect(0,H-8,W,8,'F');
+    };
+
+    addBg();
+    doc.setTextColor(255,255,255); doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text('INNOVA FACTORY · by Pao Peressotti · INNOVA PRO', mg, 7);
+    doc.setTextColor(255,255,255); doc.setFontSize(6);
+    doc.text('innova-factory.vercel.app', mg, H-3);
+
+    const mod = MODS.find(m => m.id === curMod);
+    doc.setFontSize(18); doc.setFont('helvetica','bold');
+    doc.setTextColor(255,77,158);
+    doc.text((mod?.name||curMod).toUpperCase(), W/2, 22, {align:'center'});
+    doc.setFontSize(11); doc.setTextColor(200,200,220);
+    doc.text(curProject.product||'', W/2, 30, {align:'center'});
+    doc.setDrawColor(255,0,110); doc.setLineWidth(.4);
+    doc.line(mg, 34, W-mg, 34);
+
+    let y = 42;
+    const lines = curResult.split('\n');
+
+    for (const line of lines) {
+      if (y > H-14) {
+        doc.addPage(); addBg();
+        doc.setTextColor(255,255,255); doc.setFontSize(6);
+        doc.text('innova-factory.vercel.app', mg, H-3);
+        y = 18;
+      }
+      if (!line.trim()) { y += 3; continue; }
+      if (line.startsWith('---')) { doc.setDrawColor(42,42,69); doc.line(mg,y,W-mg,y); y+=5; continue; }
+
+      let fs=9, bold=false, color=[200,200,216];
+      if (line.startsWith('# ')) { fs=15; bold=true; color=[255,77,158]; y+=3; }
+      else if (line.startsWith('## ')) { fs=12; bold=true; color=[168,85,247]; y+=2; }
+      else if (line.startsWith('### ')) { fs=10; bold=true; color=[255,77,158]; y+=1; }
+
+      doc.setFontSize(fs); doc.setFont('helvetica', bold?'bold':'normal');
+      doc.setTextColor(...color);
+      const clean = line.replace(/^#+\s/,'').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/`(.*?)`/g,'$1');
+      const wrapped = doc.splitTextToSize(clean, mxW);
+      for (const w of wrapped) {
+        if (y > H-14) {
+          doc.addPage(); addBg();
+          doc.setTextColor(255,255,255); doc.setFontSize(6);
+          doc.text('innova-factory.vercel.app', mg, H-3);
+          y = 18;
+          doc.setFontSize(fs); doc.setFont('helvetica', bold?'bold':'normal');
+          doc.setTextColor(...color);
+        }
+        doc.text(w, mg, y); y += fs*0.42+1.5;
+      }
+      y += 1;
+    }
+
+    doc.save(`innova_${curMod}_${(curProject.product||'').replace(/\s+/g,'_')}.pdf`);
+    toast('PDF descargado 📥', 'ok');
+  } catch(e) { toast('Error al generar PDF', 'err'); }
 }
 
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-renderStep();
+// ── HELPERS ──
+function setLoading(on, msg='Generando con IA...') {
+  document.getElementById('loading').classList.toggle('on', on);
+  document.getElementById('ld-msg').textContent = msg;
+}
+
+function toast(msg, type='ok') {
+  const c = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span>${type==='ok'?'✓':'✗'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 3500);
+}
+
+function saveCur() {
+  const i = projects.findIndex(p => p.product === curProject.product);
+  if (i>=0) projects[i] = curProject;
+  localStorage.setItem('innova_projects', JSON.stringify(projects));
+}
 </script>
-
 </body>
 </html>
