@@ -29,11 +29,11 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
+        model: 'dall-e-2',
         prompt: finalPrompt,
         n: 1,
         size: '1024x1024',
-        quality: 'standard',
+        
       }),
     });
 
