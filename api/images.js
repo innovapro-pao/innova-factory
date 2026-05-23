@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       mockup: `Professional 3D digital product mockup for: ${prompt}. Clean dark background, gold and white accents, premium quality hardcover book or ebook displayed at an angle, photorealistic rendering, soft studio lighting, no text overlays, marketing product shot style.`,
       logros: `Abstract dark luxury background image representing transformation and success for: ${prompt}. Black background, soft gold and pink bokeh lights, upward arrows and stars made of light, premium elegant atmosphere, no text, no people, cinematic lighting.`,
       bonos: `Dark premium flat lay of multiple digital books and guides stacked together for: ${prompt}. Black background, gold metallic accents, soft dramatic lighting on book covers, luxury product photography style, no text overlays, rich shadows and highlights.`,
-      hero: `Stunning dark hero banner background for: ${prompt}. Deep black and dark purple gradient, soft pink and gold light orbs, galaxy stars, premium digital product atmosphere, abstract elegant bokeh, cinematic wide format, no people, no text.`,
+      hero: `Premium dark marketing lifestyle photography for: ${prompt}. Show the actual product visually, real ingredients or finished product beauty shot, dark moody background with gold and warm accent lighting, professional photography style, no text, no people.`,
       custom: prompt,
     };
     const finalPrompt = prompts[type] || prompts.custom;
