@@ -35,7 +35,7 @@ module.exports = async function handler(req, res) {
     });
 
     const result = await response.json();
-    const content = result.content[0]?.text || '';
+    const content = result?.content?.[0]?.text || result?.completion || JSON.stringify(result);
     res.status(200).json({ content, step });
 
   } catch (error) {
