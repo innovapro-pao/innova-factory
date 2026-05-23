@@ -35,6 +35,7 @@ module.exports = async function handler(req, res) {
     });
 
     const result = await response.json();
+if (!response.ok) return res.status(500).json({ error: result.error?.message || 'API error' });
     const content = result?.content?.[0]?.text || result?.completion || JSON.stringify(result);
     res.status(200).json({ content, step });
 
