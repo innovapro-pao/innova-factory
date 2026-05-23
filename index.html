@@ -28,8 +28,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .view{display:none;padding:2.5rem;max-width:1300px;margin:0 auto}
 .view.active{display:block;animation:fadeIn .35s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* DASHBOARD */
 .dash-hero{text-align:center;padding:3rem 0 2rem}
 .dash-hero h1{font-family:var(--font-h);font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:.5rem}
 .dash-hero h1 span{background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -46,8 +44,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .proj-badge{display:inline-block;background:rgba(124,58,237,.15);color:var(--violet2);border:1px solid rgba(124,58,237,.3);padding:.2rem .7rem;border-radius:100px;font-size:.72rem;margin-top:.75rem}
 .empty-state{grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);border:2px dashed var(--border);border-radius:20px}
 .empty-state .big{font-size:3rem;margin-bottom:1rem}
-
-/* FORM */
 .wiz-wrap{max-width:720px;margin:0 auto}
 .wiz-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:3rem;margin-bottom:1.5rem}
 .wiz-card h2{font-family:var(--font-h);font-size:1.8rem;text-align:center;margin-bottom:.4rem}
@@ -58,7 +54,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .field textarea{resize:vertical;min-height:80px}
 .field select option{background:var(--deep)}
-.field-hint{font-size:.75rem;color:var(--muted);margin-top:.3rem}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:600px){.row2{grid-template-columns:1fr}}
 .color-row{display:flex;align-items:center;gap:1rem}
@@ -78,8 +73,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .add-btn:hover{background:rgba(124,58,237,.2)}
 .section-label{font-size:.75rem;color:var(--fuchsia2);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 2rem;border-radius:100px;font-family:var(--font-b);font-weight:500;font-size:.95rem;cursor:pointer;border:none;transition:all .25s}
 .btn-primary{background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;box-shadow:0 4px 20px rgba(255,0,110,.25)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,0,110,.35)}
@@ -88,8 +81,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .btn-ghost:hover{color:var(--text);border-color:var(--muted)}
 .wiz-btns{display:flex;gap:1rem;margin-top:2rem}
 .wiz-btns .btn{flex:1}
-
-/* MODULES */
 .gen-header{text-align:center;margin-bottom:2rem}
 .gen-header h2{font-family:var(--font-h);font-size:2rem;margin-bottom:.4rem}
 .gen-header p{color:var(--muted)}
@@ -102,13 +93,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .mod-card.done::before{background:var(--success)}
 .mod-card.landing-mod{border-color:rgba(255,0,110,.3);background:linear-gradient(135deg,rgba(255,0,110,.05),rgba(124,58,237,.05))}
 .mod-card.landing-mod::after{content:'⭐ ESPECIAL';position:absolute;top:.6rem;right:.6rem;font-size:.6rem;background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;padding:.2rem .5rem;border-radius:100px;font-weight:700}
+.mod-card.locked{opacity:.5;cursor:not-allowed}
+.mod-card.locked::after{content:'🔒 Completá el paso anterior';position:absolute;top:.6rem;right:.6rem;font-size:.6rem;background:rgba(100,100,100,.8);color:#fff;padding:.2rem .5rem;border-radius:100px;font-weight:700}
 .mod-icon{font-size:2rem;margin-bottom:.75rem}
 .mod-name{font-family:var(--font-h);font-size:.95rem;font-weight:700;margin-bottom:.3rem}
 .mod-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
 .mod-status{font-size:.72rem;margin-top:.6rem;font-weight:500}
 .s-pending{color:var(--muted)}.s-running{color:var(--fuchsia2)}.s-done{color:var(--success)}
-
-/* RESULT */
 .result-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:1.5rem}
 .result-top{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
 .result-title{font-family:var(--font-h);font-size:1rem;font-weight:700}
@@ -135,9 +126,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .placeholder .big{font-size:3rem;opacity:.35}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--fuchsia);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
+/* BONOS PREVIEW */
+.bonos-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
+.bono-preview-card{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:1.2rem;text-align:center}
+.bono-preview-emoji{font-size:2rem;margin-bottom:.5rem}
+.bono-preview-nombre{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.4rem}
+.bono-preview-desc{font-size:.72rem;color:var(--muted);margin-bottom:.6rem;line-height:1.4}
+.bono-preview-precio{font-size:.75rem;color:#666;text-decoration:line-through;margin-bottom:.2rem}
+.bono-preview-gratis{font-size:.82rem;font-weight:800;color:var(--success);letter-spacing:1px}
 /* IMAGE GENERATOR */
-.img-gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem}
+.img-gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}
 .img-gen-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .25s}
 .img-gen-card:hover{border-color:rgba(255,0,110,.3)}
 .img-gen-preview{width:100%;aspect-ratio:1;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
@@ -162,21 +160,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .img-gen-note{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:1rem 1.2rem;font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
 .img-gen-note strong{color:var(--violet2)}
 .img-cost-note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:1rem;opacity:.7}
-
-/* LOADING */
+.hero-img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+.hero-img-slot{aspect-ratio:16/9;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.hero-img-slot img{width:100%;height:100%;object-fit:cover;display:none}
+.hero-img-slot img.loaded{display:block}
+.hero-img-slot .slot-label{font-size:.7rem;color:var(--muted);text-align:center;padding:.5rem}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
 .ld-txt{color:var(--fuchsia2);font-size:1rem}
-
-/* TOAST */
 #toasts{position:fixed;bottom:2rem;right:2rem;z-index:1001;display:flex;flex-direction:column;gap:.6rem}
 .toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1.3rem;display:flex;align-items:center;gap:.7rem;font-size:.85rem;box-shadow:0 8px 30px rgba(0,0,0,.4);animation:slideIn .3s ease}
 .toast.ok{border-color:var(--success)}.toast.err{border-color:#ef4444}
 @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 .fab{position:fixed;bottom:2rem;left:2rem;width:56px;height:56px;background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-radius:50%;display:grid;place-items:center;font-size:1.6rem;cursor:pointer;border:none;color:#fff;box-shadow:0 8px 24px rgba(255,0,110,.4);transition:transform .25s;z-index:100}
 .fab:hover{transform:scale(1.1)}
-
 @media(max-width:768px){
   nav{padding:1rem 1.5rem}
   .view{padding:1.5rem}
@@ -185,6 +183,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   .testi-item{grid-template-columns:1fr}
   .testi-item textarea{grid-column:1}
   .img-gen-grid{grid-template-columns:1fr}
+  .hero-img-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -203,7 +202,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   </div>
 </nav>
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="view active">
   <div class="dash-hero">
     <h1>Bienvenida a <span>INNOVA FACTORY</span></h1>
@@ -219,10 +217,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   <div class="projects-grid" id="projects-grid"></div>
 </div>
 
-<!-- GENERATOR -->
 <div id="generator" class="view">
 
-  <!-- STEP 1 -->
   <div id="step1" class="wiz-wrap">
     <div class="wiz-card">
       <h2>📝 Tu Infoproducto</h2>
@@ -238,7 +234,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
     </div>
   </div>
 
-  <!-- STEP 2 -->
   <div id="step2" class="wiz-wrap" style="display:none">
     <div class="wiz-card">
       <h2>💰 Precio y Plataforma</h2>
@@ -263,7 +258,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
     </div>
   </div>
 
-  <!-- MODULES -->
   <div id="modules-panel" style="display:none">
     <div class="gen-header">
       <h2>🚀 Generá tu Contenido</h2>
@@ -279,11 +273,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
     </div>
   </div>
 
-  <!-- LANDING CONFIG -->
   <div id="landing-config" style="display:none">
     <div class="wiz-wrap" style="max-width:800px">
 
-      <!-- LC1: Colors & Promise -->
       <div id="lc1">
         <div class="wiz-card">
           <h2>🎨 Diseño de tu Landing</h2>
@@ -331,7 +323,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         </div>
       </div>
 
-      <!-- LC2: Urgency -->
       <div id="lc2" style="display:none">
         <div class="wiz-card">
           <h2>⚡ Urgencia y Escasez</h2>
@@ -357,7 +348,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         </div>
       </div>
 
-      <!-- LC3: Guarantee & Testimonials -->
       <div id="lc3" style="display:none">
         <div class="wiz-card">
           <h2>🛡️ Garantía y Testimonios</h2>
@@ -381,7 +371,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         </div>
       </div>
 
-      <!-- LC4: Extra sections -->
       <div id="lc4" style="display:none">
         <div class="wiz-card">
           <h2>✨ Secciones Extra</h2>
@@ -405,19 +394,33 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         </div>
       </div>
 
-      <!-- LC5: IMAGE GENERATOR ⭐ NEW -->
       <div id="lc5" style="display:none">
         <div class="wiz-card">
-          <h2>🎨 Crear Imágenes con IA</h2>
-          <p class="sub">Generá las imágenes de tu landing con DALL-E 3 — un clic y listo</p>
+          <h2>🎨 Imágenes de tu Landing</h2>
+          <p class="sub">Generá las imágenes con IA — un clic y listo</p>
 
           <div class="img-gen-note">
-            <strong>¿Cómo funciona?</strong> Hacé clic en "Generar" en cada imagen. La IA crea automáticamente una imagen profesional basada en tu producto. Podés regenerar las veces que quieras hasta que te guste. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
+            <strong>¿Cómo funciona?</strong> Generá el mockup y el hero con IA. Los bonos se toman automáticamente del paso anterior. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
           </div>
 
-          <div class="img-gen-grid" id="img-gen-grid"></div>
+          <!-- MOCKUP -->
+          <div class="section-label">Mockup del Producto</div>
+          <div class="img-gen-grid" id="img-mockup-grid"></div>
 
-          <div class="img-cost-note">💡 Podés saltear este paso y agregar las imágenes después editando el HTML descargado</div>
+          <!-- HERO CARRUSEL -->
+          <div class="section-label" style="margin-top:2rem">Hero — Carrusel (3 imágenes)</div>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Se van a generar 3 imágenes que van a rotar automáticamente en el hero de tu landing.</p>
+          <div class="hero-img-grid" id="hero-img-grid"></div>
+          <div style="text-align:center;margin-top:.75rem">
+            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 imágenes del Hero</button>
+            <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
+          </div>
+
+          <!-- BONOS -->
+          <div class="section-label" style="margin-top:2rem">Bonos — Generados automáticamente</div>
+          <div id="bonos-preview-lc5"></div>
+
+          <div class="img-cost-note">💡 Podés saltear imágenes y agregar las tuyas después editando el HTML</div>
 
           <div class="wiz-btns" style="margin-top:2rem">
             <button class="btn btn-ghost" onclick="goLC4()">← Atrás</button>
@@ -429,29 +432,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
     </div>
   </div>
 
-</div><!-- /generator -->
-</div><!-- /app -->
+</div>
+</div>
 
 <div id="loading"><div class="ld-spinner"></div><div class="ld-txt" id="ld-msg">Generando con IA...</div></div>
 <div id="toasts"></div>
 <button class="fab" onclick="startNew()">+</button>
 
 <script>
-// ── CONSTANTS ──
 const MODS = [
   {id:'ebook',     icon:'📘', name:'Ebook Completo',        desc:'Títulos, índice y capítulos — descargá en PDF'},
-  {id:'bonos',     icon:'🎁', name:'Pack de Bonos',         desc:'5 bonos irresistibles con copy incluido'},
+  {id:'bonos',     icon:'🎁', name:'Pack de Bonos',         desc:'4 bonos irresistibles — generá antes de la landing'},
   {id:'landing',   icon:'🌐', name:'Landing Page Pro',      desc:'Configurador completo → HTML espectacular listo para usar', special:true},
   {id:'copies',    icon:'✍️',  name:'Copies AIDA',          desc:'Emails, posts, stories y ads completos'},
   {id:'creativos', icon:'🎨', name:'Creativos & Diseño',    desc:'Briefs y prompts para Midjourney/DALL-E'},
   {id:'trafico',   icon:'📈', name:'Estrategia de Tráfico', desc:'Plan orgánico, paid y cronograma 30 días'},
-];
-
-const IMG_TYPES = [
-  {id:'mockup',  icon:'📦', title:'Mockup del Producto',         desc:'Imagen 3D premium de tu ebook o curso'},
-  {id:'logros',  icon:'🏆', title:'Lo que vas a Lograr',         desc:'Imagen de transformación y resultados'},
-  {id:'bonos',   icon:'🎁', title:'Pack de Bonos',               desc:'Imagen visual de los bonos incluidos'},
-  {id:'hero',    icon:'🌟', title:'Banner Hero',                  desc:'Fondo galaxy para el hero de la landing'},
 ];
 
 let projects = JSON.parse(localStorage.getItem('innova_projects') || '[]');
@@ -463,8 +458,8 @@ let selectedUrgency = new Set();
 let selectedSections = new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials = [];
 let generatedImages = {};
+let heroImages = [];
 
-// ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   renderStars();
   renderDash();
@@ -491,7 +486,6 @@ function showView(id) {
   document.querySelectorAll('.nav-btn')[idx].classList.add('active');
 }
 
-// ── DASHBOARD ──
 function renderDash() {
   document.getElementById('s-total').textContent = projects.length;
   document.getElementById('s-ebooks').textContent = projects.filter(p => p.hasEbook).length;
@@ -518,7 +512,6 @@ function openProject(i) {
   showView('generator');
 }
 
-// ── WIZARD ──
 function startNew() {
   ['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget'].forEach(id => {
     const el = document.getElementById(id);
@@ -575,17 +568,20 @@ function showModulesPanel() {
   renderMods();
 }
 
-// ── MODULES ──
 function renderMods() {
   const g = document.getElementById('mods-grid');
   if (!g) return;
-  g.innerHTML = MODS.map(m => `
-    <div class="mod-card ${m.special?'landing-mod':''}" id="mc-${m.id}" onclick="clickMod('${m.id}')">
+  const hasBonos = !!(curProject.bonos && curProject.bonos.length);
+  g.innerHTML = MODS.map(m => {
+    const needsBonos = m.id === 'landing' && !hasBonos;
+    return `
+    <div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos ? "toast('Generá los Bonos primero 🎁','err')" : `clickMod('${m.id}')`}">
       <div class="mod-icon">${m.icon}</div>
       <div class="mod-name">${m.name}</div>
-      <div class="mod-desc">${m.desc}</div>
+      <div class="mod-desc">${needsBonos ? '⚠️ Generá los Bonos primero' : m.desc}</div>
       <div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function clickMod(id) {
@@ -610,6 +606,13 @@ async function generate(modId) {
     curResult = json.content;
     setModStatus(modId, 'done', '✓ Listo');
     if (modId === 'ebook') { curProject.hasEbook = true; saveCur(); }
+    if (modId === 'bonos' && json.bonos) {
+      curProject.bonos = json.bonos;
+      curProject.bonos_frase = json.frase_remate;
+      curProject.bonos_valor = json.valor_total;
+      saveCur();
+      toast('¡Bonos guardados! Ya podés crear tu landing 🎁', 'ok');
+    }
     renderResult(curResult, mod.name, false);
     setLoading(false);
     toast(`${mod.name} generado 🎉`, 'ok');
@@ -658,11 +661,11 @@ function renderResult(content, title, isHtml) {
   }
 }
 
-// ── LANDING CONFIGURATOR ──
 function startLandingConfig() {
   lcConfig = {};
   testimonials = [];
   generatedImages = {};
+  heroImages = [];
   selectedUrgency = new Set();
   ['step1','step2','modules-panel'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('landing-config').style.display = 'block';
@@ -724,38 +727,59 @@ function goLC5() {
   lcConfig.url = document.getElementById('lc-url').value;
   lcConfig.extra = document.getElementById('lc-extra').value;
   showLCStep(5);
-  renderImageGenerator();
+  renderLC5();
 }
 
-// ── IMAGE GENERATOR ──
-function renderImageGenerator() {
-  const grid = document.getElementById('img-gen-grid');
-  grid.innerHTML = IMG_TYPES.map(img => `
-    <div class="img-gen-card" id="imgcard-${img.id}">
-      <div class="img-gen-preview" id="imgprev-${img.id}">
-        <div class="img-placeholder-inner" id="imgph-${img.id}">
-          <div class="ph-icon">${img.icon}</div>
-          <div class="ph-text">${img.title}</div>
+function renderLC5() {
+  // Mockup grid
+  const mockupGrid = document.getElementById('img-mockup-grid');
+  mockupGrid.innerHTML = `
+    <div class="img-gen-card" id="imgcard-mockup">
+      <div class="img-gen-preview" id="imgprev-mockup">
+        <div class="img-placeholder-inner" id="imgph-mockup">
+          <div class="ph-icon">📦</div>
+          <div class="ph-text">Mockup del Producto</div>
         </div>
-        <img id="imgel-${img.id}" src="" alt="${img.title}" onload="onImgLoad('${img.id}')">
+        <img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')">
       </div>
       <div class="img-gen-body">
-        <div class="img-gen-title">${img.title}</div>
-        <div class="img-gen-desc">${img.desc}</div>
+        <div class="img-gen-title">Mockup del Producto</div>
+        <div class="img-gen-desc">Imagen 3D premium de tu ebook o curso</div>
         <div class="img-gen-actions">
-          <button class="img-gen-btn generate" id="imgbtn-${img.id}" onclick="generateImage('${img.id}')">
-            ✨ Generar
-          </button>
-          <button class="img-gen-btn regen" id="imgrebtn-${img.id}" onclick="generateImage('${img.id}')" style="display:none">
-            🔄 Regenerar
-          </button>
-          <button class="img-gen-btn copy-url" id="imgcopy-${img.id}" onclick="copyImgUrl('${img.id}')" style="display:none">
-            📋 Copiar URL
-          </button>
+          <button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button>
+          <button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regenerar</button>
         </div>
-        <div class="img-gen-status" id="imgstatus-${img.id}"></div>
+        <div class="img-gen-status" id="imgstatus-mockup"></div>
       </div>
+    </div>`;
+
+  // Hero grid
+  const heroGrid = document.getElementById('hero-img-grid');
+  heroGrid.innerHTML = [1,2,3].map(i => `
+    <div class="hero-img-slot" id="hero-slot-${i}">
+      <img id="hero-img-${i}" src="" alt="Hero ${i}" onload="this.classList.add('loaded')">
+      <div class="slot-label" id="hero-label-${i}">Imagen ${i}</div>
     </div>`).join('');
+
+  // Bonos preview
+  const bonosDiv = document.getElementById('bonos-preview-lc5');
+  const bonos = curProject.bonos || [];
+  if (bonos.length) {
+    bonosDiv.innerHTML = `
+      <div class="bonos-preview">
+        ${bonos.map((b,i) => `
+          <div class="bono-preview-card">
+            <div class="bono-preview-emoji">${b.emoji||'🎁'}</div>
+            <div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div>
+            <div class="bono-preview-desc">${b.descripcion}</div>
+            <div class="bono-preview-precio">${b.precio_original}</div>
+            <div class="bono-preview-gratis">HOY GRATIS</div>
+          </div>`).join('')}
+      </div>
+      <p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos para incluir en tu landing</p>`;
+  } else {
+    bonosDiv.innerHTML = `<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center;background:rgba(255,255,255,.03);border-radius:12px;border:1px dashed var(--border)">No generaste bonos aún — volvé al generador y creá el Pack de Bonos primero.</p>`;
+  }
 }
 
 async function generateImage(type) {
@@ -764,12 +788,10 @@ async function generateImage(type) {
   const status = document.getElementById(`imgstatus-${type}`);
   const ph = document.getElementById(`imgph-${type}`);
   const imgEl = document.getElementById(`imgel-${type}`);
-
-  btn.disabled = true;
+  if (btn) btn.disabled = true;
   if (rebtn) rebtn.disabled = true;
-  ph.innerHTML = `<div class="spinner"></div>`;
-  status.innerHTML = `<div class="img-spin"></div> Generando con DALL-E 3...`;
-
+  if (ph) ph.innerHTML = `<div class="spinner"></div>`;
+  if (status) status.innerHTML = `<div class="img-spin"></div> Generando...`;
   try {
     const res = await fetch('/api/images', {
       method: 'POST',
@@ -781,21 +803,16 @@ async function generateImage(type) {
     });
     const json = await res.json();
     if (json.error) throw new Error(json.error);
-
     generatedImages[type] = json.url;
-    imgEl.src = json.url;
-    status.innerHTML = `<span style="color:var(--success)">✓ Lista</span>`;
-
-    btn.style.display = 'none';
-    rebtn.style.display = 'inline-flex';
-    rebtn.disabled = false;
-    document.getElementById(`imgcopy-${type}`).style.display = 'inline-flex';
-    toast(`${IMG_TYPES.find(i=>i.id===type)?.title} generada 🎨`, 'ok');
-
+    if (imgEl) { imgEl.src = json.url; }
+    if (status) status.innerHTML = `<span style="color:var(--success)">✓ Lista</span>`;
+    if (btn) btn.style.display = 'none';
+    if (rebtn) { rebtn.style.display = 'inline-flex'; rebtn.disabled = false; }
+    toast('Imagen generada 🎨', 'ok');
   } catch(e) {
-    ph.innerHTML = `<div class="ph-icon">❌</div><div class="ph-text" style="color:#ef4444">Error</div>`;
-    status.innerHTML = `<span style="color:#ef4444">${e.message}</span>`;
-    btn.disabled = false;
+    if (ph) ph.innerHTML = `<div class="ph-icon">❌</div><div class="ph-text" style="color:#ef4444">Error</div>`;
+    if (status) status.innerHTML = `<span style="color:#ef4444">${e.message}</span>`;
+    if (btn) btn.disabled = false;
     if (rebtn) rebtn.disabled = false;
     toast('Error al generar imagen 😓', 'err');
   }
@@ -808,18 +825,47 @@ function onImgLoad(type) {
   if (imgEl) imgEl.classList.add('loaded');
 }
 
-function copyImgUrl(type) {
-  const url = generatedImages[type];
-  if (!url) return;
-  navigator.clipboard.writeText(url).then(() => toast('URL copiada 📋', 'ok'));
+async function generateAllHero() {
+  const btn = document.getElementById('hero-gen-all-btn');
+  const status = document.getElementById('hero-status');
+  btn.disabled = true;
+  heroImages = [];
+  for (let i = 1; i <= 3; i++) {
+    status.innerHTML = `<div class="img-spin"></div> Generando imagen ${i} de 3...`;
+    const slot = document.getElementById(`hero-slot-${i}`);
+    const label = document.getElementById(`hero-label-${i}`);
+    const img = document.getElementById(`hero-img-${i}`);
+    if (label) label.textContent = `Generando ${i}/3...`;
+    try {
+      const res = await fetch('/api/images', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          type: 'hero',
+          prompt: `${curProject.product} - ${curProject.audience} - ${lcConfig.promise || curProject.transformation}`
+        })
+      });
+      const json = await res.json();
+      if (json.error) throw new Error(json.error);
+      heroImages.push(json.url);
+      if (img) { img.src = json.url; img.classList.add('loaded'); }
+      if (label) label.style.display = 'none';
+    } catch(e) {
+      if (label) label.textContent = `Error imagen ${i}`;
+    }
+  }
+  btn.disabled = false;
+  status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} imágenes del hero listas</span>`;
+  toast('¡Hero carrusel listo! 🌟', 'ok');
 }
 
 async function generateLanding() {
   lcConfig.images = generatedImages;
+  lcConfig.heroImages = heroImages;
+  lcConfig.bonoImages = [];
   curMod = 'landing';
   setModStatus('landing', 'running', '⟳ Generando...');
   setLoading(true, '🚀 Creando tu Landing Page Pro...');
-
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
@@ -845,7 +891,6 @@ async function generateLanding() {
   }
 }
 
-// Color pickers
 function updateColorPreview() {
   document.getElementById('cp1').style.background = document.getElementById('lc-color1').value;
   document.getElementById('cp2').style.background = document.getElementById('lc-color2').value;
@@ -862,7 +907,6 @@ function syncColor(n) {
   }
 }
 
-// Chips
 function toggleChip(el) {
   el.classList.toggle('on');
   const val = el.dataset.val;
@@ -880,19 +924,12 @@ function toggleChip(el) {
 function updateUrgencyDetails() {
   const c = document.getElementById('urgency-details');
   let html = '';
-  if (selectedUrgency.has('countdown')) {
-    html += `<div class="field"><label>Fecha límite para el countdown</label><input type="datetime-local" id="lc-countdown-date" style="color-scheme:dark"></div>`;
-  }
-  if (selectedUrgency.has('stock') || selectedUrgency.has('limited')) {
-    html += `<div class="field"><label>¿Cuántos lugares quedan?</label><input type="number" id="lc-stock-left" placeholder="Ej: 12" min="1"></div>`;
-  }
-  if (selectedUrgency.has('sold')) {
-    html += `<div class="field"><label>¿Qué porcentaje está vendido?</label><input type="number" id="lc-sold-pct" placeholder="Ej: 78" min="1" max="99"></div>`;
-  }
+  if (selectedUrgency.has('countdown')) html += `<div class="field"><label>Fecha límite para el countdown</label><input type="datetime-local" id="lc-countdown-date" style="color-scheme:dark"></div>`;
+  if (selectedUrgency.has('stock') || selectedUrgency.has('limited')) html += `<div class="field"><label>¿Cuántos lugares quedan?</label><input type="number" id="lc-stock-left" placeholder="Ej: 12" min="1"></div>`;
+  if (selectedUrgency.has('sold')) html += `<div class="field"><label>¿Qué porcentaje está vendido?</label><input type="number" id="lc-sold-pct" placeholder="Ej: 78" min="1" max="99"></div>`;
   c.innerHTML = html;
 }
 
-// Testimonials
 function initTestimonials() {
   testimonials = [];
   const list = document.getElementById('testi-list');
@@ -922,7 +959,6 @@ function removeTesti(idx) {
   if (testimonials[idx]) testimonials[idx] = {name:'',lastname:'',text:''};
 }
 
-// ── ACTIONS ──
 function doCopy() {
   if (!curResult) return;
   navigator.clipboard.writeText(curResult).then(() => toast('Copiado 📋', 'ok'));
@@ -988,7 +1024,6 @@ function doPDF() {
   } catch(e) { toast('Error al generar PDF', 'err'); }
 }
 
-// ── HELPERS ──
 function setLoading(on, msg='Generando con IA...') {
   document.getElementById('loading').classList.toggle('on', on);
   document.getElementById('ld-msg').textContent = msg;
