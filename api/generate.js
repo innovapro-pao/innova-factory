@@ -36,7 +36,8 @@ export default async function handler(req, res) {
     });
 
     const json = await r.json();
-    const text = json?.content?.[0]?.text || JSON.stringify(json);
+    const raw = json?.content?.[0]?.text || JSON.stringify(json);
+const text = raw.replace(/^```html\n?/, '').replace(/\n?```$/, '').trim();
     return res.status(200).json({ content: text, step });
 
   } catch (err) {
