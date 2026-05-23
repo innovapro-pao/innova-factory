@@ -12,11 +12,11 @@ export default async function handler(req, res) {
 
     const prompts = {
       ebook: `Eres experto en infoproductos. Crea un ebook completo en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Problema: ${data.problem || ''}, Transformacion: ${data.transformation || ''}. Incluye: 3 titulos magneticos, indice con 7 capitulos, introduccion de 400 palabras, capitulo 1 completo de 600 palabras, capitulo 2 completo de 600 palabras, conclusion con llamada a la accion.`,
-      bonos: `Eres experto en lanzamientos digitales. Crea 4 bonos irresistibles en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Para cada bono incluye: nombre atractivo, descripcion detallada, valor percibido, por que lo incluyes, y copy para presentarlo en la landing.`,
-      landing: `Genera SOLO codigo HTML puro sin explicaciones. Crea una landing page completa con HTML CSS y JavaScript en un solo archivo para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Secciones: hero con headline magnetico, seccion de dolor, presentacion de solucion, beneficios en bullets, bonos, garantia, precio con urgencia y countdown, CTA final, FAQ. Colores: fondo negro #05050a, fucsia #ff006e, violeta #7c3aed. Google Fonts Syne. SOLO devuelve el codigo HTML comenzando con <!DOCTYPE html>.`,
-      copies: `Eres copywriter experto en AIDA. Crea en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Genera: 5 emails de lanzamiento completos, 5 posts de Instagram con caption y hashtags, 7 scripts de stories, 3 anuncios para Facebook Ads con headline texto y CTA.`,
-      creativos: `Eres director creativo. Crea briefs detallados en español para: Producto: ${data.product || ''}, Estética: galaxy oscura, fucsia #ff006e, violeta #7c3aed. Genera: brief de portada de ebook, brief de banner 1080x1080, descripcion de 6 slides de carrusel, 5 prompts listos para Midjourney o DALL-E para generar imagenes del producto, paleta de marca completa con colores HEX y tipografias.`,
-      trafico: `Eres experto en trafico digital. Crea estrategia completa en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Incluye: plan organico 30 dias con calendario de contenidos, estrategia de Facebook Ads con segmentacion y presupuesto sugerido, funnel completo de ventas, cronograma de lanzamiento semana a semana, KPIs a medir.`,
+      bonos: `Eres experto en lanzamientos digitales. Crea 4 bonos irresistibles en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Para cada bono incluye: nombre atractivo, descripcion detallada, valor percibido, por que lo incluyes, y copy para presentarlo.`,
+      landing: `Eres experto en landing pages. Crea contenido completo en español para una landing page de: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Incluye: headline principal, subheadline, 5 puntos de dolor, presentacion de solucion, 6 beneficios, seccion de bonos, garantia, precio con urgencia y CTA poderoso.`,
+      copies: `Eres copywriter experto en AIDA. Crea en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Genera: 5 emails de lanzamiento completos, 5 posts de Instagram con caption y hashtags, 7 scripts de stories, 3 anuncios para Facebook Ads.`,
+      creativos: `Eres director creativo. Crea briefs detallados en español para: Producto: ${data.product || ''}, Estetica: galaxy oscura, fucsia #ff006e, violeta #7c3aed. Genera: brief de portada de ebook, brief de banner 1080x1080, descripcion de 6 slides de carrusel, 5 prompts para Midjourney o DALL-E, paleta de marca completa.`,
+      trafico: `Eres experto en trafico digital. Crea estrategia completa en español para: Producto: ${data.product || ''}, Publico: ${data.audience || ''}, Precio: ${data.price || ''}. Incluye: plan organico 30 dias, estrategia Facebook Ads con segmentacion, funnel de ventas, cronograma de lanzamiento semana a semana.`,
     };
 
     const prompt = prompts[step] || prompts.ebook;
@@ -36,8 +36,7 @@ export default async function handler(req, res) {
     });
 
     const json = await r.json();
-    const raw = json?.content?.[0]?.text || JSON.stringify(json);
-const text = raw.replace(/^```html\n?/, '').replace(/\n?```$/, '').trim();
+    const text = json?.content?.[0]?.text || 'Error al generar contenido';
     return res.status(200).json({ content: text, step });
 
   } catch (err) {
