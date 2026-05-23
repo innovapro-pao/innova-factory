@@ -510,6 +510,7 @@ function openProject(i) {
   document.getElementById('prod-name').textContent = curProject.product;
   showModulesPanel();
   showView('generator');
+  renderMods();
 }
 
 function startNew() {
@@ -720,7 +721,6 @@ function goLC4() {
   lcConfig.testimonials = testimonials.filter(t => t.name.trim());
   showLCStep(4);
 }
-
 function goLC5() {
   lcConfig.sections = [...selectedSections];
   lcConfig.cta = document.getElementById('lc-cta').value;
