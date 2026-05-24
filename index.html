@@ -389,11 +389,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           </div>
           <div class="section-label">Mockup del Producto</div>
           <div class="img-gen-grid" id="img-mockup-grid"></div>
-          <div class="section-label" style="margin-top:2rem">Hero — Carrusel (3 imágenes)</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Se van a generar 3 fotos distintas de tu producto que van a rotar en el hero.</p>
+          <div class="section-label" style="margin-top:2rem">Hero — Carrusel (3 fotos del producto)</div>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">3 fotos profesionales de tu producto sin texto, que van a rotar en el hero.</p>
           <div class="hero-img-grid" id="hero-img-grid"></div>
           <div style="text-align:center;margin-top:.75rem">
-            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 imágenes del Hero</button>
+            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 fotos del Hero</button>
             <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
           </div>
           <div class="section-label" style="margin-top:2rem">Bonos — Generados automáticamente</div>
@@ -432,10 +432,7 @@ let testimonials = [];
 let generatedImages = {};
 let heroImages = [];
 document.addEventListener('DOMContentLoaded', () => {
-  renderStars();
-  renderDash();
-  renderMods();
-  initTestimonials();
+  renderStars(); renderDash(); renderMods(); initTestimonials();
 });
 function renderStars() {
   const c = document.getElementById('stars');
@@ -475,9 +472,7 @@ function renderDash() {
 function openProject(i) {
   curProject = {...projects[i]};
   document.getElementById('prod-name').textContent = curProject.product;
-  showModulesPanel();
-  showView('generator');
-  renderMods();
+  showModulesPanel(); showView('generator'); renderMods();
 }
 function startNew() {
   ['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget'].forEach(id => {
@@ -485,8 +480,7 @@ function startNew() {
     if (el) el.value = '';
   });
   document.getElementById('f-platform').selectedIndex = 0;
-  showStep(1);
-  showView('generator');
+  showStep(1); showView('generator');
 }
 function showStep(n) {
   ['step1','step2','modules-panel','landing-config'].forEach(id => {
@@ -569,8 +563,7 @@ async function generate(modId) {
       curProject.bonos = json.bonos;
       curProject.bonos_frase = json.frase_remate;
       curProject.bonos_valor = json.valor_total;
-      saveCur();
-      renderMods();
+      saveCur(); renderMods();
       toast('¡Bonos guardados! Ya podés crear tu landing 🎁', 'ok');
     }
     renderResult(curResult, mod.name, false);
@@ -618,10 +611,7 @@ function renderResult(content, title, isHtml) {
   }
 }
 function startLandingConfig() {
-  lcConfig = {};
-  testimonials = [];
-  generatedImages = {};
-  heroImages = [];
+  lcConfig = {}; testimonials = {}; generatedImages = {}; heroImages = [];
   selectedUrgency = new Set();
   ['step1','step2','modules-panel'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('landing-config').style.display = 'block';
@@ -703,7 +693,7 @@ function renderLC5() {
   heroGrid.innerHTML = [1,2,3].map(i => `
     <div class="hero-img-slot" id="hero-slot-${i}">
       <img id="hero-img-${i}" src="" alt="Hero ${i}" onload="this.classList.add('loaded')">
-      <div class="slot-label" id="hero-label-${i}">Imagen ${i}</div>
+      <div class="slot-label" id="hero-label-${i}">Foto ${i}</div>
     </div>`).join('');
   const bonosDiv = document.getElementById('bonos-preview-lc5');
   const bonos = curProject.bonos || [];
@@ -770,13 +760,17 @@ async function generateAllHero() {
   const status = document.getElementById('hero-status');
   btn.disabled = true;
   heroImages = [];
-  const heroStyles = [
-    'flat lay top view, ingredients and finished product beautifully arranged on dark surface, gold accents',
-    'close up macro shot showing texture and details of the finished product, dramatic side lighting, dark moody',
-    'lifestyle scene, product displayed elegantly on dark marble surface, soft bokeh background, warm golden light'
+  // Limpiar el nombre del producto de palabras que no son el tema visual
+  const tema = curProject.product
+    .replace(/ebook|e-book|curso|guia|guía|pack|kit|método|metodo|de|para|el|la|los|las|del|con|y|en|un|una/gi, ' ')
+    .replace(/\s+/g, ' ').trim();
+  const estilos = [
+    `Stunning flat lay top view, ${tema} beautifully arranged on dark black slate surface with scattered ingredients, dramatic lighting, gold accents. Pure product photography, zero text, zero writing, zero books, zero ebooks.`,
+    `Extreme close up macro photograph of ${tema}, incredible texture detail, shallow depth of field, dramatic moody side lighting, dark background. Zero text, zero writing, zero books anywhere.`,
+    `Elegant lifestyle photograph of ${tema} on dark marble surface with soft bokeh lights in background, warm golden hour lighting, luxury feel. Zero text, zero writing, zero books anywhere.`
   ];
   for (let i = 1; i <= 3; i++) {
-    status.innerHTML = `<div class="img-spin"></div> Generando imagen ${i} de 3...`;
+    status.innerHTML = `<div class="img-spin"></div> Generando foto ${i} de 3...`;
     const img = document.getElementById(`hero-img-${i}`);
     const label = document.getElementById(`hero-label-${i}`);
     if (label) label.textContent = `Generando ${i}/3...`;
@@ -784,10 +778,7 @@ async function generateAllHero() {
       const res = await fetch('/api/images', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          type: 'custom',
-          prompt: `Professional food and product photography. NO text, NO books, NO ebooks, NO titles, NO writing anywhere. ONLY the real physical product: ${curProject.product}. Style: ${heroStyles[i-1]}. Dark background, cinematic lighting. Absolutely no text or words in the image.`
-        })
+        body: JSON.stringify({ type: 'custom', prompt: estilos[i-1] })
       });
       const json = await res.json();
       if (json.error) throw new Error(json.error);
@@ -795,11 +786,11 @@ async function generateAllHero() {
       if (img) { img.src = json.url; img.classList.add('loaded'); }
       if (label) label.style.display = 'none';
     } catch(e) {
-      if (label) label.textContent = `Error imagen ${i}`;
+      if (label) label.textContent = `Error foto ${i}`;
     }
   }
   btn.disabled = false;
-  status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} imágenes del hero listas</span>`;
+  status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} fotos del hero listas</span>`;
   toast('¡Hero carrusel listo! 🌟', 'ok');
 }
 async function generateLanding() {
