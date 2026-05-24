@@ -128,11 +128,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 @keyframes spin{to{transform:rotate(360deg)}}
 .bonos-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
 .bono-preview-card{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:1.2rem;text-align:center}
-.bono-preview-emoji{font-size:2rem;margin-bottom:.5rem}
+.bono-preview-img{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;margin-bottom:.75rem;background:#111;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative}
+.bono-preview-img img{width:100%;height:100%;object-fit:cover;display:none}
+.bono-preview-img img.loaded{display:block}
 .bono-preview-nombre{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.4rem}
 .bono-preview-desc{font-size:.72rem;color:var(--muted);margin-bottom:.6rem;line-height:1.4}
 .bono-preview-precio{font-size:.75rem;color:#666;text-decoration:line-through;margin-bottom:.2rem}
 .bono-preview-gratis{font-size:.82rem;font-weight:800;color:var(--success);letter-spacing:1px}
+.bono-gen-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .8rem;border-radius:100px;font-size:.7rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-b);background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;margin-top:.5rem}
+.bono-gen-btn:disabled{opacity:.5;cursor:not-allowed}
 .img-gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}
 .img-gen-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .25s}
 .img-gen-card:hover{border-color:rgba(255,0,110,.3)}
@@ -152,17 +156,18 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .img-gen-btn.generate:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .img-gen-btn.regen{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
 .img-gen-btn.regen:hover{color:var(--text)}
-.img-gen-btn.copy-url{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--success)}
 .img-gen-status{font-size:.72rem;margin-top:.5rem;display:flex;align-items:center;gap:.4rem}
 .img-spin{width:12px;height:12px;border:2px solid rgba(255,0,110,.3);border-top-color:var(--fuchsia);border-radius:50%;animation:spin .6s linear infinite}
 .img-gen-note{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:1rem 1.2rem;font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
 .img-gen-note strong{color:var(--violet2)}
 .img-cost-note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:1rem;opacity:.7}
-.hero-img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
-.hero-img-slot{aspect-ratio:16/9;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
-.hero-img-slot img{width:100%;height:100%;object-fit:cover;display:none}
-.hero-img-slot img.loaded{display:block}
-.hero-img-slot .slot-label{font-size:.7rem;color:var(--muted);text-align:center;padding:.5rem}
+.hero-foto-inputs{display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
+.hero-foto-row{display:grid;grid-template-columns:auto 1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:.75rem 1rem}
+.hero-foto-num{font-size:.75rem;font-weight:700;color:var(--fuchsia2);min-width:60px}
+.hero-foto-preview{width:60px;height:45px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-foto-preview img{width:100%;height:100%;object-fit:cover;display:none}
+.hero-foto-preview img.loaded{display:block}
+.hero-foto-status{font-size:.65rem;color:var(--muted)}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -181,7 +186,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   .testi-item{grid-template-columns:1fr}
   .testi-item textarea{grid-column:1}
   .img-gen-grid{grid-template-columns:1fr}
-  .hero-img-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -383,21 +387,51 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div id="lc5" style="display:none">
         <div class="wiz-card">
           <h2>🎨 Imágenes de tu Landing</h2>
-          <p class="sub">Generá las imágenes con IA — un clic y listo</p>
+          <p class="sub">Describí tus fotos y la IA las genera — un clic y listo</p>
           <div class="img-gen-note">
-            <strong>¿Cómo funciona?</strong> Generá el mockup y el hero con IA. Los bonos se toman automáticamente del paso anterior. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
+            <strong>¿Cómo funciona?</strong> Describí qué querés ver en cada foto del hero y la IA la genera. Para los bonos, la IA crea el mockup automáticamente. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
           </div>
+
+          <!-- MOCKUP -->
           <div class="section-label">Mockup del Producto</div>
           <div class="img-gen-grid" id="img-mockup-grid"></div>
-          <div class="section-label" style="margin-top:2rem">Hero — Carrusel (3 fotos del producto)</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">3 fotos profesionales de tu producto sin texto, que van a rotar en el hero.</p>
-          <div class="hero-img-grid" id="hero-img-grid"></div>
-          <div style="text-align:center;margin-top:.75rem">
-            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 fotos del Hero</button>
+
+          <!-- HERO -->
+          <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos del Producto</div>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Describí exactamente qué querés en cada foto. La IA la genera tal cual.</p>
+          <div class="hero-foto-inputs">
+            <div class="hero-foto-row">
+              <div>
+                <div class="hero-foto-num">📷 Foto 1</div>
+                <input type="text" id="hero-desc-1" placeholder="Ej: caja de bombones abierta sobre mesa oscura con velas" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+              </div>
+              <div class="hero-foto-preview"><img id="hero-prev-1" src="" onload="this.classList.add('loaded')"><span id="hero-ph-1" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
+            </div>
+            <div class="hero-foto-row">
+              <div>
+                <div class="hero-foto-num">📷 Foto 2</div>
+                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado a la mitad mostrando el relleno de caramelo" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+              </div>
+              <div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
+            </div>
+            <div class="hero-foto-row">
+              <div>
+                <div class="hero-foto-num">📷 Foto 3</div>
+                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja de bombones variados con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+              </div>
+              <div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:1rem">
+            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 fotos</button>
             <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
           </div>
-          <div class="section-label" style="margin-top:2rem">Bonos — Generados automáticamente</div>
+
+          <!-- BONOS -->
+          <div class="section-label" style="margin-top:2rem">Bonos — Mockups con IA</div>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">La IA genera el mockup de portada para cada bono automáticamente.</p>
           <div id="bonos-preview-lc5"></div>
+
           <div class="img-cost-note">💡 Podés saltear imágenes y agregar las tuyas después editando el HTML</div>
           <div class="wiz-btns" style="margin-top:2rem">
             <button class="btn btn-ghost" onclick="goLC4()">← Atrás</button>
@@ -431,9 +465,12 @@ let selectedSections = new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials = [];
 let generatedImages = {};
 let heroImages = [];
+let bonoImages = [];
+
 document.addEventListener('DOMContentLoaded', () => {
   renderStars(); renderDash(); renderMods(); initTestimonials();
 });
+
 function renderStars() {
   const c = document.getElementById('stars');
   for (let i = 0; i < 120; i++) {
@@ -444,6 +481,7 @@ function renderStars() {
     c.appendChild(s);
   }
 }
+
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -451,6 +489,7 @@ function showView(id) {
   const idx = id === 'dashboard' ? 0 : 1;
   document.querySelectorAll('.nav-btn')[idx].classList.add('active');
 }
+
 function renderDash() {
   document.getElementById('s-total').textContent = projects.length;
   document.getElementById('s-ebooks').textContent = projects.filter(p => p.hasEbook).length;
@@ -469,11 +508,13 @@ function renderDash() {
       <div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div>
     </div>`).join('');
 }
+
 function openProject(i) {
   curProject = {...projects[i]};
   document.getElementById('prod-name').textContent = curProject.product;
   showModulesPanel(); showView('generator'); renderMods();
 }
+
 function startNew() {
   ['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget'].forEach(id => {
     const el = document.getElementById(id);
@@ -482,13 +523,16 @@ function startNew() {
   document.getElementById('f-platform').selectedIndex = 0;
   showStep(1); showView('generator');
 }
+
 function showStep(n) {
   ['step1','step2','modules-panel','landing-config'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
   document.getElementById(`step${n}`).style.display = 'block';
 }
+
 function goStep1() { showStep(1); }
+
 function goStep2() {
   const product = document.getElementById('f-product').value.trim();
   const audience = document.getElementById('f-audience').value.trim();
@@ -499,6 +543,7 @@ function goStep2() {
   curProject.transformation = document.getElementById('f-transform').value;
   showStep(2);
 }
+
 function goModules() {
   const price = document.getElementById('f-price').value.trim();
   if (!price) { toast('Ingresá el precio 😊', 'err'); return; }
@@ -517,12 +562,14 @@ function goModules() {
   showModulesPanel();
   toast('¡Proyecto guardado! 🎉', 'ok');
 }
+
 function showModulesPanel() {
   ['step1','step2','landing-config'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('modules-panel').style.display = 'block';
   document.getElementById('result-panel').style.display = 'none';
   renderMods();
 }
+
 function renderMods() {
   const g = document.getElementById('mods-grid');
   if (!g) return;
@@ -538,10 +585,12 @@ function renderMods() {
     </div>`;
   }).join('');
 }
+
 function clickMod(id) {
   if (id === 'landing') startLandingConfig();
   else generate(id);
 }
+
 async function generate(modId) {
   curMod = modId;
   const mod = MODS.find(m => m.id === modId);
@@ -576,6 +625,7 @@ async function generate(modId) {
     toast('Error al generar 😓', 'err');
   }
 }
+
 function setModStatus(id, cls, txt) {
   const el = document.getElementById('ms-'+id);
   const card = document.getElementById('mc-'+id);
@@ -584,12 +634,14 @@ function setModStatus(id, cls, txt) {
   el.textContent = txt;
   if (cls==='done') card.classList.add('done');
 }
+
 function showResultLoading() {
   const panel = document.getElementById('result-panel');
   panel.style.display = 'block';
   panel.scrollIntoView({behavior:'smooth', block:'nearest'});
   document.getElementById('r-body').innerHTML = `<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
 }
+
 function renderResult(content, title, isHtml) {
   document.getElementById('r-title').textContent = title || 'Resultado';
   const acts = document.getElementById('r-acts');
@@ -610,8 +662,9 @@ function renderResult(content, title, isHtml) {
     document.getElementById('r-body').innerHTML = `<div class="md">${marked.parse(content)}</div>`;
   }
 }
+
 function startLandingConfig() {
-  lcConfig = {}; testimonials = {}; generatedImages = {}; heroImages = [];
+  lcConfig = {}; testimonials = []; generatedImages = {}; heroImages = []; bonoImages = [];
   selectedUrgency = new Set();
   ['step1','step2','modules-panel'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('landing-config').style.display = 'block';
@@ -623,16 +676,19 @@ function startLandingConfig() {
   });
   selectedSections = new Set(['benefits','bonos','faq','cta_multiple']);
 }
+
 function showLCStep(n) {
   [1,2,3,4,5].forEach(i => {
     const el = document.getElementById(`lc${i}`);
     if (el) el.style.display = i===n ? 'block' : 'none';
   });
 }
+
 function cancelLanding() {
   document.getElementById('landing-config').style.display = 'none';
   showModulesPanel();
 }
+
 function goLC1() { showLCStep(1); }
 function goLC2() {
   const promise = document.getElementById('lc-promise').value.trim();
@@ -668,7 +724,9 @@ function goLC5() {
   showLCStep(5);
   renderLC5();
 }
+
 function renderLC5() {
+  // Mockup
   const mockupGrid = document.getElementById('img-mockup-grid');
   mockupGrid.innerHTML = `
     <div class="img-gen-card" id="imgcard-mockup">
@@ -689,31 +747,33 @@ function renderLC5() {
         <div class="img-gen-status" id="imgstatus-mockup"></div>
       </div>
     </div>`;
-  const heroGrid = document.getElementById('hero-img-grid');
-  heroGrid.innerHTML = [1,2,3].map(i => `
-    <div class="hero-img-slot" id="hero-slot-${i}">
-      <img id="hero-img-${i}" src="" alt="Hero ${i}" onload="this.classList.add('loaded')">
-      <div class="slot-label" id="hero-label-${i}">Foto ${i}</div>
-    </div>`).join('');
+
+  // Bonos con botón de generar mockup para cada uno
   const bonosDiv = document.getElementById('bonos-preview-lc5');
   const bonos = curProject.bonos || [];
   if (bonos.length) {
     bonosDiv.innerHTML = `
       <div class="bonos-preview">
         ${bonos.map((b,i) => `
-          <div class="bono-preview-card">
-            <div class="bono-preview-emoji">${b.emoji||'🎁'}</div>
+          <div class="bono-preview-card" id="bono-card-${i}">
+            <div class="bono-preview-img" id="bono-img-wrap-${i}">
+              <img id="bono-img-${i}" src="" onload="document.getElementById('bono-ph-${i}').style.display='none';this.classList.add('loaded')">
+              <span id="bono-ph-${i}">${b.emoji||'🎁'}</span>
+            </div>
             <div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div>
             <div class="bono-preview-desc">${b.descripcion}</div>
             <div class="bono-preview-precio">${b.precio_original}</div>
             <div class="bono-preview-gratis">HOY GRATIS</div>
+            <button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Generar mockup</button>
+            <div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div>
           </div>`).join('')}
       </div>
-      <p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos para incluir en tu landing</p>`;
+      <p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos — generá el mockup de cada uno</p>`;
   } else {
     bonosDiv.innerHTML = `<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center;background:rgba(255,255,255,.03);border-radius:12px;border:1px dashed var(--border)">No generaste bonos aún.</p>`;
   }
 }
+
 async function generateImage(type) {
   const btn = document.getElementById(`imgbtn-${type}`);
   const rebtn = document.getElementById(`imgrebtn-${type}`);
@@ -749,54 +809,91 @@ async function generateImage(type) {
     toast('Error al generar imagen 😓', 'err');
   }
 }
+
+async function generateBonoImage(idx) {
+  const bono = curProject.bonos[idx];
+  if (!bono) return;
+  const btn = document.getElementById(`bono-btn-${idx}`);
+  const status = document.getElementById(`bono-status-${idx}`);
+  const img = document.getElementById(`bono-img-${idx}`);
+  btn.disabled = true;
+  status.innerHTML = `<div class="img-spin" style="display:inline-block"></div> Generando...`;
+  try {
+    const res = await fetch('/api/images', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        type: 'custom',
+        prompt: `Premium digital ebook cover mockup for: "${bono.nombre}". Dark elegant background, gold typography, professional book cover design, 3D book mockup at an angle, luxury feel. No additional text overlay.`
+      })
+    });
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+    bonoImages[idx] = json.url;
+    if (img) { img.src = json.url; }
+    status.innerHTML = `<span style="color:var(--success)">✓ Lista</span>`;
+    btn.textContent = '🔄 Regenerar';
+    btn.disabled = false;
+    toast(`Mockup Bono ${idx+1} listo 🎁`, 'ok');
+  } catch(e) {
+    status.innerHTML = `<span style="color:#ef4444">${e.message}</span>`;
+    btn.disabled = false;
+    toast('Error al generar mockup 😓', 'err');
+  }
+}
+
 function onImgLoad(type) {
   const ph = document.getElementById(`imgph-${type}`);
   const imgEl = document.getElementById(`imgel-${type}`);
   if (ph) ph.style.display = 'none';
   if (imgEl) imgEl.classList.add('loaded');
 }
+
 async function generateAllHero() {
   const btn = document.getElementById('hero-gen-all-btn');
   const status = document.getElementById('hero-status');
+  const desc1 = document.getElementById('hero-desc-1').value.trim();
+  const desc2 = document.getElementById('hero-desc-2').value.trim();
+  const desc3 = document.getElementById('hero-desc-3').value.trim();
+  if (!desc1 && !desc2 && !desc3) {
+    toast('Describí al menos una foto 😊', 'err');
+    return;
+  }
   btn.disabled = true;
   heroImages = [];
-  // Limpiar el nombre del producto de palabras que no son el tema visual
-  const tema = curProject.product
-    .replace(/ebook|e-book|curso|guia|guía|pack|kit|método|metodo|de|para|el|la|los|las|del|con|y|en|un|una/gi, ' ')
-    .replace(/\s+/g, ' ').trim();
-  const estilos = [
-    `Stunning flat lay top view, ${tema} beautifully arranged on dark black slate surface with scattered ingredients, dramatic lighting, gold accents. Pure product photography, zero text, zero writing, zero books, zero ebooks.`,
-    `Extreme close up macro photograph of ${tema}, incredible texture detail, shallow depth of field, dramatic moody side lighting, dark background. Zero text, zero writing, zero books anywhere.`,
-    `Elegant lifestyle photograph of ${tema} on dark marble surface with soft bokeh lights in background, warm golden hour lighting, luxury feel. Zero text, zero writing, zero books anywhere.`
-  ];
-  for (let i = 1; i <= 3; i++) {
-    status.innerHTML = `<div class="img-spin"></div> Generando foto ${i} de 3...`;
-    const img = document.getElementById(`hero-img-${i}`);
-    const label = document.getElementById(`hero-label-${i}`);
-    if (label) label.textContent = `Generando ${i}/3...`;
+  const descs = [desc1, desc2, desc3];
+  for (let i = 0; i < 3; i++) {
+    if (!descs[i]) continue;
+    status.innerHTML = `<div class="img-spin"></div> Generando foto ${i+1} de 3...`;
+    const prev = document.getElementById(`hero-prev-${i+1}`);
+    const ph = document.getElementById(`hero-ph-${i+1}`);
     try {
       const res = await fetch('/api/images', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ type: 'custom', prompt: estilos[i-1] })
+        body: JSON.stringify({
+          type: 'custom',
+          prompt: `Professional product photography, dark moody background, cinematic lighting, gold accents. NO text, NO books, NO ebooks, NO writing. Scene: ${descs[i]}.`
+        })
       });
       const json = await res.json();
       if (json.error) throw new Error(json.error);
       heroImages.push(json.url);
-      if (img) { img.src = json.url; img.classList.add('loaded'); }
-      if (label) label.style.display = 'none';
+      if (prev) { prev.src = json.url; }
+      if (ph) ph.style.display = 'none';
     } catch(e) {
-      if (label) label.textContent = `Error foto ${i}`;
+      toast(`Error foto ${i+1} 😓`, 'err');
     }
   }
   btn.disabled = false;
-  status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} fotos del hero listas</span>`;
-  toast('¡Hero carrusel listo! 🌟', 'ok');
+  status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;
+  toast('¡Fotos del hero listas! 🌟', 'ok');
 }
+
 async function generateLanding() {
   lcConfig.images = generatedImages;
   lcConfig.heroImages = heroImages;
-  lcConfig.bonoImages = [];
+  lcConfig.bonoImages = bonoImages;
   curMod = 'landing';
   setModStatus('landing', 'running', '⟳ Generando...');
   setLoading(true, '🚀 Creando tu Landing Page Pro...');
@@ -824,6 +921,7 @@ async function generateLanding() {
     toast('Error: ' + e.message, 'err');
   }
 }
+
 function updateColorPreview() {
   document.getElementById('cp1').style.background = document.getElementById('lc-color1').value;
   document.getElementById('cp2').style.background = document.getElementById('lc-color2').value;
