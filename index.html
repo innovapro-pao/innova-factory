@@ -162,12 +162,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .img-gen-note strong{color:var(--violet2)}
 .img-cost-note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:1rem;opacity:.7}
 .hero-foto-inputs{display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
-.hero-foto-row{display:grid;grid-template-columns:auto 1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:.75rem 1rem}
-.hero-foto-num{font-size:.75rem;font-weight:700;color:var(--fuchsia2);min-width:60px}
+.hero-foto-row{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:.75rem 1rem}
+.hero-foto-num{font-size:.75rem;font-weight:700;color:var(--fuchsia2);margin-bottom:.3rem}
 .hero-foto-preview{width:60px;height:45px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hero-foto-preview img{width:100%;height:100%;object-fit:cover;display:none}
 .hero-foto-preview img.loaded{display:block}
-.hero-foto-status{font-size:.65rem;color:var(--muted)}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -276,16 +275,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           <p class="sub">Configurá el look & feel de tu página de ventas</p>
           <div class="section-label">Colores de marca</div>
           <div class="row2">
-            <div class="field">
-              <label>Color principal</label>
+            <div class="field"><label>Color principal</label>
               <div class="color-row">
                 <input type="color" id="lc-color1" value="#ff006e" onchange="updateColorPreview()">
                 <div class="color-preview" id="cp1" style="background:#ff006e"></div>
                 <input type="text" id="lc-color1-txt" value="#ff006e" style="width:100px" oninput="syncColor(1)">
               </div>
             </div>
-            <div class="field">
-              <label>Color secundario</label>
+            <div class="field"><label>Color secundario</label>
               <div class="color-row">
                 <input type="color" id="lc-color2" value="#7c3aed" onchange="updateColorPreview()">
                 <div class="color-preview" id="cp2" style="background:#7c3aed"></div>
@@ -293,8 +290,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
               </div>
             </div>
           </div>
-          <div class="field">
-            <label>Color de fondo</label>
+          <div class="field"><label>Color de fondo</label>
             <div class="color-row">
               <input type="color" id="lc-color3" value="#05050a" onchange="updateColorPreview()">
               <div class="color-preview" id="cp3" style="background:#05050a;border:1px solid var(--border)"></div>
@@ -302,12 +298,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
             </div>
           </div>
           <div class="section-label" style="margin-top:1.5rem">La promesa principal</div>
-          <div class="field">
-            <label>Promesa que va en GRANDE arriba de todo</label>
+          <div class="field"><label>Promesa que va en GRANDE arriba de todo</label>
             <textarea id="lc-promise" placeholder="Ej: Convertí tu pasión por la cocina en $1.000 mensuales desde casa" style="min-height:80px"></textarea>
           </div>
-          <div class="field">
-            <label>Subpromesa (frase debajo)</label>
+          <div class="field"><label>Subpromesa (frase debajo)</label>
             <input id="lc-subpromise" type="text" placeholder="Ej: El método paso a paso que ya transformó a más de 500 mujeres">
           </div>
           <div class="wiz-btns">
@@ -320,7 +314,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         <div class="wiz-card">
           <h2>⚡ Urgencia y Escasez</h2>
           <p class="sub">Elegí los elementos de FOMO para tu landing</p>
-          <div class="section-label">Seleccioná los que querés</div>
           <div class="chips" id="urgency-chips">
             <button class="chip" data-val="countdown" onclick="toggleChip(this)">⏰ Countdown 10 min</button>
             <button class="chip" data-val="stock" onclick="toggleChip(this)">📦 Cupos limitados</button>
@@ -344,7 +337,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         <div class="wiz-card">
           <h2>🛡️ Garantía y Testimonios</h2>
           <p class="sub">Generá confianza con prueba social</p>
-          <div class="section-label">Garantía</div>
           <div class="row2">
             <div class="field"><label>Días de garantía</label>
               <select id="lc-guarantee"><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="60">60 días</option></select>
@@ -366,7 +358,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         <div class="wiz-card">
           <h2>✨ Secciones Extra</h2>
           <p class="sub">Últimos detalles para tu landing</p>
-          <div class="section-label">Secciones a incluir</div>
           <div class="chips" id="sections-chips">
             <button class="chip on" data-val="benefits" onclick="toggleChip(this)">✅ Beneficios</button>
             <button class="chip on" data-val="bonos" onclick="toggleChip(this)">🎁 Bonos</button>
@@ -387,16 +378,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div id="lc5" style="display:none">
         <div class="wiz-card">
           <h2>🎨 Imágenes de tu Landing</h2>
-          <p class="sub">Describí tus fotos y la IA las genera — un clic y listo</p>
+          <p class="sub">Describí tus fotos y la IA las genera</p>
           <div class="img-gen-note">
             <strong>¿Cómo funciona?</strong> Describí qué querés ver en cada foto del hero y la IA la genera. Para los bonos, la IA crea el mockup automáticamente. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
           </div>
-
-          <!-- MOCKUP -->
           <div class="section-label">Mockup del Producto</div>
           <div class="img-gen-grid" id="img-mockup-grid"></div>
-
-          <!-- HERO -->
           <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos del Producto</div>
           <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Describí exactamente qué querés en cada foto. La IA la genera tal cual.</p>
           <div class="hero-foto-inputs">
@@ -410,14 +397,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
             <div class="hero-foto-row">
               <div>
                 <div class="hero-foto-num">📷 Foto 2</div>
-                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado a la mitad mostrando el relleno de caramelo" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado a la mitad mostrando el relleno" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
               </div>
               <div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
             </div>
             <div class="hero-foto-row">
               <div>
                 <div class="hero-foto-num">📷 Foto 3</div>
-                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja de bombones variados con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja de bombones con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
               </div>
               <div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
             </div>
@@ -426,12 +413,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
             <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 fotos</button>
             <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
           </div>
-
-          <!-- BONOS -->
           <div class="section-label" style="margin-top:2rem">Bonos — Mockups con IA</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">La IA genera el mockup de portada para cada bono automáticamente.</p>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">La IA genera el mockup de portada para cada bono.</p>
           <div id="bonos-preview-lc5"></div>
-
           <div class="img-cost-note">💡 Podés saltear imágenes y agregar las tuyas después editando el HTML</div>
           <div class="wiz-btns" style="margin-top:2rem">
             <button class="btn btn-ghost" onclick="goLC4()">← Atrás</button>
@@ -653,7 +637,7 @@ function renderResult(content, title, isHtml) {
       <div style="margin-bottom:1rem;padding:.75rem 1rem;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);border-radius:10px;font-size:.82rem;color:var(--cyan)">
         🌐 <strong>Landing generada</strong> — Descargá el HTML y abrilo en tu navegador.
       </div>
-      <div class="md">${marked.parse(content.substring(0,300)+'...')}</div>`;
+      <div class="md">${marked.parse(typeof content === 'string' ? content.substring(0,300)+'...' : JSON.stringify(content).substring(0,300)+'...')}</div>`;
   } else {
     acts.innerHTML = `
       <button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>
@@ -726,7 +710,6 @@ function goLC5() {
 }
 
 function renderLC5() {
-  // Mockup
   const mockupGrid = document.getElementById('img-mockup-grid');
   mockupGrid.innerHTML = `
     <div class="img-gen-card" id="imgcard-mockup">
@@ -748,7 +731,6 @@ function renderLC5() {
       </div>
     </div>`;
 
-  // Bonos con botón de generar mockup para cada uno
   const bonosDiv = document.getElementById('bonos-preview-lc5');
   const bonos = curProject.bonos || [];
   if (bonos.length) {
@@ -855,10 +837,7 @@ async function generateAllHero() {
   const desc1 = document.getElementById('hero-desc-1').value.trim();
   const desc2 = document.getElementById('hero-desc-2').value.trim();
   const desc3 = document.getElementById('hero-desc-3').value.trim();
-  if (!desc1 && !desc2 && !desc3) {
-    toast('Describí al menos una foto 😊', 'err');
-    return;
-  }
+  if (!desc1 && !desc2 && !desc3) { toast('Describí al menos una foto 😊', 'err'); return; }
   btn.disabled = true;
   heroImages = [];
   const descs = [desc1, desc2, desc3];
@@ -896,7 +875,7 @@ async function generateLanding() {
   lcConfig.bonoImages = bonoImages;
   curMod = 'landing';
   setModStatus('landing', 'running', '⟳ Generando...');
-  setLoading(true, '🚀 Creando tu Landing Page Pro...');
+  setLoading(true, '🚀 Generando contenido con IA...');
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
@@ -905,7 +884,12 @@ async function generateLanding() {
     });
     const json = await res.json();
     if (json.error) throw new Error(json.error);
-    curResult = json.content;
+
+    // El servidor devuelve JSON, el navegador construye el HTML
+    const landingContent = json.content;
+    const htmlFinal = buildPremiumLanding(lcConfig, curProject, landingContent);
+
+    curResult = htmlFinal;
     setModStatus('landing', 'done', '✓ Lista');
     curProject.hasLanding = true;
     saveCur();
@@ -920,6 +904,319 @@ async function generateLanding() {
     setLoading(false);
     toast('Error: ' + e.message, 'err');
   }
+}
+
+// ── BUILD PREMIUM LANDING (corre en el navegador) ──
+function buildPremiumLanding(lc, data, c) {
+  const c1 = lc.color1 || '#D4AF37';
+  const c2 = lc.color2 || '#1a5c3a';
+  const bg = lc.colorBg || '#000000';
+  const cta = lc.cta || '¡Quiero empezar ahora!';
+  const url = lc.url || '#';
+  const guarantee = lc.guarantee || 30;
+  const urgency = lc.urgency || [];
+  const hasCountdown = urgency.includes('countdown');
+  const hasSold = urgency.includes('sold');
+  const hasStock = urgency.includes('stock') || urgency.includes('limited');
+  const hasViewers = urgency.includes('viewers');
+  const badges = [lc.badge1, lc.badge2, lc.badge3].filter(Boolean);
+  const bonos = data.bonos || [];
+  const heroImgs = lc.heroImages || [];
+  const bonoImgs = lc.bonoImages || [];
+
+  const esc = s => String(s||'').replace(/`/g,'\\`').replace(/\${/g,'\\${');
+
+  const marqueeItems = c.marquee_items || ['PRODUCTO PREMIUM','ACCESO INMEDIATO','RESULTADOS REALES','TRANSFORMACIÓN GARANTIZADA'];
+  const marqueeHTML = [...marqueeItems,...marqueeItems].map(i=>`<div class="tk-item">⬡&nbsp;&nbsp;${i}&nbsp;&nbsp;</div>`).join('');
+
+  const paraVosHTML = (c.para_vos_si||[]).map(i=>`<div class="pv-item"><div class="pv-icon">${i.icon}</div><div class="pv-body"><div class="pv-title-item">${i.title}</div><div class="pv-desc">${i.desc}</div></div></div>`).join('');
+  const aprendHTML = (c.que_vas_aprender||[]).map(i=>`<div class="learn-item"><div class="learn-check">✓</div><div class="learn-body"><div class="learn-title-item">${i.title}</div><div class="learn-desc">${i.desc}</div></div></div>`).join('');
+
+  const logrosHTML = `<div style="background:#0a0a0a;border-radius:16px;padding:28px;border-top:3px solid ${c1}">
+    <p style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:${c1};text-align:center;margin-bottom:16px;opacity:.8">Con este producto vas a lograr</p>
+    ${(c.logros||[]).map(l=>`<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding:14px;background:#141414;border-radius:10px;border:1px solid #222"><div style="width:40px;height:40px;border-radius:50%;background:#1a1500;border:1.5px solid ${c1};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">${l.icon}</div><div><div style="font-size:.82rem;font-weight:700;color:${c1};text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">${l.titulo}</div><div style="font-size:.75rem;color:#aaa;line-height:1.5">${l.desc}</div></div></div>`).join('')}
+    ${c.logros_frase?`<div style="margin-top:14px;padding:12px;background:#0f0f00;border:1px solid ${c1}33;border-radius:10px;text-align:center;font-size:.85rem;color:${c1};font-weight:600;font-style:italic">"${c.logros_frase}"</div>`:''}
+  </div>`;
+
+  const bonosHTML = bonos.map((b,i)=>`<div class="bono-card"><div class="bono-mockup">${bonoImgs[i]?`<img src="${bonoImgs[i]}" alt="${b.nombre}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`:`<div class="bono-mockup-inner"><div style="font-size:2.5rem">${b.emoji||'🎁'}</div><div style="font-size:.7rem;font-weight:800;color:${c1};text-transform:uppercase;letter-spacing:1px;text-align:center;margin-top:8px;line-height:1.3;padding:0 8px">${b.nombre}</div></div>`}</div><div class="bono-num">BONO ${i+1}</div><div class="bono-nombre">${b.nombre}</div><div class="bono-desc">${b.descripcion}</div><div class="bono-precio-old"><s>${b.precio_original}</s></div><div class="bono-gratis">HOY GRATIS</div></div>`).join('');
+
+  const heroCarouselHTML = heroImgs.length>=1 ? heroImgs.map((img,i)=>`<div class="hero-slide ${i===0?'active':''}" style="background-image:url('${img}');background-size:cover;background-position:center"></div>`).join('') : `<div class="hero-slide active" style="background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(212,175,55,.15),transparent 60%)"></div>`;
+
+  const trustHTML = (c.trust_badges||[]).map(b=>`<div class="trust-item"><div class="trust-icon">${b.icon}</div><div class="trust-label">${b.label}</div></div>`).join('');
+  const testiHTML = (c.testimonials||[]).map(t=>`<div class="testi-card"><div class="testi-stars">${'⭐'.repeat(t.stars||5)}</div><div class="testi-text">"${t.text}"</div><div class="testi-author"><div class="testi-avatar">${t.name.charAt(0)}</div><div><div class="testi-name">${t.name}</div><div class="testi-place">${t.place}</div><div class="testi-result">✓ ${t.result}</div></div></div></div>`).join('');
+  const faqHTML = (c.faq||[]).map((f,i)=>`<div class="faq-item" aria-expanded="false"><button class="faq-q" onclick="toggleFaq(this)"><span class="faq-left"><span class="faq-num">${String(i+1).padStart(2,'0')}</span><span class="faq-qt">${f.q}</span></span><span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-ai">${f.a}</div></div></div>`).join('');
+  const popupActionsJS = (c.popup_actions||['acaba de comprar','descargó los bonos','activó su acceso']).map(a=>`"${a}"`).join(',');
+
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${data.product}</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--c1:${c1};--c2:${c2};--bg:${bg};--text:#f2f2f2;--muted:#cfcfcf}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+.container{max-width:860px;margin:0 auto;padding:0 20px}
+.gold{background:linear-gradient(90deg,#fff4b0,var(--c1),#ffb300,#fff8c0,var(--c1),#fff4b0);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldFlow 4s linear infinite}
+@keyframes goldFlow{0%{background-position:0%}100%{background-position:300%}}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 40px;background:var(--c2);color:#fff;border:none;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:all .3s;width:100%;max-width:360px}
+.btn:hover{transform:scale(1.03);filter:brightness(1.1)}
+.top-bar{background:linear-gradient(90deg,var(--c2),var(--c1),var(--c2));padding:10px 16px;text-align:center;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;position:sticky;top:0;z-index:200}
+.top-badge{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:11px;display:inline-flex;align-items:center;gap:6px}
+.top-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:dotPulse 1s infinite;display:inline-block}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero{position:relative;min-height:600px;display:flex;align-items:center;overflow:hidden}
+.hero-slides{position:absolute;inset:0;z-index:0}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-color:var(--bg)}
+.hero-slide.active{opacity:1}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.75) 100%);z-index:1}
+.hero-content{position:relative;z-index:2;width:100%;padding:80px 20px 60px;text-align:center}
+.hero-h1{font-size:clamp(2.2rem,9vw,4.5rem);font-weight:900;text-transform:uppercase;line-height:1.05;margin-bottom:8px}
+.hero-sub-box{border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:16px 28px;display:inline-block;margin:20px auto;max-width:520px}
+.hero-sub-text{font-size:16px;font-style:italic;font-weight:500;color:#e8e8e8}
+.hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:24px auto;max-width:500px}
+.hero-badge-item{background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700}
+.hero-cta-wrap{margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:dotPulse 1.5s infinite;display:inline-block}
+.hero-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s;padding:0}
+.hero-dot.active{background:var(--c1);width:24px;border-radius:4px}
+.marquee-wrap{border-top:2px solid var(--c1);border-bottom:2px solid var(--c1);padding:14px 0;overflow:hidden}
+.marquee-track{display:flex;width:max-content;animation:marqueeScroll 20s linear infinite}
+.tk-item{display:inline-flex;align-items:center;padding:0 32px;white-space:nowrap;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:15px;color:var(--c1)}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mockup-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px;margin:32px auto 0;align-items:start}
+.pv-list{display:flex;flex-direction:column;gap:16px;max-width:680px;margin:0 auto 40px}
+.pv-item{display:flex;align-items:flex-start;gap:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px 20px}
+.pv-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px}
+.pv-title-item{font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px}
+.pv-desc{font-size:.88rem;color:var(--muted);line-height:1.6}
+.learn-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto 32px}
+.learn-item{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px}
+.learn-check{width:28px;height:28px;border-radius:50%;background:var(--c2);display:grid;place-items:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
+.learn-title-item{font-size:.82rem;font-weight:800;color:var(--c1);letter-spacing:1px;margin-bottom:4px}
+.learn-desc{font-size:.8rem;color:var(--muted);line-height:1.5}
+.bonos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto 32px}
+.bono-card{background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:20px;text-align:center;transition:all .25s}
+.bono-card:hover{border-color:var(--c1);transform:translateY(-4px)}
+.bono-mockup{width:100%;aspect-ratio:1;border-radius:12px;overflow:hidden;margin-bottom:12px;background:#111;display:flex;align-items:center;justify-content:center}
+.bono-mockup-inner{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;width:100%}
+.bono-num{font-size:.7rem;font-weight:800;color:var(--c1);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.bono-nombre{font-size:.85rem;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.3}
+.bono-desc{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.bono-precio-old{font-size:.82rem;color:#666;text-decoration:line-through;margin-bottom:4px}
+.bono-gratis{font-size:.9rem;font-weight:900;color:#22c55e;letter-spacing:2px;text-transform:uppercase}
+.trust-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:700px;margin:0 auto}
+.trust-item{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:100px;text-align:center}
+.trust-icon{font-size:1.5rem}
+.trust-label{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.testi-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:24px}
+.testi-stars{font-size:.9rem;margin-bottom:10px}
+.testi-text{font-size:.88rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:16px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;font-weight:900;font-size:.9rem;color:#fff;flex-shrink:0}
+.testi-name{font-size:.85rem;font-weight:700;color:#fff}
+.testi-place{font-size:.75rem;color:var(--muted)}
+.testi-result{font-size:.75rem;color:var(--c1);font-weight:600;margin-top:2px}
+.price-box{max-width:500px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 12px 50px rgba(0,0,0,.4)}
+.price-box-header{background:var(--c2);padding:20px 24px;text-align:center}
+.price-box-label{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(212,175,55,.8);margin-bottom:6px}
+.price-box-title{font-size:18px;font-weight:800;color:#fff}
+.price-box-body{padding:28px 24px;background:#fffdf8;text-align:center}
+.price-old{font-size:1.2rem;color:#bbb;text-decoration:line-through;margin-bottom:4px}
+.price-current{font-size:4rem;font-weight:900;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.price-installments{font-size:.9rem;color:#666;margin-bottom:24px}
+.price-btn{display:block;background:var(--c2);color:#fff;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:18px 36px;border-radius:999px;border:none;cursor:pointer;width:100%;max-width:320px;margin:0 auto 16px;text-decoration:none}
+.price-guarantee{font-size:.8rem;color:#888;display:flex;align-items:center;justify-content:center;gap:6px}
+.price-inc-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:#444;padding:.3rem 0}
+.price-inc-item::before{content:'✓';color:var(--c2);font-weight:700}
+.faq-card{max-width:800px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.2)}
+.faq-item{border-bottom:1px solid #f0ece3}
+.faq-item:last-child{border-bottom:none}
+.faq-q{width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.faq-q:hover{background:#faf8f3}
+.faq-left{display:flex;align-items:center;gap:12px}
+.faq-num{width:28px;height:28px;border-radius:8px;background:var(--c2);color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;flex-shrink:0}
+.faq-qt{font-size:.9rem;font-weight:700;color:#1a1a1a;text-align:left;line-height:1.4}
+.faq-ico{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--c1);display:grid;place-items:center;color:#b8952a;font-size:18px;font-weight:300;flex-shrink:0;transition:transform .22s}
+.faq-item[aria-expanded="true"] .faq-ico{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-ai{padding:0 20px 16px 60px;font-size:.88rem;color:#444;line-height:1.65}
+.sold-bar{height:16px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.sold-fill{height:100%;background:linear-gradient(90deg,var(--c2),var(--c1));border-radius:100px;animation:fillBar 2.5s ease forwards}
+@keyframes fillBar{from{width:0}}
+.tk-fomo{position:fixed;right:18px;bottom:18px;z-index:999999;width:min(370px,calc(100vw - 36px));display:none;opacity:0;transform:translateY(18px);transition:.35s ease}
+.tk-fomo.show{display:block;opacity:1;transform:translateY(0)}
+.tk-card{background:linear-gradient(180deg,#060707,#000);border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 18px 46px rgba(0,0,0,.55)}
+.tk-avatar{width:50px;height:50px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#111;position:relative}
+.tk-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.tk-avatar::after{content:'';position:absolute;right:2px;bottom:2px;width:11px;height:11px;border-radius:99px;background:#22c55e;border:2px solid #000}
+.tk-content{flex:1;min-width:0}
+.tk-title{color:#f2f2f2;font-size:13px;font-weight:800;line-height:1.25}
+.tk-title b{color:var(--c1)}
+.tk-sub{margin-top:5px;color:#cfcfcf;font-size:11.5px;display:flex;flex-wrap:wrap;gap:6px}
+.tk-pill{padding:3px 8px;border-radius:999px;border:1px solid rgba(212,175,55,.22);background:rgba(0,0,0,.25);color:rgba(212,175,55,.95);font-weight:700;font-size:10px}
+.tk-time{color:#bdbdbd;font-size:11px}
+.tk-close{border:0;background:transparent;color:rgba(212,175,55,.95);cursor:pointer;font-size:20px;line-height:1;padding:0 6px}
+footer{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.05);padding:24px 20px;text-align:center;color:var(--muted);font-size:.78rem}
+@media(max-width:600px){.hero-h1{font-size:2rem}.mockup-grid{grid-template-columns:1fr}.learn-grid{grid-template-columns:1fr}.testi-grid{grid-template-columns:1fr}.bonos-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top-bar"><span class="top-badge"><span class="top-dot"></span> El precio está por subir</span>${hasViewers?` <span class="top-badge"><span style="background:#22c55e" class="top-dot"></span><span id="viewers">27</span> viendo ahora</span>`:''}</div>
+
+<section class="hero">
+  <div class="hero-slides" id="heroSlides">${heroCarouselHTML}</div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content"><div class="container">
+    <div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div>
+    <h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>
+    ${c.headline_sub?`<div class="hero-sub-box"><span class="hero-sub-text">${c.headline_sub}</span></div>`:''}
+    ${badges.length?`<div class="hero-badges">${badges.map(b=>`<div class="hero-badge-item">⚡ ${b}</div>`).join('')}</div>`:''}
+    <div class="hero-cta-wrap">
+      <a href="${url}" class="btn">${cta}</a>
+      <div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><span class="live-dot"></span> <span id="viewers2">--</span> personas viendo esto ahora</div>
+    </div>
+  </div></div>
+  <div class="hero-dots" id="heroDots"></div>
+</section>
+
+<div class="marquee-wrap"><div class="marquee-track">${marqueeHTML}${marqueeHTML}</div></div>
+
+<section style="padding:60px 20px;text-align:center">
+  <div class="container">
+    <p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);opacity:.8;margin-bottom:8px">Tu producto</p>
+    <h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2>
+    <div class="mockup-grid">
+      <div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" alt="Mockup" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase">📦 Mockup</div>`}</div>
+      <div>${logrosHTML}</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:60px 20px">
+  <div class="container">
+    <p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);text-align:center;margin-bottom:12px;opacity:.8">¿Es para vos?</p>
+    <h2 style="font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px">ESTO ES PARA VOS SI...</h2>
+    <div class="pv-list">${paraVosHTML}</div>
+    <div style="text-align:center"><p style="font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.85rem;opacity:.7;margin-bottom:16px">✦ ${lc.promise} ✦</p><a href="${url}" class="btn">Sí, esto es para mí →</a></div>
+  </div>
+</section>
+
+<section style="padding:60px 20px;background:rgba(0,0,0,.2)">
+  <div class="container">
+    <p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Contenido incluido</p>
+    <h2 style="text-align:center;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;margin-bottom:32px">¿QUÉ VAS A <span class="gold">APRENDER?</span></h2>
+    <div class="learn-grid">${aprendHTML}</div>
+    <div style="text-align:center;margin-top:24px"><a href="${url}" class="btn">${cta}</a></div>
+  </div>
+</section>
+
+${hasCountdown?`<section style="padding:40px 20px;background:rgba(0,0,0,.1)"><div style="max-width:520px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)"><div style="background:var(--c2);padding:20px 24px;text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">La oferta finaliza en</div></div><div style="padding:28px 24px;background:#fffdf8;text-align:center"><div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px"><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-min">10</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Minutos</div></div><div style="font-size:36px;font-weight:800;color:var(--c1);margin-bottom:18px">:</div><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-sec">00</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Segundos</div></div></div><a href="${url}" style="display:block;background:var(--c2);color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:999px;border:none;cursor:pointer;width:100%;max-width:300px;margin:0 auto;text-decoration:none">${cta}</a></div></div></section>`:''}
+
+${hasSold?`<section style="padding:32px 20px;text-align:center"><div style="max-width:560px;margin:0 auto"><div style="font-size:.95rem;margin-bottom:10px;font-weight:600">🔥 <strong style="color:var(--c1)">${c.sold_pct||73}% vendido</strong> — ¡Quedan pocos lugares!</div><div class="sold-bar"><div class="sold-fill" style="width:${c.sold_pct||73}%"></div></div><div style="margin-top:10px;font-size:.82rem;color:var(--c1);font-weight:700">⚠️ ${c.stock_text||'Solo quedan 12 lugares disponibles'}</div></div></section>`:''}
+
+${hasStock?`<div style="text-align:center;padding:8px 20px"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.2);padding:10px 20px;border-radius:12px;font-size:.88rem;font-weight:600;color:#ff6b6b"><span style="width:9px;height:9px;border-radius:50%;background:#ff6b6b;animation:dotPulse 1s infinite;flex-shrink:0;display:inline-block"></span>${c.stock_text||'Solo quedan 12 cupos disponibles'}</div></div>`:''}
+
+<section style="padding:60px 20px;background:rgba(0,0,0,.15)">
+  <div class="container">
+    <p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Con tu compra hoy te llevás</p>
+    <h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">100% GRATIS <span class="gold">4 BONOS EXCLUSIVOS</span></h2>
+    <div class="bonos-grid">${bonosHTML}</div>
+    <div style="text-align:center;margin-top:32px"><a href="${url}" class="btn">${cta}</a></div>
+  </div>
+</section>
+
+<section style="padding:28px 20px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)"><div class="trust-grid">${trustHTML}</div></section>
+
+<section style="padding:60px 20px;background:rgba(0,0,0,.1)">
+  <div class="container">
+    <p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Resultados reales</p>
+    <h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Lo que dicen nuestros clientes ❤️</h2>
+    <div class="testi-grid">${testiHTML}</div>
+  </div>
+</section>
+
+<section style="padding:60px 20px;text-align:center">
+  <div class="container">
+    <p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Invertí en tu transformación</p>
+    <h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Tu acceso está <span class="gold">esperándote</span></h2>
+    <div class="price-box">
+      <div class="price-box-header"><div class="price-box-label">Oferta especial hoy</div><div class="price-box-title">Tu acceso está reservado</div></div>
+      <div class="price-box-body">
+        ${data.oldprice?`<div class="price-old">${data.oldprice}</div>`:''}
+        <div class="price-current">${data.price}</div>
+        ${data.cuotas?`<div class="price-installments">${data.cuotas}</div>`:''}
+        <a href="${url}" class="price-btn">${cta}</a>
+        <div class="price-guarantee">🛡️ ${c.guarantee_text||`Garantía de ${guarantee} días`}</div>
+        <div style="text-align:left;margin-top:20px;padding-top:20px;border-top:1px solid #f0ece3">
+          <div style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Incluye</div>
+          <div class="price-inc-item">${data.product} completo</div>
+          ${bonos.map(b=>`<div class="price-inc-item">Bono: ${b.nombre}</div>`).join('')}
+          <div class="price-inc-item">Acceso inmediato al descargar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:48px 20px;text-align:center;background:rgba(212,175,55,.03);border-top:1px solid rgba(212,175,55,.1);border-bottom:1px solid rgba(212,175,55,.1)">
+  <div class="container" style="max-width:600px">
+    <div style="font-size:3.5rem;margin-bottom:12px">🛡️</div>
+    <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:12px">Garantía de ${guarantee} días</h2>
+    <p style="color:var(--muted);font-size:.95rem;line-height:1.8">${c.guarantee_text||`Si en ${guarantee} días no estás satisfecha, te devolvemos el 100% de tu dinero.`}</p>
+  </div>
+</section>
+
+<section style="padding:60px 20px">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:32px"><h2 style="font-size:clamp(1.5rem,5vw,2rem);font-weight:800">Preguntas <span style="color:var(--c1)">frecuentes</span></h2></div>
+    <div class="faq-card">${faqHTML}<div style="padding:14px 20px;text-align:center;font-size:.8rem;color:#888;background:#faf8f3;border-top:1px solid #f0ece3">¿Te quedó alguna duda? <b style="color:var(--c2)">Escribinos</b> y te ayudamos.</div></div>
+  </div>
+</section>
+
+<section style="padding:80px 20px;text-align:center">
+  <div class="container">
+    <h2 style="font-size:clamp(1.8rem,6vw,3rem);font-weight:900;margin-bottom:12px"><span class="gold">${c.final_headline||'¿Lista para transformar tu vida?'}</span></h2>
+    <p style="color:var(--muted);font-size:1rem;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto">${lc.subpromise||lc.promise}</p>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <a href="${url}" class="btn">${cta}</a>
+      <div style="font-size:.78rem;color:var(--muted)">Descarga inmediata · Pago seguro · Garantía ${guarantee} días</div>
+    </div>
+  </div>
+</section>
+
+<footer><p>${data.product}</p><p style="margin-top:.5rem">© 2025 · Todos los derechos reservados</p></footer>
+
+<div class="tk-fomo" id="tkFomo">
+  <div class="tk-card">
+    <div class="tk-avatar"><img id="tkAvatar" src="" alt="Cliente"></div>
+    <div class="tk-content">
+      <div class="tk-title" id="tkTitle"></div>
+      <div class="tk-sub"><span class="tk-pill" id="tkPlace"></span><span class="tk-pill">Acceso digital inmediato</span><span class="tk-time" id="tkWhen"></span></div>
+    </div>
+    <button class="tk-close" onclick="document.getElementById('tkFomo').style.display='none'">×</button>
+  </div>
+</div>
+
+<script>
+function updateViewers(){var v=Math.floor(Math.random()*28)+14;var e1=document.getElementById('viewers');var e2=document.getElementById('viewers2');if(e1)e1.textContent=v;if(e2)e2.textContent=v;}
+updateViewers();setInterval(updateViewers,5000);
+var slides=document.querySelectorAll('.hero-slide');var dotsWrap=document.getElementById('heroDots');var cur=0;
+if(slides.length>1){slides.forEach(function(_,i){var d=document.createElement('button');d.className='hero-dot'+(i===0?' active':'');d.onclick=function(){goSlide(i);};dotsWrap.appendChild(d);});setInterval(function(){goSlide((cur+1)%slides.length);},5000);}
+function goSlide(n){slides[cur].classList.remove('active');var dots=document.querySelectorAll('.hero-dot');if(dots[cur])dots[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');if(dots[cur])dots[cur].classList.add('active');}
+${hasCountdown?`var total=600;function tick(){var m=Math.floor(total/60),s=total%60;var me=document.getElementById('cd-min'),se=document.getElementById('cd-sec');if(me)me.textContent=('0'+m).slice(-2);if(se)se.textContent=('0'+s).slice(-2);if(total>0)total--;}tick();setInterval(tick,1000);`:''}
+function toggleFaq(btn){var item=btn.closest('.faq-item');var panel=item.querySelector('.faq-a');var open=item.getAttribute('aria-expanded')==='true';document.querySelectorAll('.faq-item').forEach(function(i){i.setAttribute('aria-expanded','false');i.querySelector('.faq-a').style.maxHeight=0;});if(!open){item.setAttribute('aria-expanded','true');panel.style.maxHeight=panel.scrollHeight+'px';}}
+var pops=[{name:"Luciana",place:"Buenos Aires",img:"https://randomuser.me/api/portraits/women/44.jpg"},{name:"Marcos",place:"Rosario",img:"https://randomuser.me/api/portraits/men/32.jpg"},{name:"Valentina",place:"Montevideo",img:"https://randomuser.me/api/portraits/women/68.jpg"},{name:"Carlos",place:"Bogotá",img:"https://randomuser.me/api/portraits/men/46.jpg"},{name:"Fernanda",place:"Ciudad de México",img:"https://randomuser.me/api/portraits/women/29.jpg"},{name:"Diego",place:"Santiago",img:"https://randomuser.me/api/portraits/men/55.jpg"}];
+var actions=[${popupActionsJS}];var times=["hace 1 min","hace 2 min","hace 3 min","hace 5 min","ahora mismo"];var pi=0;
+function showPopup(){var p=pops[pi%pops.length];pi++;var a=actions[Math.floor(Math.random()*actions.length)];var t=times[Math.floor(Math.random()*times.length)];var el=document.getElementById('tkFomo');document.getElementById('tkAvatar').src=p.img;document.getElementById('tkPlace').textContent=p.place;document.getElementById('tkWhen').textContent=t;document.getElementById('tkTitle').innerHTML='<b>'+p.name+'</b> de <b>'+p.place+'</b> '+a;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},5000);}
+setTimeout(showPopup,3500);setInterval(showPopup,14000);
+<\/script>
+</body>
+</html>`;
 }
 
 function updateColorPreview() {
@@ -1029,7 +1326,8 @@ function doPDF() {
     doc.text(curProject.product||'', W/2, 30, {align:'center'});
     doc.setDrawColor(255,0,110); doc.setLineWidth(.4); doc.line(mg, 34, W-mg, 34);
     let y = 42;
-    for (const line of curResult.split('\n')) {
+    const textContent = typeof curResult === 'string' ? curResult : JSON.stringify(curResult);
+    for (const line of textContent.split('\n')) {
       if (y > H-14) { doc.addPage(); addBg(); y = 18; }
       if (!line.trim()) { y+=3; continue; }
       let fs=9, bold=false, color=[200,200,216];
