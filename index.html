@@ -188,7 +188,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 <body>
 <div id="stars"></div>
 <div id="app">
-
 <nav>
   <div>
     <div class="logo">INNOVA FACTORY</div>
@@ -199,7 +198,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
     <button class="nav-btn" onclick="showView('generator')">Generador</button>
   </div>
 </nav>
-
 <div id="dashboard" class="view active">
   <div class="dash-hero">
     <h1>Bienvenida a <span>INNOVA FACTORY</span></h1>
@@ -214,7 +212,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   <h2 style="font-family:var(--font-h);margin-bottom:1.2rem">Proyectos Recientes</h2>
   <div class="projects-grid" id="projects-grid"></div>
 </div>
-
 <div id="generator" class="view">
   <div id="step1" class="wiz-wrap">
     <div class="wiz-card">
@@ -230,7 +227,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div>
     </div>
   </div>
-
   <div id="step2" class="wiz-wrap" style="display:none">
     <div class="wiz-card">
       <h2>💰 Precio y Plataforma</h2>
@@ -254,7 +250,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div>
     </div>
   </div>
-
   <div id="modules-panel" style="display:none">
     <div class="gen-header">
       <h2>🚀 Generá tu Contenido</h2>
@@ -269,7 +264,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div class="result-body" id="r-body"></div>
     </div>
   </div>
-
   <div id="landing-config" style="display:none">
     <div class="wiz-wrap" style="max-width:800px">
       <div id="lc1">
@@ -318,7 +312,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           </div>
         </div>
       </div>
-
       <div id="lc2" style="display:none">
         <div class="wiz-card">
           <h2>⚡ Urgencia y Escasez</h2>
@@ -343,7 +336,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           </div>
         </div>
       </div>
-
       <div id="lc3" style="display:none">
         <div class="wiz-card">
           <h2>🛡️ Garantía y Testimonios</h2>
@@ -366,7 +358,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           </div>
         </div>
       </div>
-
       <div id="lc4" style="display:none">
         <div class="wiz-card">
           <h2>✨ Secciones Extra</h2>
@@ -389,7 +380,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           </div>
         </div>
       </div>
-
       <div id="lc5" style="display:none">
         <div class="wiz-card">
           <h2>🎨 Imágenes de tu Landing</h2>
@@ -419,11 +409,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   </div>
 </div>
 </div>
-
 <div id="loading"><div class="ld-spinner"></div><div class="ld-txt" id="ld-msg">Generando con IA...</div></div>
 <div id="toasts"></div>
 <button class="fab" onclick="startNew()">+</button>
-
 <script>
 const MODS = [
   {id:'ebook',     icon:'📘', name:'Ebook Completo',        desc:'Títulos, índice y capítulos — descargá en PDF'},
@@ -433,7 +421,6 @@ const MODS = [
   {id:'creativos', icon:'🎨', name:'Creativos & Diseño',    desc:'Briefs y prompts para Midjourney/DALL-E'},
   {id:'trafico',   icon:'📈', name:'Estrategia de Tráfico', desc:'Plan orgánico, paid y cronograma 30 días'},
 ];
-
 let projects = JSON.parse(localStorage.getItem('innova_projects') || '[]');
 let curProject = {};
 let lcConfig = {};
@@ -444,14 +431,12 @@ let selectedSections = new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials = [];
 let generatedImages = {};
 let heroImages = [];
-
 document.addEventListener('DOMContentLoaded', () => {
   renderStars();
   renderDash();
   renderMods();
   initTestimonials();
 });
-
 function renderStars() {
   const c = document.getElementById('stars');
   for (let i = 0; i < 120; i++) {
@@ -462,7 +447,6 @@ function renderStars() {
     c.appendChild(s);
   }
 }
-
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -470,7 +454,6 @@ function showView(id) {
   const idx = id === 'dashboard' ? 0 : 1;
   document.querySelectorAll('.nav-btn')[idx].classList.add('active');
 }
-
 function renderDash() {
   document.getElementById('s-total').textContent = projects.length;
   document.getElementById('s-ebooks').textContent = projects.filter(p => p.hasEbook).length;
@@ -489,7 +472,6 @@ function renderDash() {
       <div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div>
     </div>`).join('');
 }
-
 function openProject(i) {
   curProject = {...projects[i]};
   document.getElementById('prod-name').textContent = curProject.product;
@@ -497,7 +479,6 @@ function openProject(i) {
   showView('generator');
   renderMods();
 }
-
 function startNew() {
   ['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget'].forEach(id => {
     const el = document.getElementById(id);
@@ -507,16 +488,13 @@ function startNew() {
   showStep(1);
   showView('generator');
 }
-
 function showStep(n) {
   ['step1','step2','modules-panel','landing-config'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
   document.getElementById(`step${n}`).style.display = 'block';
 }
-
 function goStep1() { showStep(1); }
-
 function goStep2() {
   const product = document.getElementById('f-product').value.trim();
   const audience = document.getElementById('f-audience').value.trim();
@@ -527,7 +505,6 @@ function goStep2() {
   curProject.transformation = document.getElementById('f-transform').value;
   showStep(2);
 }
-
 function goModules() {
   const price = document.getElementById('f-price').value.trim();
   if (!price) { toast('Ingresá el precio 😊', 'err'); return; }
@@ -546,14 +523,12 @@ function goModules() {
   showModulesPanel();
   toast('¡Proyecto guardado! 🎉', 'ok');
 }
-
 function showModulesPanel() {
   ['step1','step2','landing-config'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('modules-panel').style.display = 'block';
   document.getElementById('result-panel').style.display = 'none';
   renderMods();
 }
-
 function renderMods() {
   const g = document.getElementById('mods-grid');
   if (!g) return;
@@ -569,12 +544,10 @@ function renderMods() {
     </div>`;
   }).join('');
 }
-
 function clickMod(id) {
   if (id === 'landing') startLandingConfig();
   else generate(id);
 }
-
 async function generate(modId) {
   curMod = modId;
   const mod = MODS.find(m => m.id === modId);
@@ -610,7 +583,6 @@ async function generate(modId) {
     toast('Error al generar 😓', 'err');
   }
 }
-
 function setModStatus(id, cls, txt) {
   const el = document.getElementById('ms-'+id);
   const card = document.getElementById('mc-'+id);
@@ -619,14 +591,12 @@ function setModStatus(id, cls, txt) {
   el.textContent = txt;
   if (cls==='done') card.classList.add('done');
 }
-
 function showResultLoading() {
   const panel = document.getElementById('result-panel');
   panel.style.display = 'block';
   panel.scrollIntoView({behavior:'smooth', block:'nearest'});
   document.getElementById('r-body').innerHTML = `<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
 }
-
 function renderResult(content, title, isHtml) {
   document.getElementById('r-title').textContent = title || 'Resultado';
   const acts = document.getElementById('r-acts');
@@ -647,7 +617,6 @@ function renderResult(content, title, isHtml) {
     document.getElementById('r-body').innerHTML = `<div class="md">${marked.parse(content)}</div>`;
   }
 }
-
 function startLandingConfig() {
   lcConfig = {};
   testimonials = [];
@@ -664,21 +633,17 @@ function startLandingConfig() {
   });
   selectedSections = new Set(['benefits','bonos','faq','cta_multiple']);
 }
-
 function showLCStep(n) {
   [1,2,3,4,5].forEach(i => {
     const el = document.getElementById(`lc${i}`);
     if (el) el.style.display = i===n ? 'block' : 'none';
   });
 }
-
 function cancelLanding() {
   document.getElementById('landing-config').style.display = 'none';
   showModulesPanel();
 }
-
 function goLC1() { showLCStep(1); }
-
 function goLC2() {
   const promise = document.getElementById('lc-promise').value.trim();
   if (!promise) { toast('Escribí la promesa principal 😊', 'err'); return; }
@@ -689,7 +654,6 @@ function goLC2() {
   lcConfig.subpromise = document.getElementById('lc-subpromise').value;
   showLCStep(2);
 }
-
 function goLC3() {
   lcConfig.urgency = [...selectedUrgency];
   lcConfig.badge1 = document.getElementById('lc-badge1').value;
@@ -700,14 +664,12 @@ function goLC3() {
   lcConfig.soldPct = document.getElementById('lc-sold-pct')?.value || '73';
   showLCStep(3);
 }
-
 function goLC4() {
   lcConfig.guarantee = document.getElementById('lc-guarantee').value;
   lcConfig.guaranteeType = document.getElementById('lc-guarantee-type').value;
   lcConfig.testimonials = testimonials.filter(t => t.name.trim());
   showLCStep(4);
 }
-
 function goLC5() {
   lcConfig.sections = [...selectedSections];
   lcConfig.cta = document.getElementById('lc-cta').value;
@@ -716,7 +678,6 @@ function goLC5() {
   showLCStep(5);
   renderLC5();
 }
-
 function renderLC5() {
   const mockupGrid = document.getElementById('img-mockup-grid');
   mockupGrid.innerHTML = `
@@ -738,14 +699,12 @@ function renderLC5() {
         <div class="img-gen-status" id="imgstatus-mockup"></div>
       </div>
     </div>`;
-
   const heroGrid = document.getElementById('hero-img-grid');
   heroGrid.innerHTML = [1,2,3].map(i => `
     <div class="hero-img-slot" id="hero-slot-${i}">
       <img id="hero-img-${i}" src="" alt="Hero ${i}" onload="this.classList.add('loaded')">
       <div class="slot-label" id="hero-label-${i}">Imagen ${i}</div>
     </div>`).join('');
-
   const bonosDiv = document.getElementById('bonos-preview-lc5');
   const bonos = curProject.bonos || [];
   if (bonos.length) {
@@ -765,7 +724,6 @@ function renderLC5() {
     bonosDiv.innerHTML = `<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center;background:rgba(255,255,255,.03);border-radius:12px;border:1px dashed var(--border)">No generaste bonos aún.</p>`;
   }
 }
-
 async function generateImage(type) {
   const btn = document.getElementById(`imgbtn-${type}`);
   const rebtn = document.getElementById(`imgrebtn-${type}`);
@@ -801,23 +759,21 @@ async function generateImage(type) {
     toast('Error al generar imagen 😓', 'err');
   }
 }
-
 function onImgLoad(type) {
   const ph = document.getElementById(`imgph-${type}`);
   const imgEl = document.getElementById(`imgel-${type}`);
   if (ph) ph.style.display = 'none';
   if (imgEl) imgEl.classList.add('loaded');
 }
-
 async function generateAllHero() {
   const btn = document.getElementById('hero-gen-all-btn');
   const status = document.getElementById('hero-status');
   btn.disabled = true;
   heroImages = [];
   const heroStyles = [
-    'flat lay top view, ingredients and finished product beautifully arranged on dark surface, gold accents, no text, no people',
-    'close up macro shot, texture and details of the finished product, dramatic side lighting, dark moody atmosphere, no text, no people',
-    'lifestyle scene, product displayed elegantly on dark marble surface, soft bokeh background, warm golden light, no text, no people'
+    'flat lay top view, ingredients and finished product beautifully arranged on dark surface, gold accents',
+    'close up macro shot showing texture and details of the finished product, dramatic side lighting, dark moody',
+    'lifestyle scene, product displayed elegantly on dark marble surface, soft bokeh background, warm golden light'
   ];
   for (let i = 1; i <= 3; i++) {
     status.innerHTML = `<div class="img-spin"></div> Generando imagen ${i} de 3...`;
@@ -830,7 +786,7 @@ async function generateAllHero() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           type: 'custom',
-          prompt: `Premium dark marketing lifestyle photography for: ${curProject.product}. ${heroStyles[i-1]}.`
+          prompt: `Professional food and product photography. NO text, NO books, NO ebooks, NO titles, NO writing anywhere. ONLY the real physical product: ${curProject.product}. Style: ${heroStyles[i-1]}. Dark background, cinematic lighting. Absolutely no text or words in the image.`
         })
       });
       const json = await res.json();
@@ -846,7 +802,6 @@ async function generateAllHero() {
   status.innerHTML = `<span style="color:var(--success)">✓ ${heroImages.length} imágenes del hero listas</span>`;
   toast('¡Hero carrusel listo! 🌟', 'ok');
 }
-
 async function generateLanding() {
   lcConfig.images = generatedImages;
   lcConfig.heroImages = heroImages;
@@ -878,7 +833,6 @@ async function generateLanding() {
     toast('Error: ' + e.message, 'err');
   }
 }
-
 function updateColorPreview() {
   document.getElementById('cp1').style.background = document.getElementById('lc-color1').value;
   document.getElementById('cp2').style.background = document.getElementById('lc-color2').value;
@@ -894,7 +848,6 @@ function syncColor(n) {
     document.getElementById(`cp${n}`).style.background = txt;
   }
 }
-
 function toggleChip(el) {
   el.classList.toggle('on');
   const val = el.dataset.val;
@@ -908,7 +861,6 @@ function toggleChip(el) {
     else selectedSections.delete(val);
   }
 }
-
 function updateUrgencyDetails() {
   const c = document.getElementById('urgency-details');
   let html = '';
@@ -917,14 +869,12 @@ function updateUrgencyDetails() {
   if (selectedUrgency.has('sold')) html += `<div class="field"><label>¿Qué porcentaje está vendido?</label><input type="number" id="lc-sold-pct" placeholder="Ej: 78" min="1" max="99"></div>`;
   c.innerHTML = html;
 }
-
 function initTestimonials() {
   testimonials = [];
   const list = document.getElementById('testi-list');
   if (list) list.innerHTML = '';
   addTesti(); addTesti(); addTesti();
 }
-
 function addTesti() {
   const idx = testimonials.length;
   testimonials.push({name:'', lastname:'', text:''});
@@ -946,7 +896,6 @@ function removeTesti(idx) {
   if (el) el.remove();
   if (testimonials[idx]) testimonials[idx] = {name:'',lastname:'',text:''};
 }
-
 function doCopy() {
   if (!curResult) return;
   navigator.clipboard.writeText(curResult).then(() => toast('Copiado 📋', 'ok'));
@@ -1011,7 +960,6 @@ function doPDF() {
     toast('PDF descargado 📥', 'ok');
   } catch(e) { toast('Error al generar PDF', 'err'); }
 }
-
 function setLoading(on, msg='Generando con IA...') {
   document.getElementById('loading').classList.toggle('on', on);
   document.getElementById('ld-msg').textContent = msg;
