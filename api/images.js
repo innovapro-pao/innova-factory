@@ -11,10 +11,10 @@ export default async function handler(req, res) {
     if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
     const prompts = {
       mockup: `Professional 3D digital product mockup for: ${prompt}. Clean dark background, gold and white accents, premium quality hardcover book or ebook displayed at an angle, photorealistic rendering, soft studio lighting, no text overlays, marketing product shot style.`,
-      logros: `Abstract dark luxury background image representing transformation and success for: ${prompt}. Black background, soft gold and pink bokeh lights, upward arrows and stars made of light, premium elegant atmosphere, no text, no people, cinematic lighting.`,
-      bonos: `Dark premium flat lay of multiple digital books and guides stacked together for: ${prompt}. Black background, gold metallic accents, soft dramatic lighting on book covers, luxury product photography style, no text overlays, rich shadows and highlights.`,
-      hero: `Premium dark marketing lifestyle photography for: ${prompt}. Show the actual product visually, real ingredients or finished product beauty shot, dark moody background with gold and warm accent lighting, professional photography style, no text, no people.`,
-      custom: prompt,
+      logros: `Abstract dark luxury background image representing transformation and success. Black background, soft gold and pink bokeh lights, upward arrows and stars made of light, premium elegant atmosphere, no text, no people, cinematic lighting.`,
+      bonos: `Dark premium flat lay of multiple digital books and guides stacked together. Black background, gold metallic accents, soft dramatic lighting on book covers, luxury product photography style, no text overlays, rich shadows and highlights.`,
+      hero: `Dark moody premium lifestyle photography. Black background, gold bokeh lights, elegant dark surface, cinematic atmosphere. No text, no people, no books, no writing anywhere.`,
+      custom: `${prompt}`,
     };
     const finalPrompt = prompts[type] || prompts.custom;
     const r = await fetch('https://api.openai.com/v1/images/generations', {
