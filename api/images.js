@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     const finalPrompt = prompts[type] || prompts.custom;
 
-    const r = await fetch('https://fal.run/fal-ai/flux/schnell', {
+    const r = await fetch('https://fal.run/fal-ai/flux-pro/v1.1', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,14 +30,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         prompt: finalPrompt,
         image_size: 'square_hd',
-        num_inference_steps: 4,
         num_images: 1,
-        enable_safety_checker: true,
+        safety_tolerance: '2',
       }),
     });
 
     const json = await r.json();
-
     if (json.error) return res.status(500).json({ error: json.error });
 
     const imageUrl = json.images?.[0]?.url;
