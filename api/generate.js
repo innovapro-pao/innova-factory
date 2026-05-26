@@ -17,12 +17,12 @@ Producto: ${data.product}
 Público: ${data.audience}
 Problema: ${data.problem}
 Transformación: ${data.transformation}
+Contenido específico requerido: ${data.contenido_especifico || 'no especificado'}
 
 Devuelve SOLO JSON puro sin markdown:
 {
   "titulo_principal": "título magnético del ebook",
   "subtitulo": "subtítulo que complementa",
-  "autor": "nombre del autor o marca",
   "introduccion": "introducción de 200 palabras que engancha al lector",
   "capitulos": [
     {"numero": 1, "titulo": "Título del capítulo 1", "descripcion": "De qué trata en 1 oración"},
@@ -43,15 +43,16 @@ Producto: ${data.product}
 Público: ${data.audience}
 Capítulo: ${capitulo.titulo}
 Descripción: ${capitulo.descripcion}
+Contenido específico requerido: ${data.contenido_especifico || ''}
 
-Escribí un capítulo COMPLETO y DETALLADO de mínimo 600 palabras. Incluí:
-- Introducción del capítulo (por qué es importante)
-- 3-4 secciones con subtítulos
-- Ejemplos prácticos y concretos
-- Tips accionables
-- Cierre con resumen y transición al próximo capítulo
+Escribí un capítulo COMPLETO y DETALLADO de exactamente 600 palabras. Incluí:
+- Introducción del capítulo
+- 3 secciones con subtítulos ## 
+- Ejemplos prácticos y concretos relacionados al contenido específico requerido
+- Tips accionables numerados
+- Cierre del capítulo
 
-Escribí directamente el contenido, sin JSON, en formato markdown con ## para subtítulos.`;
+Escribí directamente en markdown. Sin JSON. Sin intro tipo "aquí está el capítulo".`;
 
     } else if (step === 'bono_contenido') {
       const bono = data.bonos[bono_idx];
@@ -61,15 +62,16 @@ Producto principal: ${data.product}
 Público: ${data.audience}
 Bono: ${bono.nombre}
 Descripción del bono: ${bono.descripcion}
+Contenido específico: ${data.contenido_especifico || ''}
 
-Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras para este bono. Incluí:
-- Introducción (qué van a aprender y por qué es valioso)
-- 3-5 secciones con subtítulos y contenido detallado
+Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras. Incluí:
+- Introducción
+- 4 secciones con subtítulos ##
 - Ejemplos prácticos
 - Tips accionables
 - Conclusión con próximos pasos
 
-Formato markdown con ## para subtítulos. Sin JSON.`;
+Formato markdown. Sin JSON.`;
 
     } else if (step === 'landing' && landingConfig) {
       const lc = landingConfig;
@@ -88,12 +90,12 @@ CTA: ${lc.cta || '¡Quiero empezar ahora!'}
 Garantía: ${lc.guarantee} días
 Bonos del producto: ${JSON.stringify(data.bonos || [])}
 
-Devuelve EXACTAMENTE este JSON completo:
+Devuelve EXACTAMENTE este JSON:
 {
   "preheadline": "frase corta llamativa tipo ATENCIÓN para el público específico",
   "headline1": "primera línea del título en mayúsculas máximo 6 palabras",
   "headline2": "segunda línea del título con la promesa clave máximo 6 palabras",
-  "headline_sub": "frase en cursiva dentro de un recuadro como en todoketo: poética y directa",
+  "headline_sub": "frase en cursiva dentro de un recuadro poética y directa",
   "marquee_items": ["frase corta 1","frase corta 2","frase corta 3","frase corta 4"],
   "para_vos_si": [
     {"icon":"🎯","title":"Si querés X","desc":"pero Y, Z."},
@@ -153,7 +155,7 @@ Devuelve EXACTAMENTE este JSON completo:
       const prompts = {
         bonos: `Eres experto en lanzamientos. Crea exactamente 4 bonos irresistibles en español para:
 Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
-Devuelve SOLO JSON puro sin markdown ni explicaciones:
+Devuelve SOLO JSON puro sin markdown:
 {
   "bonos": [
     {"nombre":"NOMBRE DEL BONO EN MAYUSCULAS","descripcion":"descripción 2-3 líneas","precio_original":"USD 27","emoji":"🎯"},
@@ -164,21 +166,18 @@ Devuelve SOLO JSON puro sin markdown ni explicaciones:
   "valor_total": "USD 138",
   "frase_remate": "frase poderosa de cierre máximo 10 palabras"
 }`,
-
         copies: `Eres copywriter AIDA experto. Genera en español para: Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
 1. Secuencia 5 emails lanzamiento completos
 2. 5 posts Instagram con caption largo y hashtags
 3. 7 scripts de stories paso a paso
 4. 3 anuncios Facebook/Instagram Ads completos
 5. 2 mensajes WhatsApp difusion`,
-
         creativos: `Eres director creativo senior. Crea briefs detallados para: Producto: ${data.product}.
 1. Brief portada ebook completo
 2. Brief banner 1080x1080 y 1080x1920
 3. Descripcion 6 slides carrusel
 4. Paleta de marca completa HEX + tipografias
 5. 5 prompts Midjourney/DALL-E listos para copiar`,
-
         trafico: `Eres experto en trafico digital. Estrategia completa para: Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
 1. Plan organico 30 dias
 2. Estrategia Facebook/Instagram Ads
