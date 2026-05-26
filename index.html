@@ -33,7 +33,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .dash-hero h1 span{background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .dash-hero p{color:var(--muted);font-size:1rem;margin-bottom:2rem}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s}
+.stat:hover{border-color:var(--violet);transform:translateY(-2px)}
 .stat .num{font-family:var(--font-h);font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--fuchsia),var(--violet2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .stat .lbl{color:var(--muted);font-size:.8rem;margin-top:.25rem}
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
@@ -119,13 +120,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .md ul,.md ol{padding-left:1.5rem;margin-bottom:.8rem}
 .md li{color:#c8c8d8;margin-bottom:.35rem;line-height:1.7}
 .md hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.md table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.85rem}
-.md th{background:rgba(124,58,237,.2);color:var(--violet2);padding:.6rem 1rem;text-align:left;border:1px solid var(--border)}
-.md td{padding:.6rem 1rem;border:1px solid var(--border);color:#c8c8d8}
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;min-height:200px;color:var(--muted);text-align:center}
 .placeholder .big{font-size:3rem;opacity:.35}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--fuchsia);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.ebook-progress{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.ebook-progress-title{font-family:var(--font-h);font-size:.9rem;font-weight:700;margin-bottom:1rem}
+.cap-list{display:flex;flex-direction:column;gap:.5rem}
+.cap-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid var(--border);font-size:.82rem}
+.cap-item.done{border-color:var(--success);background:rgba(16,185,129,.05)}
+.cap-item.running{border-color:var(--fuchsia);background:rgba(255,0,110,.05)}
+.cap-icon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;flex-shrink:0}
+.cap-icon.pending{background:rgba(255,255,255,.05);color:var(--muted)}
+.cap-icon.running{background:rgba(255,0,110,.15);color:var(--fuchsia)}
+.cap-icon.done{background:rgba(16,185,129,.15);color:var(--success)}
 .bonos-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
 .bono-preview-card{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:1.2rem;text-align:center}
 .bono-preview-img{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;margin-bottom:.75rem;background:#111;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative}
@@ -177,15 +185,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 .fab{position:fixed;bottom:2rem;left:2rem;width:56px;height:56px;background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-radius:50%;display:grid;place-items:center;font-size:1.6rem;cursor:pointer;border:none;color:#fff;box-shadow:0 8px 24px rgba(255,0,110,.4);transition:transform .25s;z-index:100}
 .fab:hover{transform:scale(1.1)}
-@media(max-width:768px){
-  nav{padding:1rem 1.5rem}
-  .view{padding:1.5rem}
-  .wiz-card{padding:1.5rem}
-  .modules-grid{grid-template-columns:1fr}
-  .testi-item{grid-template-columns:1fr}
-  .testi-item textarea{grid-column:1}
-  .img-gen-grid{grid-template-columns:1fr}
-}
+@media(max-width:768px){nav{padding:1rem 1.5rem}.view{padding:1.5rem}.wiz-card{padding:1.5rem}.modules-grid{grid-template-columns:1fr}.testi-item{grid-template-columns:1fr}.testi-item textarea{grid-column:1}.img-gen-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -243,8 +243,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div class="field"><label>Plataforma principal de venta</label>
         <select id="f-platform">
           <option>Instagram/Facebook</option><option>TikTok</option><option>Email Marketing</option>
-          <option>WhatsApp/Telegram</option><option>Sitio Web propio</option>
-          <option>Hotmart/Kiwify</option><option>Mixto</option>
+          <option>WhatsApp/Telegram</option><option>Sitio Web propio</option><option>Hotmart/Kiwify</option><option>Mixto</option>
         </select>
       </div>
       <div class="wiz-btns">
@@ -385,7 +384,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
           <div class="section-label">Mockup del Producto</div>
           <div class="img-gen-grid" id="img-mockup-grid"></div>
           <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos del Producto</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Describí exactamente qué querés en cada foto. La IA la genera tal cual.</p>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Describí exactamente qué querés en cada foto.</p>
           <div class="hero-foto-inputs">
             <div class="hero-foto-row">
               <div>
@@ -397,14 +396,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
             <div class="hero-foto-row">
               <div>
                 <div class="hero-foto-num">📷 Foto 2</div>
-                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado a la mitad mostrando el relleno" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado mostrando el relleno" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
               </div>
               <div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
             </div>
             <div class="hero-foto-row">
               <div>
                 <div class="hero-foto-num">📷 Foto 3</div>
-                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja de bombones con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
+                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
               </div>
               <div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
             </div>
@@ -414,7 +413,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
             <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
           </div>
           <div class="section-label" style="margin-top:2rem">Bonos — Mockups con IA</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">La IA genera el mockup de portada para cada bono.</p>
           <div id="bonos-preview-lc5"></div>
           <div class="img-cost-note">💡 Podés saltear imágenes y agregar las tuyas después editando el HTML</div>
           <div class="wiz-btns" style="margin-top:2rem">
@@ -431,11 +429,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 <div id="toasts"></div>
 <button class="fab" onclick="startNew()">+</button>
 <script>
-const MODS=[{id:'ebook',icon:'📘',name:'Ebook Completo',desc:'Títulos, índice y capítulos — descargá en PDF'},{id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos irresistibles — generá antes de la landing'},{id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'Configurador completo → HTML espectacular listo para usar',special:true},{id:'copies',icon:'✍️',name:'Copies AIDA',desc:'Emails, posts, stories y ads completos'},{id:'creativos',icon:'🎨',name:'Creativos & Diseño',desc:'Briefs y prompts para Midjourney/DALL-E'},{id:'trafico',icon:'📈',name:'Estrategia de Tráfico',desc:'Plan orgánico, paid y cronograma 30 días'}];
+const MODS=[
+  {id:'ebook',icon:'📘',name:'Ebook Completo',desc:'7 capítulos completos — descargá en PDF o TXT'},
+  {id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos irresistibles — generá antes de la landing'},
+  {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'Configurador completo → HTML espectacular listo para usar',special:true},
+  {id:'copies',icon:'✍️',name:'Copies AIDA',desc:'Emails, posts, stories y ads completos'},
+  {id:'creativos',icon:'🎨',name:'Creativos & Diseño',desc:'Briefs y prompts para Midjourney/DALL-E'},
+  {id:'trafico',icon:'📈',name:'Estrategia de Tráfico',desc:'Plan orgánico, paid y cronograma 30 días'},
+];
 let projects=JSON.parse(localStorage.getItem('innova_projects')||'[]');
 let curProject={},lcConfig={},curResult='',curMod='';
 let selectedUrgency=new Set(),selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials=[],generatedImages={},heroImages=[],bonoImages=[];
+let ebookData=null;
 
 document.addEventListener('DOMContentLoaded',()=>{renderStars();renderDash();renderMods();initTestimonials();});
 
@@ -453,16 +459,128 @@ function showStep(n){['step1','step2','modules-panel','landing-config'].forEach(
 
 function goStep1(){showStep(1);}
 function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;showStep(2);}
-
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
 
 function showModulesPanel(){['step1','step2','landing-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
 
-function clickMod(id){if(id==='landing')startLandingConfig();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else generate(id);}
 
-async function generate(modId){curMod=modId;const mod=MODS.find(m=>m.id===modId);setModStatus(modId,'running','⟳ Generando...');setLoading(true,`Generando ${mod.name}...`);showResultLoading();try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);curResult=json.content;setModStatus(modId,'done','✓ Listo');if(modId==='ebook'){curProject.hasEbook=true;saveCur();}if(modId==='bonos'&&json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();toast('¡Bonos guardados! Ya podés crear tu landing 🎁','ok');}renderResult(curResult,mod.name,false);setLoading(false);toast(`${mod.name} generado 🎉`,'ok');}catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>Error: ${e.message}</div></div>`;toast('Error al generar 😓','err');}}
+// ── EBOOK POR CAPÍTULOS ──
+async function generateEbook(){
+  curMod='ebook';
+  setModStatus('ebook','running','⟳ Generando...');
+  const panel=document.getElementById('result-panel');
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('r-title').textContent='📘 Ebook Completo';
+  document.getElementById('r-acts').innerHTML='';
+  document.getElementById('r-body').innerHTML=`
+    <div class="ebook-progress">
+      <div class="ebook-progress-title">✨ Generando tu ebook capítulo por capítulo...</div>
+      <div class="cap-list" id="cap-list">
+        <div class="cap-item running"><div class="cap-icon running">⟳</div><span>Generando estructura e índice...</span></div>
+      </div>
+    </div>`;
+
+  try {
+    // Paso 1: Generar índice
+    const r1=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_indice',data:curProject})});
+    const j1=await r1.json();
+    if(j1.error)throw new Error(j1.error);
+    ebookData=j1.content;
+
+    // Mostrar índice
+    const capList=document.getElementById('cap-list');
+    capList.innerHTML=`
+      <div class="cap-item done"><div class="cap-icon done">✓</div><span>✅ Estructura lista: <strong>${ebookData.titulo_principal}</strong></span></div>
+      ${ebookData.capitulos.map(c=>`<div class="cap-item" id="cap-${c.numero}"><div class="cap-icon pending" id="cap-icon-${c.numero}">📄</div><span id="cap-txt-${c.numero}">Capítulo ${c.numero}: ${c.titulo}</span></div>`).join('')}
+      <div class="cap-item" id="cap-conclusion"><div class="cap-icon pending" id="cap-icon-conclusion">📄</div><span>Conclusión</span></div>`;
+
+    // Paso 2: Generar cada capítulo
+    let fullContent=`# ${ebookData.titulo_principal}\n\n*${ebookData.subtitulo}*\n\n---\n\n## Introducción\n\n${ebookData.introduccion}\n\n---\n\n`;
+
+    for(const cap of ebookData.capitulos){
+      // Actualizar UI
+      const capEl=document.getElementById(`cap-${cap.numero}`);
+      const capIcon=document.getElementById(`cap-icon-${cap.numero}`);
+      const capTxt=document.getElementById(`cap-txt-${cap.numero}`);
+      if(capEl)capEl.className='cap-item running';
+      if(capIcon){capIcon.className='cap-icon running';capIcon.textContent='⟳';}
+      if(capTxt)capTxt.textContent=`Generando: ${cap.titulo}...`;
+
+      const r2=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_capitulo',data:curProject,capitulo:cap})});
+      const j2=await r2.json();
+      if(j2.error)throw new Error(j2.error);
+
+      fullContent+=`## Capítulo ${cap.numero}: ${cap.titulo}\n\n${j2.content}\n\n---\n\n`;
+
+      if(capEl)capEl.className='cap-item done';
+      if(capIcon){capIcon.className='cap-icon done';capIcon.textContent='✓';}
+      if(capTxt)capTxt.textContent=`✅ Capítulo ${cap.numero}: ${cap.titulo}`;
+    }
+
+    // Conclusión
+    const concEl=document.getElementById('cap-conclusion');
+    const concIcon=document.getElementById('cap-icon-conclusion');
+    if(concEl)concEl.className='cap-item done';
+    if(concIcon){concIcon.className='cap-icon done';concIcon.textContent='✓';}
+    fullContent+=`## Conclusión\n\n${ebookData.conclusion}`;
+
+    curResult=fullContent;
+    setModStatus('ebook','done','✓ Listo');
+    curProject.hasEbook=true;
+    saveCur();
+
+    document.getElementById('r-acts').innerHTML=`
+      <button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>
+      <button class="act-btn act-txt" onclick="doTxt()">📄 TXT</button>
+      <button class="act-btn act-pdf" onclick="doPDF()">📥 PDF</button>`;
+
+    document.getElementById('r-body').innerHTML=`
+      <div style="margin-bottom:1rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">
+        ✅ <strong>Ebook completo generado!</strong> ${ebookData.capitulos.length} capítulos · Descargá en PDF o TXT
+      </div>
+      <div class="md">${marked.parse(fullContent.substring(0,500)+'...')}</div>`;
+
+    toast('¡Ebook completo generado! 🎉','ok');
+
+  } catch(e){
+    setModStatus('ebook','pending','✕ Error');
+    toast('Error al generar ebook 😓','err');
+  }
+}
+
+async function generate(modId){
+  curMod=modId;
+  const mod=MODS.find(m=>m.id===modId);
+  setModStatus(modId,'running','⟳ Generando...');
+  setLoading(true,`Generando ${mod.name}...`);
+  showResultLoading();
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});
+    const json=await res.json();
+    if(json.error)throw new Error(json.error);
+    curResult=json.content;
+    setModStatus(modId,'done','✓ Listo');
+    if(modId==='bonos'&&json.bonos){
+      curProject.bonos=json.bonos;
+      curProject.bonos_frase=json.frase_remate;
+      curProject.bonos_valor=json.valor_total;
+      saveCur();renderMods();
+      toast('¡Bonos guardados! Ya podés crear tu landing 🎁','ok');
+    }
+    renderResult(curResult,mod.name,false);
+    setLoading(false);
+    toast(`${mod.name} generado 🎉`,'ok');
+  }catch(e){
+    setModStatus(modId,'pending','✕ Error');
+    setLoading(false);
+    document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>Error: ${e.message}</div></div>`;
+    toast('Error al generar 😓','err');
+  }
+}
 
 function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);const card=document.getElementById('mc-'+id);if(!el||!card)return;el.className=`mod-status s-${cls}`;el.textContent=txt;if(cls==='done')card.classList.add('done');}
 
@@ -473,9 +591,7 @@ function renderResult(content,title,isHtml){document.getElementById('r-title').t
 function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
-
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
-
 function goLC1(){showLCStep(1);}
 function goLC2(){const promise=document.getElementById('lc-promise').value.trim();if(!promise){toast('Escribí la promesa principal 😊','err');return;}lcConfig.color1=document.getElementById('lc-color1').value;lcConfig.color2=document.getElementById('lc-color2').value;lcConfig.colorBg=document.getElementById('lc-color3').value;lcConfig.promise=promise;lcConfig.subpromise=document.getElementById('lc-subpromise').value;showLCStep(2);}
 function goLC3(){lcConfig.urgency=[...selectedUrgency];lcConfig.badge1=document.getElementById('lc-badge1').value;lcConfig.badge2=document.getElementById('lc-badge2').value;lcConfig.badge3=document.getElementById('lc-badge3').value;lcConfig.countdownDate=document.getElementById('lc-countdown-date')?.value||'';lcConfig.stockLeft=document.getElementById('lc-stock-left')?.value||'15';lcConfig.soldPct=document.getElementById('lc-sold-pct')?.value||'73';showLCStep(3);}
@@ -484,50 +600,32 @@ function goLC5(){lcConfig.sections=[...selectedSections];lcConfig.cta=document.g
 
 function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card" id="imgcard-mockup"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup del Producto</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-desc">Imagen 3D premium de tu ebook o curso</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regenerar</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;
 const bonosDiv=document.getElementById('bonos-preview-lc5');const bonos=curProject.bonos||[];
-if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card" id="bono-card-${i}"><div class="bono-preview-img" id="bono-img-wrap-${i}"><img id="bono-img-${i}" src="" onload="document.getElementById('bono-ph-${i}').style.display='none';this.classList.add('loaded')"><span id="bono-ph-${i}">${b.emoji||'🎁'}</span></div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-desc">${b.descripcion}</div><div class="bono-preview-precio">${b.precio_original}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Generar mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div><p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos — generá el mockup de cada uno</p>`;}
+if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card" id="bono-card-${i}"><div class="bono-preview-img" id="bono-img-wrap-${i}"><img id="bono-img-${i}" src="" onload="document.getElementById('bono-ph-${i}').style.display='none';this.classList.add('loaded')"><span id="bono-ph-${i}">${b.emoji||'🎁'}</span></div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-desc">${b.descripcion}</div><div class="bono-preview-precio">${b.precio_original}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Generar mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div><p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos</p>`;}
 else{bonosDiv.innerHTML=`<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center;background:rgba(255,255,255,.03);border-radius:12px;border:1px dashed var(--border)">No generaste bonos aún.</p>`;}}
 
 async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(rebtn)rebtn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,prompt:`${curProject.product} - ${curProject.audience} - ${lcConfig.promise||curProject.transformation}`})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl){imgEl.src=json.url;}if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div><div class="ph-text" style="color:#ef4444">Error</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;if(rebtn)rebtn.disabled=false;toast('Error al generar imagen 😓','err');}}
 
-async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);const img=document.getElementById(`bono-img-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium digital ebook cover mockup for: "${bono.nombre}". Dark elegant background, gold typography, professional book cover design, 3D book mockup at an angle, luxury feel. No additional text overlay.`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;if(img){img.src=json.url;}status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;btn.textContent='🔄 Regenerar';btn.disabled=false;toast(`Mockup Bono ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;btn.disabled=false;toast('Error al generar mockup 😓','err');}}
+async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);const img=document.getElementById(`bono-img-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background, golden bokeh, luxury feel. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;if(img){img.src=json.url;}status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;btn.textContent='🔄 Regenerar';btn.disabled=false;toast(`Mockup Bono ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;btn.disabled=false;toast('Error al generar mockup 😓','err');}}
 
 function onImgLoad(type){const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(ph)ph.style.display='none';if(imgEl)imgEl.classList.add('loaded');}
 
 async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const desc1=document.getElementById('hero-desc-1').value.trim();const desc2=document.getElementById('hero-desc-2').value.trim();const desc3=document.getElementById('hero-desc-3').value.trim();if(!desc1&&!desc2&&!desc3){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];const descs=[desc1,desc2,desc3];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Generando foto ${i+1} de 3...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Professional product photography, dark moody background, cinematic lighting, gold accents. NO text, NO books, NO ebooks, NO writing. Scene: ${descs[i]}.`})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev){prev.src=json.url;}if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos del hero listas! 🌟','ok');}
 
 async function generateLanding(){
-  // Guardamos imágenes localmente ANTES de mandar al servidor
-  const heroImgsLocal=[...heroImages];
-  const bonoImgsLocal=[...bonoImages];
-  const generatedImgsLocal={...generatedImages};
-  // Mandamos al servidor SIN imágenes (son muy pesadas en base64)
-  lcConfig.images={};
-  lcConfig.heroImages=[];
-  lcConfig.bonoImages=[];
-  curMod='landing';
-  setModStatus('landing','running','⟳ Generando...');
-  setLoading(true,'🚀 Generando contenido con IA...');
+  const heroImgsLocal=[...heroImages];const bonoImgsLocal=[...bonoImages];const generatedImgsLocal={...generatedImages};
+  lcConfig.images={};lcConfig.heroImages=[];lcConfig.bonoImages=[];
+  curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando contenido con IA...');
   try{
     const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'landing',data:curProject,landingConfig:lcConfig})});
-    const json=await res.json();
-    if(json.error)throw new Error(json.error);
-    // Restauramos las imágenes locales para construir el HTML en el navegador
-    lcConfig.heroImages=heroImgsLocal;
-    lcConfig.bonoImages=bonoImgsLocal;
-    lcConfig.images=generatedImgsLocal;
-    const landingContent=json.content;
-    const htmlFinal=buildPremiumLanding(lcConfig,curProject,landingContent);
-    curResult=htmlFinal;
-    setModStatus('landing','done','✓ Lista');
-    curProject.hasLanding=true;
-    saveCur();
-    document.getElementById('landing-config').style.display='none';
-    showModulesPanel();
+    const json=await res.json();if(json.error)throw new Error(json.error);
+    lcConfig.heroImages=heroImgsLocal;lcConfig.bonoImages=bonoImgsLocal;lcConfig.images=generatedImgsLocal;
+    const htmlFinal=buildPremiumLanding(lcConfig,curProject,json.content);
+    curResult=htmlFinal;setModStatus('landing','done','✓ Lista');curProject.hasLanding=true;saveCur();
+    document.getElementById('landing-config').style.display='none';showModulesPanel();
     renderResult(curResult,'🌐 Landing Page Pro',true);
     document.getElementById('result-panel').style.display='block';
     document.getElementById('result-panel').scrollIntoView({behavior:'smooth'});
-    setLoading(false);
-    toast('¡Landing generada! Descargá el HTML 🎉','ok');
+    setLoading(false);toast('¡Landing generada! Descargá el HTML 🎉','ok');
   }catch(e){setLoading(false);toast('Error: '+e.message,'err');}}
 
 function buildPremiumLanding(lc,data,c){
@@ -669,7 +767,7 @@ footer{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.05);padd
 </head>
 <body>
 <div class="top-bar"><span class="top-badge"><span class="top-dot"></span> El precio está por subir</span>${hasViewers?` <span class="top-badge"><span style="background:#22c55e" class="top-dot"></span><span id="viewers">27</span> viendo ahora</span>`:''}</div>
-<section class="hero"><div class="hero-slides" id="heroSlides">${heroCarouselHTML}</div><div class="hero-overlay"></div><div class="hero-content"><div class="container"><div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div><h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>${c.headline_sub?`<div class="hero-sub-box"><span class="hero-sub-text">${c.headline_sub}</span></div>`:''}${badges.length?`<div class="hero-badges">${badges.map(b=>`<div class="hero-badge-item">⚡ ${b}</div>`).join('')}</div>`:''}<div class="hero-cta-wrap"><a href="${url}" class="btn">${cta}</a><div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><span class="live-dot"></span> <span id="viewers2">--</span> personas viendo esto ahora</div></div></div></div><div class="hero-dots" id="heroDots"></div></section>
+<section class="hero"><div class="hero-slides" id="heroSlides">${heroCarouselHTML}</div><div class="hero-overlay"></div><div class="hero-content"><div class="container"><div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div><h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>${c.headline_sub?`<div class="hero-sub-box"><span class="hero-sub-text">${c.headline_sub}</span></div>`:''}${badges.length?`<div class="hero-badges">${badges.map(b=>`<div class="hero-badge-item">⚡ ${b}</div>`).join('')}</div>`:''}<div class="hero-cta-wrap"><a href="${url}" class="btn">${cta}</a><div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><span class="live-dot"></span><span id="viewers2">--</span> personas viendo esto ahora</div></div></div></div><div class="hero-dots" id="heroDots"></div></section>
 <div class="marquee-wrap"><div class="marquee-track">${marqueeHTML}${marqueeHTML}</div></div>
 <section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);opacity:.8;margin-bottom:8px">Tu producto</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2><div class="mockup-grid"><div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" alt="Mockup" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase">📦 Mockup</div>`}</div><div>${logrosHTML}</div></div></div></section>
 <section style="padding:60px 20px"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);text-align:center;margin-bottom:12px;opacity:.8">¿Es para vos?</p><h2 style="font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px">ESTO ES PARA VOS SI...</h2><div class="pv-list">${paraVosHTML}</div><div style="text-align:center"><p style="font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.85rem;opacity:.7;margin-bottom:16px">✦ ${lc.promise} ✦</p><a href="${url}" class="btn">Sí, esto es para mí →</a></div></div></section>
