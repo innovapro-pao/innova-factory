@@ -6,11 +6,72 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { step, data, landingConfig } = req.body;
+    const { step, data, landingConfig, capitulo, bono_idx } = req.body;
     const key = process.env.ANTHROPIC_API_KEY;
     let prompt = '';
 
-    if (step === 'landing' && landingConfig) {
+    if (step === 'ebook_indice') {
+      prompt = `Eres experto en infoproductos digitales. Crea la estructura completa de un ebook profesional en español.
+
+Producto: ${data.product}
+Público: ${data.audience}
+Problema: ${data.problem}
+Transformación: ${data.transformation}
+
+Devuelve SOLO JSON puro sin markdown:
+{
+  "titulo_principal": "título magnético del ebook",
+  "subtitulo": "subtítulo que complementa",
+  "autor": "nombre del autor o marca",
+  "introduccion": "introducción de 200 palabras que engancha al lector",
+  "capitulos": [
+    {"numero": 1, "titulo": "Título del capítulo 1", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 2, "titulo": "Título del capítulo 2", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 3, "titulo": "Título del capítulo 3", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 4, "titulo": "Título del capítulo 4", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 5, "titulo": "Título del capítulo 5", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 6, "titulo": "Título del capítulo 6", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 7, "titulo": "Título del capítulo 7", "descripcion": "De qué trata en 1 oración"}
+  ],
+  "conclusion": "conclusión de 150 palabras con CTA poderoso"
+}`;
+
+    } else if (step === 'ebook_capitulo') {
+      prompt = `Eres experto en infoproductos. Escribí el capítulo ${capitulo.numero} de un ebook profesional en español.
+
+Producto: ${data.product}
+Público: ${data.audience}
+Capítulo: ${capitulo.titulo}
+Descripción: ${capitulo.descripcion}
+
+Escribí un capítulo COMPLETO y DETALLADO de mínimo 600 palabras. Incluí:
+- Introducción del capítulo (por qué es importante)
+- 3-4 secciones con subtítulos
+- Ejemplos prácticos y concretos
+- Tips accionables
+- Cierre con resumen y transición al próximo capítulo
+
+Escribí directamente el contenido, sin JSON, en formato markdown con ## para subtítulos.`;
+
+    } else if (step === 'bono_contenido') {
+      const bono = data.bonos[bono_idx];
+      prompt = `Eres experto en infoproductos. Creá el contenido completo del siguiente bono digital en español.
+
+Producto principal: ${data.product}
+Público: ${data.audience}
+Bono: ${bono.nombre}
+Descripción del bono: ${bono.descripcion}
+
+Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras para este bono. Incluí:
+- Introducción (qué van a aprender y por qué es valioso)
+- 3-5 secciones con subtítulos y contenido detallado
+- Ejemplos prácticos
+- Tips accionables
+- Conclusión con próximos pasos
+
+Formato markdown con ## para subtítulos. Sin JSON.`;
+
+    } else if (step === 'landing' && landingConfig) {
       const lc = landingConfig;
       prompt = `Eres copywriter experto en landing pages de alta conversión para LATAM. Genera SOLO JSON puro sin markdown ni explicaciones.
 
@@ -90,10 +151,6 @@ Devuelve EXACTAMENTE este JSON completo:
 
     } else {
       const prompts = {
-        ebook: `Eres experto en infoproductos. Crea un ebook COMPLETO en español para:
-Producto: ${data.product}, Publico: ${data.audience}, Problema: ${data.problem}, Transformacion: ${data.transformation}.
-Incluye: 3 titulos magneticos, indice con 7 capitulos, CAPITULO 1 desarrollado (600 palabras), CAPITULO 2 desarrollado (600 palabras), CAPITULO 3 desarrollado (500 palabras), conclusion con CTA (300 palabras).`,
-
         bonos: `Eres experto en lanzamientos. Crea exactamente 4 bonos irresistibles en español para:
 Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
 Devuelve SOLO JSON puro sin markdown ni explicaciones:
@@ -156,6 +213,16 @@ Devuelve SOLO JSON puro sin markdown ni explicaciones:
         return res.status(200).json({ content: text, bonos: parsed.bonos, frase_remate: parsed.frase_remate, valor_total: parsed.valor_total, step });
       } catch(e) {
         return res.status(200).json({ content: text, step });
+      }
+    }
+
+    if (step === 'ebook_indice') {
+      try {
+        const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const parsed = JSON.parse(clean);
+        return res.status(200).json({ content: parsed, step, isJson: true });
+      } catch(e) {
+        return res.status(200).json({ content: text, step, isJson: false });
       }
     }
 
