@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { step, data, landingConfig, capitulo, bono_idx } = req.body;
+    const { step, data, landingConfig, capitulo, bono_idx, item } = req.body;
     const key = process.env.ANTHROPIC_API_KEY;
     let prompt = '';
 
@@ -29,12 +29,17 @@ Devuelve SOLO JSON puro sin markdown:
     {"numero": 2, "titulo": "Título del capítulo 2", "descripcion": "De qué trata en 1 oración"},
     {"numero": 3, "titulo": "Título del capítulo 3", "descripcion": "De qué trata en 1 oración"},
     {"numero": 4, "titulo": "Título del capítulo 4", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 5, "titulo": "Título del capítulo 5", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 6, "titulo": "Título del capítulo 6", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 7, "titulo": "Título del capítulo 7", "descripcion": "De qué trata en 1 oración"}
+    {"numero": 5, "titulo": "Título del capítulo 5", "descripcion": "De qué trata en 1 oración"}
+  ],
+  "items_especificos": [
+    {"numero": 1, "titulo": "Nombre del ítem 1", "tipo": "receta/técnica/ejercicio/etc"},
+    {"numero": 2, "titulo": "Nombre del ítem 2", "tipo": "receta/técnica/ejercicio/etc"},
+    {"numero": 3, "titulo": "Nombre del ítem 3", "tipo": "receta/técnica/ejercicio/etc"}
   ],
   "conclusion": "conclusión de 150 palabras con CTA poderoso"
-}`;
+}
+
+IMPORTANTE: Si el contenido específico incluye recetas, técnicas, ejercicios u otros ítems concretos, listalos en "items_especificos". Si no hay contenido específico, devuelve "items_especificos": [].`;
 
     } else if (step === 'ebook_capitulo') {
       prompt = `Eres experto en infoproductos. Escribí el capítulo ${capitulo.numero} de un ebook profesional en español.
@@ -43,16 +48,33 @@ Producto: ${data.product}
 Público: ${data.audience}
 Capítulo: ${capitulo.titulo}
 Descripción: ${capitulo.descripcion}
-Contenido específico requerido: ${data.contenido_especifico || ''}
+Contenido específico del ebook: ${data.contenido_especifico || ''}
 
-Escribí un capítulo COMPLETO y DETALLADO de exactamente 600 palabras. Incluí:
+Escribí un capítulo COMPLETO de 500 palabras en markdown. Incluí:
 - Introducción del capítulo
-- 3 secciones con subtítulos ## 
-- Ejemplos prácticos y concretos relacionados al contenido específico requerido
-- Tips accionables numerados
-- Cierre del capítulo
+- 3 secciones con subtítulos ##
+- Ejemplos prácticos
+- Tips numerados
+- Cierre
 
-Escribí directamente en markdown. Sin JSON. Sin intro tipo "aquí está el capítulo".`;
+Sin JSON. Sin intro tipo "aquí está el capítulo".`;
+
+    } else if (step === 'ebook_item') {
+      prompt = `Eres experto en infoproductos. Desarrollá el siguiente ítem de contenido específico para un ebook profesional en español.
+
+Producto: ${data.product}
+Público: ${data.audience}
+Tipo de ítem: ${item.tipo}
+Ítem número: ${item.numero}
+Título: ${item.titulo}
+
+Desarrollá este ítem de forma COMPLETA y DETALLADA en markdown. Dependiendo del tipo:
+- Si es RECETA: incluí ingredientes con cantidades exactas, pasos numerados detallados, tiempo de preparación, porciones, tips y variaciones
+- Si es TÉCNICA: incluí descripción, materiales necesarios, pasos detallados, errores comunes y tips pro
+- Si es EJERCICIO: incluí descripción, duración, repeticiones, músculos trabajados, pasos, variaciones y precauciones
+- Si es otro tipo: desarrollá con introducción, pasos o secciones detalladas, ejemplos prácticos y tips
+
+Mínimo 400 palabras. Sin JSON. Directo al contenido.`;
 
     } else if (step === 'bono_contenido') {
       const bono = data.bonos[bono_idx];
@@ -64,14 +86,14 @@ Bono: ${bono.nombre}
 Descripción del bono: ${bono.descripcion}
 Contenido específico: ${data.contenido_especifico || ''}
 
-Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras. Incluí:
+Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras en markdown. Incluí:
 - Introducción
 - 4 secciones con subtítulos ##
 - Ejemplos prácticos
 - Tips accionables
 - Conclusión con próximos pasos
 
-Formato markdown. Sin JSON.`;
+Sin JSON.`;
 
     } else if (step === 'landing' && landingConfig) {
       const lc = landingConfig;
