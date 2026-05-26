@@ -12,11 +12,11 @@ export default async function handler(req, res) {
     if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
 
     const prompts = {
-      mockup: `Premium 3D digital ebook mockup, hardcover book displayed at elegant angle, dark background with gold accents, soft studio lighting, photorealistic, luxury product photography, no text overlays. Book about: ${prompt}`,
+      mockup: `Professional 3D hardcover book mockup, elegant angle, black cover with gold geometric ornaments and abstract decorative elements, NO text, NO words, NO letters anywhere on the cover, dark studio background with soft golden bokeh lights, dramatic side lighting, photorealistic render, luxury premium feel, high end product photography`,
       logros: `Abstract dark luxury background, black background, soft gold and pink bokeh lights, upward arrows made of light, premium elegant atmosphere, no text, no people, cinematic lighting`,
-      bonos: `Dark premium flat lay of multiple digital books stacked together, black background, gold metallic accents, dramatic lighting, luxury product photography, no text overlays`,
-      hero: `Dark moody premium lifestyle photography, black background, gold bokeh lights, elegant dark surface, cinematic atmosphere, no text, no people, no books`,
-      custom: `${prompt}`,
+      bonos: `Dark premium flat lay photography, elegant black hardcover book on dark marble surface, gold metallic accents and ornaments, dramatic side lighting, luxury product photography, NO text, NO words, NO letters`,
+      hero: `Dark moody premium lifestyle photography, black background, gold bokeh lights, elegant dark surface, cinematic atmosphere, no text, no people, no books, no writing`,
+      custom: `${prompt}. Photorealistic, professional photography, cinematic lighting, dark moody background.`,
     };
 
     const finalPrompt = prompts[type] || prompts.custom;
