@@ -11,13 +11,15 @@ export default async function handler(req, res) {
     let prompt = '';
 
     if (step === 'ebook_indice') {
-      prompt = `Eres experto en infoproductos digitales. Crea la estructura completa de un ebook profesional en español.
+      prompt = `Eres experto en infoproductos digitales. Crea la estructura de un ebook profesional en español.
 
 Producto: ${data.product}
 Público: ${data.audience}
 Problema: ${data.problem}
 Transformación: ${data.transformation}
-Contenido específico requerido: ${data.contenido_especifico || 'no especificado'}
+
+IMPORTANTE: Los capítulos NO deben incluir las recetas/técnicas/ejercicios específicos — esos se generan por separado.
+Los capítulos deben ser de CONTEXTO, FUNDAMENTOS y ESTRATEGIA.
 
 Devuelve SOLO JSON puro sin markdown:
 {
@@ -25,21 +27,14 @@ Devuelve SOLO JSON puro sin markdown:
   "subtitulo": "subtítulo que complementa",
   "introduccion": "introducción de 200 palabras que engancha al lector",
   "capitulos": [
-    {"numero": 1, "titulo": "Título del capítulo 1", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 2, "titulo": "Título del capítulo 2", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 3, "titulo": "Título del capítulo 3", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 4, "titulo": "Título del capítulo 4", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 5, "titulo": "Título del capítulo 5", "descripcion": "De qué trata en 1 oración"}
-  ],
-  "items_especificos": [
-    {"numero": 1, "titulo": "Nombre del ítem 1", "tipo": "receta/técnica/ejercicio/etc"},
-    {"numero": 2, "titulo": "Nombre del ítem 2", "tipo": "receta/técnica/ejercicio/etc"},
-    {"numero": 3, "titulo": "Nombre del ítem 3", "tipo": "receta/técnica/ejercicio/etc"}
+    {"numero": 1, "titulo": "Título capítulo 1", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 2, "titulo": "Título capítulo 2", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 3, "titulo": "Título capítulo 3", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 4, "titulo": "Título capítulo 4", "descripcion": "De qué trata en 1 oración"},
+    {"numero": 5, "titulo": "Título capítulo 5", "descripcion": "De qué trata en 1 oración"}
   ],
   "conclusion": "conclusión de 150 palabras con CTA poderoso"
-}
-
-IMPORTANTE: Si el contenido específico incluye recetas, técnicas, ejercicios u otros ítems concretos, listalos en "items_especificos". Si no hay contenido específico, devuelve "items_especificos": [].`;
+}`;
 
     } else if (step === 'ebook_capitulo') {
       prompt = `Eres experto en infoproductos. Escribí el capítulo ${capitulo.numero} de un ebook profesional en español.
@@ -48,10 +43,9 @@ Producto: ${data.product}
 Público: ${data.audience}
 Capítulo: ${capitulo.titulo}
 Descripción: ${capitulo.descripcion}
-Contenido específico del ebook: ${data.contenido_especifico || ''}
 
-Escribí un capítulo COMPLETO de 500 palabras en markdown. Incluí:
-- Introducción del capítulo
+Escribí un capítulo COMPLETO de 500 palabras en markdown con:
+- Introducción
 - 3 secciones con subtítulos ##
 - Ejemplos prácticos
 - Tips numerados
@@ -60,44 +54,78 @@ Escribí un capítulo COMPLETO de 500 palabras en markdown. Incluí:
 Sin JSON. Sin intro tipo "aquí está el capítulo".`;
 
     } else if (step === 'ebook_item') {
-      prompt = `Eres experto en infoproductos. Desarrollá el siguiente ítem de contenido específico para un ebook profesional en español.
+      prompt = `Eres experto en infoproductos. Desarrollá este ítem de forma COMPLETA y DETALLADA en español.
 
 Producto: ${data.product}
 Público: ${data.audience}
-Tipo de ítem: ${item.tipo}
-Ítem número: ${item.numero}
+Tipo: ${item.tipo}
+Número: ${item.numero}
 Título: ${item.titulo}
+Contexto adicional: ${item.contexto || ''}
 
-Desarrollá este ítem de forma COMPLETA y DETALLADA en markdown. Dependiendo del tipo:
-- Si es RECETA: incluí ingredientes con cantidades exactas, pasos numerados detallados, tiempo de preparación, porciones, tips y variaciones
-- Si es TÉCNICA: incluí descripción, materiales necesarios, pasos detallados, errores comunes y tips pro
-- Si es EJERCICIO: incluí descripción, duración, repeticiones, músculos trabajados, pasos, variaciones y precauciones
-- Si es otro tipo: desarrollá con introducción, pasos o secciones detalladas, ejemplos prácticos y tips
+${item.tipo === 'receta' ? `Desarrollá la receta COMPLETA con:
+## Ingredientes
+- Lista detallada con cantidades exactas en gramos/ml/unidades
 
-Mínimo 400 palabras. Sin JSON. Directo al contenido.`;
+## Preparación paso a paso
+1. Paso numerado con detalle
+2. Paso numerado con detalle
+(mínimo 8 pasos detallados)
+
+## Tiempo y porciones
+- Tiempo de preparación, cocción y total
+- Cantidad de porciones
+
+## Tips profesionales
+- 3 tips para vender mejor este producto
+
+## Variaciones
+- 2 variaciones de la receta base` : ''}
+
+${item.tipo === 'técnica' ? `Desarrollá la técnica COMPLETA con:
+## Qué es y para qué sirve
+## Materiales necesarios
+## Paso a paso detallado (mínimo 8 pasos)
+## Errores comunes a evitar
+## Tips pro` : ''}
+
+${item.tipo === 'ejercicio' ? `Desarrollá el ejercicio COMPLETO con:
+## Descripción y beneficios
+## Músculos trabajados
+## Paso a paso (mínimo 8 pasos con detalle)
+## Variaciones y progresiones
+## Precauciones` : ''}
+
+${!['receta','técnica','ejercicio'].includes(item.tipo) ? `Desarrollá el contenido COMPLETO con:
+## Introducción
+## Desarrollo detallado paso a paso (mínimo 8 pasos)
+## Ejemplos prácticos
+## Tips y recomendaciones
+## Conclusión` : ''}
+
+Mínimo 500 palabras. Sin JSON. Directo al contenido.`;
 
     } else if (step === 'bono_contenido') {
       const bono = data.bonos[bono_idx];
-      prompt = `Eres experto en infoproductos. Creá el contenido completo del siguiente bono digital en español.
+      prompt = `Eres experto en infoproductos. Creá el contenido completo del bono en español.
 
-Producto principal: ${data.product}
+Producto: ${data.product}
 Público: ${data.audience}
 Bono: ${bono.nombre}
-Descripción del bono: ${bono.descripcion}
-Contenido específico: ${data.contenido_especifico || ''}
+Descripción: ${bono.descripcion}
 
-Escribí una guía/mini ebook COMPLETO de mínimo 500 palabras en markdown. Incluí:
+Guía COMPLETA de 500+ palabras en markdown con:
 - Introducción
 - 4 secciones con subtítulos ##
 - Ejemplos prácticos
 - Tips accionables
-- Conclusión con próximos pasos
+- Conclusión
 
 Sin JSON.`;
 
     } else if (step === 'landing' && landingConfig) {
       const lc = landingConfig;
-      prompt = `Eres copywriter experto en landing pages de alta conversión para LATAM. Genera SOLO JSON puro sin markdown ni explicaciones.
+      prompt = `Eres copywriter experto en landing pages de alta conversión para LATAM. Genera SOLO JSON puro sin markdown.
 
 Producto: ${data.product}
 Público: ${data.audience}
@@ -110,15 +138,15 @@ Promesa: ${lc.promise}
 Subpromesa: ${lc.subpromise || ''}
 CTA: ${lc.cta || '¡Quiero empezar ahora!'}
 Garantía: ${lc.guarantee} días
-Bonos del producto: ${JSON.stringify(data.bonos || [])}
+Bonos: ${JSON.stringify(data.bonos || [])}
 
-Devuelve EXACTAMENTE este JSON:
+JSON exacto:
 {
-  "preheadline": "frase corta llamativa tipo ATENCIÓN para el público específico",
-  "headline1": "primera línea del título en mayúsculas máximo 6 palabras",
-  "headline2": "segunda línea del título con la promesa clave máximo 6 palabras",
-  "headline_sub": "frase en cursiva dentro de un recuadro poética y directa",
-  "marquee_items": ["frase corta 1","frase corta 2","frase corta 3","frase corta 4"],
+  "preheadline": "frase corta llamativa",
+  "headline1": "primera línea título mayúsculas máximo 6 palabras",
+  "headline2": "segunda línea con promesa máximo 6 palabras",
+  "headline_sub": "frase cursiva poética y directa",
+  "marquee_items": ["frase 1","frase 2","frase 3","frase 4"],
   "para_vos_si": [
     {"icon":"🎯","title":"Si querés X","desc":"pero Y, Z."},
     {"icon":"💡","title":"Si querés X","desc":"pero Y, Z."},
@@ -128,20 +156,20 @@ Devuelve EXACTAMENTE este JSON:
     {"icon":"🚀","title":"Si querés X","desc":"pero Y, Z."}
   ],
   "que_vas_aprender": [
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"},
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"},
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"},
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"},
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"},
-    {"title":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta persuasiva"}
+    {"title":"TÍTULO","desc":"descripción"},
+    {"title":"TÍTULO","desc":"descripción"},
+    {"title":"TÍTULO","desc":"descripción"},
+    {"title":"TÍTULO","desc":"descripción"},
+    {"title":"TÍTULO","desc":"descripción"},
+    {"title":"TÍTULO","desc":"descripción"}
   ],
   "logros": [
-    {"icon":"⚡","titulo":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta del logro"},
-    {"icon":"🎯","titulo":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta del logro"},
-    {"icon":"🏆","titulo":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta del logro"},
-    {"icon":"💰","titulo":"TÍTULO EN MAYÚSCULAS","desc":"descripción corta del logro"}
+    {"icon":"⚡","titulo":"TÍTULO","desc":"descripción"},
+    {"icon":"🎯","titulo":"TÍTULO","desc":"descripción"},
+    {"icon":"🏆","titulo":"TÍTULO","desc":"descripción"},
+    {"icon":"💰","titulo":"TÍTULO","desc":"descripción"}
   ],
-  "logros_frase": "frase remate poderosa máximo 10 palabras",
+  "logros_frase": "frase remate máximo 10 palabras",
   "trust_badges": [
     {"icon":"🔒","label":"Compra 100% segura"},
     {"icon":"⚡","label":"Acceso inmediato"},
@@ -150,64 +178,59 @@ Devuelve EXACTAMENTE este JSON:
     {"icon":"⏰","label":"Por tiempo limitado"}
   ],
   "testimonials": [
-    {"name":"Nombre Apellido","place":"Ciudad, País","result":"Resultado concreto","text":"Testimonio persuasivo de 2 oraciones","stars":5},
-    {"name":"Nombre Apellido","place":"Ciudad, País","result":"Resultado concreto","text":"Testimonio persuasivo de 2 oraciones","stars":5},
-    {"name":"Nombre Apellido","place":"Ciudad, País","result":"Resultado concreto","text":"Testimonio persuasivo de 2 oraciones","stars":5}
+    {"name":"Nombre","place":"Ciudad, País","result":"Resultado","text":"Testimonio 2 oraciones","stars":5},
+    {"name":"Nombre","place":"Ciudad, País","result":"Resultado","text":"Testimonio 2 oraciones","stars":5},
+    {"name":"Nombre","place":"Ciudad, País","result":"Resultado","text":"Testimonio 2 oraciones","stars":5}
   ],
   "faq": [
-    {"q":"¿Cómo recibo el producto después de pagar?","a":"Respuesta clara"},
-    {"q":"Pregunta frecuente 2","a":"Respuesta clara"},
-    {"q":"Pregunta frecuente 3","a":"Respuesta clara"},
-    {"q":"Pregunta frecuente 4","a":"Respuesta clara"},
-    {"q":"Pregunta frecuente 5","a":"Respuesta clara"}
+    {"q":"¿Cómo recibo el producto?","a":"Respuesta"},
+    {"q":"Pregunta 2","a":"Respuesta"},
+    {"q":"Pregunta 3","a":"Respuesta"},
+    {"q":"Pregunta 4","a":"Respuesta"},
+    {"q":"Pregunta 5","a":"Respuesta"}
   ],
-  "guarantee_text": "texto persuasivo garantía",
-  "final_headline": "título final poderoso máximo 8 palabras",
-  "stock_text": "Solo quedan pocos lugares disponibles",
+  "guarantee_text": "texto garantía",
+  "final_headline": "título final máximo 8 palabras",
+  "stock_text": "Solo quedan pocos lugares",
   "sold_pct": 73,
-  "popup_actions": [
-    "acaba de descargar el producto",
-    "activó su acceso ahora mismo",
-    "descargó los bonos del pack",
-    "ya tiene su acceso listo"
-  ]
+  "popup_actions": ["acaba de descargar","activó su acceso","descargó los bonos","ya tiene acceso"]
 }`;
 
     } else {
       const prompts = {
-        bonos: `Eres experto en lanzamientos. Crea exactamente 4 bonos irresistibles en español para:
-Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
-Devuelve SOLO JSON puro sin markdown:
+        bonos: `Crea 4 bonos irresistibles en español para:
+Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
+SOLO JSON puro:
 {
   "bonos": [
-    {"nombre":"NOMBRE DEL BONO EN MAYUSCULAS","descripcion":"descripción 2-3 líneas","precio_original":"USD 27","emoji":"🎯"},
-    {"nombre":"NOMBRE DEL BONO EN MAYUSCULAS","descripcion":"descripción 2-3 líneas","precio_original":"USD 37","emoji":"📋"},
-    {"nombre":"NOMBRE DEL BONO EN MAYUSCULAS","descripcion":"descripción 2-3 líneas","precio_original":"USD 47","emoji":"⚡"},
-    {"nombre":"NOMBRE DEL BONO EN MAYUSCULAS","descripcion":"descripción 2-3 líneas","precio_original":"USD 27","emoji":"🏆"}
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 27","emoji":"🎯"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 37","emoji":"📋"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 47","emoji":"⚡"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 27","emoji":"🏆"}
   ],
   "valor_total": "USD 138",
-  "frase_remate": "frase poderosa de cierre máximo 10 palabras"
+  "frase_remate": "frase poderosa máximo 10 palabras"
 }`,
-        copies: `Eres copywriter AIDA experto. Genera en español para: Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
-1. Secuencia 5 emails lanzamiento completos
-2. 5 posts Instagram con caption largo y hashtags
-3. 7 scripts de stories paso a paso
-4. 3 anuncios Facebook/Instagram Ads completos
-5. 2 mensajes WhatsApp difusion`,
-        creativos: `Eres director creativo senior. Crea briefs detallados para: Producto: ${data.product}.
-1. Brief portada ebook completo
+        copies: `Copywriter AIDA experto. Para: Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
+1. 5 emails de lanzamiento completos
+2. 5 posts Instagram con hashtags
+3. 7 scripts de stories
+4. 3 anuncios Facebook/Instagram
+5. 2 mensajes WhatsApp`,
+        creativos: `Director creativo. Para: ${data.product}.
+1. Brief portada ebook
 2. Brief banner 1080x1080 y 1080x1920
-3. Descripcion 6 slides carrusel
-4. Paleta de marca completa HEX + tipografias
-5. 5 prompts Midjourney/DALL-E listos para copiar`,
-        trafico: `Eres experto en trafico digital. Estrategia completa para: Producto: ${data.product}, Publico: ${data.audience}, Precio: ${data.price}.
-1. Plan organico 30 dias
+3. 6 slides carrusel
+4. Paleta de marca HEX + tipografías
+5. 5 prompts Midjourney/DALL-E`,
+        trafico: `Experto en tráfico digital. Para: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
+1. Plan orgánico 30 días
 2. Estrategia Facebook/Instagram Ads
-3. Funnel ventas completo
-4. Cronograma lanzamiento ultimas 2 semanas
-5. KPIs y metricas de exito`,
+3. Funnel de ventas completo
+4. Cronograma lanzamiento 2 semanas
+5. KPIs y métricas`,
       };
-      prompt = prompts[step] || `Genera contenido profesional en español para: ${data.product}, publico: ${data.audience}. Modulo: ${step}.`;
+      prompt = prompts[step] || `Genera contenido profesional en español para: ${data.product}. Módulo: ${step}.`;
     }
 
     const r = await fetch('https://api.anthropic.com/v1/messages', {
