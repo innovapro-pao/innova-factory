@@ -55,6 +55,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .field textarea{resize:vertical;min-height:80px}
 .field select option{background:var(--deep)}
+.field-hint{font-size:.75rem;color:var(--muted);margin-top:.35rem;line-height:1.5}
+.field-hint strong{color:var(--violet2)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:600px){.row2{grid-template-columns:1fr}}
 .color-row{display:flex;align-items:center;gap:1rem}
@@ -236,7 +238,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div class="field"><label>Tu público objetivo</label><input id="f-audience" type="text" placeholder="Ej: Mujeres de 45+ que quieren emprender desde casa"></div>
       <div class="field"><label>¿Qué problema principal resuelve?</label><textarea id="f-problem" placeholder="Ej: No saben cómo monetizar su pasión por la cocina"></textarea></div>
       <div class="field"><label>¿Qué transformación logra tu cliente?</label><textarea id="f-transform" placeholder="Ej: Generan sus primeros $500 mensuales vendiendo postres"></textarea></div>
-      <div class="field"><label>¿Qué contenido específico querés en tu ebook? (opcional)</label><textarea id="f-contenido" placeholder="Ej: 15 recetas de mini donas con ingredientes y pasos detallados, 5 técnicas de decoración, guía de costos y precios" style="min-height:70px"></textarea></div>
+      <div class="field">
+        <label>¿Qué contenido específico querés en tu ebook? (opcional)</label>
+        <textarea id="f-contenido" placeholder="Ej: 15 recetas de alfajores, 5 técnicas de decoración con chocolate, 3 guías de costos" style="min-height:70px"></textarea>
+        <div class="field-hint">💡 Escribí <strong>número + tipo + descripción</strong> separados por coma. Ej: "10 recetas de bombones, 5 técnicas de glasé, 2 guías de empaque"</div>
+      </div>
       <div class="wiz-btns">
         <button class="btn btn-ghost" onclick="showView('dashboard')">Cancelar</button>
         <button class="btn btn-primary" onclick="goStep2()">Siguiente →</button>
@@ -391,43 +397,23 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
         <div class="wiz-card">
           <h2>🎨 Imágenes de tu Landing</h2>
           <p class="sub">Describí tus fotos y la IA las genera</p>
-          <div class="img-gen-note">
-            <strong>¿Cómo funciona?</strong> Describí qué querés ver en cada foto del hero y la IA la genera. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.
-          </div>
+          <div class="img-gen-note"><strong>¿Cómo funciona?</strong> Describí qué querés ver en cada foto. Cada imagen cuesta aprox. <strong>$0.04 USD</strong>.</div>
           <div class="section-label">Mockup del Producto</div>
           <div class="img-gen-grid" id="img-mockup-grid"></div>
-          <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos del Producto</div>
+          <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos</div>
           <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Describí exactamente qué querés en cada foto.</p>
           <div class="hero-foto-inputs">
-            <div class="hero-foto-row">
-              <div>
-                <div class="hero-foto-num">📷 Foto 1</div>
-                <input type="text" id="hero-desc-1" placeholder="Ej: caja de bombones abierta sobre mesa oscura con velas" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
-              </div>
-              <div class="hero-foto-preview"><img id="hero-prev-1" src="" onload="this.classList.add('loaded')"><span id="hero-ph-1" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
-            </div>
-            <div class="hero-foto-row">
-              <div>
-                <div class="hero-foto-num">📷 Foto 2</div>
-                <input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado mostrando el relleno" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
-              </div>
-              <div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
-            </div>
-            <div class="hero-foto-row">
-              <div>
-                <div class="hero-foto-num">📷 Foto 3</div>
-                <input type="text" id="hero-desc-3" placeholder="Ej: bandeja con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem">
-              </div>
-              <div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div>
-            </div>
+            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 1</div><input type="text" id="hero-desc-1" placeholder="Ej: caja de bombones sobre mesa oscura con velas" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-1" src="" onload="this.classList.add('loaded')"><span id="hero-ph-1" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
+            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 2</div><input type="text" id="hero-desc-2" placeholder="Ej: bombon cortado mostrando el relleno" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
+            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 3</div><input type="text" id="hero-desc-3" placeholder="Ej: bandeja con pétalos de rosas y luz dorada" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
           </div>
           <div style="text-align:center;margin-top:1rem">
             <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar las 3 fotos</button>
             <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
           </div>
-          <div class="section-label" style="margin-top:2rem">Bonos — Mockups con IA</div>
+          <div class="section-label" style="margin-top:2rem">Bonos — Mockups</div>
           <div id="bonos-preview-lc5"></div>
-          <div class="img-cost-note">💡 Podés saltear imágenes y agregar las tuyas después editando el HTML</div>
+          <div class="img-cost-note">💡 Podés saltear y agregar fotos después editando el HTML</div>
           <div class="wiz-btns" style="margin-top:2rem">
             <button class="btn btn-ghost" onclick="goLC4()">← Atrás</button>
             <button class="btn btn-primary" onclick="generateLanding()">🚀 ¡Generar Landing!</button>
@@ -443,9 +429,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 <button class="fab" onclick="startNew()">+</button>
 <script>
 const MODS=[
-  {id:'ebook',icon:'📘',name:'Ebook Completo',desc:'Capítulos + contenido específico detallado — PDF completo'},
-  {id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos con contenido descargable — generá antes de la landing'},
-  {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'Configurador completo → HTML espectacular listo para usar',special:true},
+  {id:'ebook',icon:'📘',name:'Ebook Completo',desc:'Capítulos + cada receta/técnica desarrollada — PDF completo'},
+  {id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos con contenido descargable'},
+  {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'Configurador completo → HTML listo para usar',special:true},
   {id:'copies',icon:'✍️',name:'Copies AIDA',desc:'Emails, posts, stories y ads completos'},
   {id:'creativos',icon:'🎨',name:'Creativos & Diseño',desc:'Briefs y prompts para Midjourney/DALL-E'},
   {id:'trafico',icon:'📈',name:'Estrategia de Tráfico',desc:'Plan orgánico, paid y cronograma 30 días'},
@@ -465,15 +451,68 @@ function openProject(i){curProject={...projects[i]};document.getElementById('pro
 function startNew(){['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget','f-contenido'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('f-platform').selectedIndex=0;showStep(1);showView('generator');}
 function showStep(n){['step1','step2','modules-panel','landing-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
 function goStep1(){showStep(1);}
-function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;showStep(2);}
+function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;curProject.items_parsed=parsearItemsEspecificos(curProject.contenido_especifico);showStep(2);}
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
 function showModulesPanel(){['step1','step2','landing-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
 function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else generate(id);}
 
-// ── EBOOK CON ÍTEMS ESPECÍFICOS ──
+// ── PARSER DE ÍTEMS ──
+function parsearItemsEspecificos(texto){
+  if(!texto||!texto.trim())return[];
+  const items=[];
+  // Detectar tipos comunes
+  const tiposMap={
+    'receta':'receta','recetas':'receta',
+    'técnica':'técnica','tecnica':'técnica','técnicas':'técnica','tecnicas':'técnica',
+    'ejercicio':'ejercicio','ejercicios':'ejercicio',
+    'guía':'guía','guia':'guía','guías':'guía','guias':'guía',
+    'tip':'tip','tips':'tip',
+    'módulo':'módulo','modulo':'módulo','módulos':'módulo','modulos':'módulo',
+    'lección':'lección','leccion':'lección','lecciones':'lección',
+    'capítulo':'capítulo','capitulo':'capítulo',
+    'plantilla':'plantilla','plantillas':'plantilla',
+    'estrategia':'estrategia','estrategias':'estrategia',
+  };
+  // Separar por coma
+  const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);
+  let contador=1;
+  for(const parte of partes){
+    // Detectar patrón: "N tipo de descripción" o "N tipos descripción"
+    const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);
+    if(match){
+      const cantidad=parseInt(match[1]);
+      const tipoRaw=match[2].toLowerCase();
+      const descripcion=match[3]||'';
+      const tipo=tiposMap[tipoRaw]||tipoRaw;
+      // Generar N ítems individuales
+      for(let i=1;i<=Math.min(cantidad,20);i++){
+        items.push({
+          numero:contador++,
+          tipo:tipo,
+          titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i}${descripcion?` — ${descripcion}`:''}`,
+          contexto:descripcion,
+          indice:i,
+          total:cantidad
+        });
+      }
+    } else {
+      // Si no tiene número, agregar como ítem único
+      items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});
+    }
+  }
+  return items;
+}
+
+// ── EBOOK CON ÍTEMS PARSEADOS ──
 async function generateEbook(){
   curMod='ebook';
+  // Asegurarse de tener los ítems parseados
+  if(!curProject.items_parsed){
+    curProject.items_parsed=parsearItemsEspecificos(curProject.contenido_especifico||'');
+  }
+  const items=curProject.items_parsed||[];
+
   setModStatus('ebook','running','⟳ Generando...');
   const panel=document.getElementById('result-panel');
   panel.style.display='block';
@@ -483,18 +522,19 @@ async function generateEbook(){
   document.getElementById('r-body').innerHTML=`<div class="ebook-progress"><div class="ebook-progress-title">✨ Generando tu ebook...</div><div class="cap-list" id="cap-list"><div class="cap-item running"><div class="cap-icon running">⟳</div><span>Generando estructura e índice...</span></div></div></div>`;
 
   try{
-    // Paso 1: Índice
+    // Paso 1: Índice (sin items, los manejamos nosotros)
     const r1=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_indice',data:curProject})});
     const j1=await r1.json();
     if(j1.error)throw new Error(j1.error);
     ebookData=j1.content;
-    const items=ebookData.items_especificos||[];
-    const capList=document.getElementById('cap-list');
 
+    const capList=document.getElementById('cap-list');
     capList.innerHTML=`
       <div class="cap-item done"><div class="cap-icon done">✓</div><span>✅ <strong>${ebookData.titulo_principal}</strong></span></div>
       ${ebookData.capitulos.map(c=>`<div class="cap-item" id="cap-${c.numero}"><div class="cap-icon pending" id="cap-icon-${c.numero}">📄</div><span id="cap-txt-${c.numero}">Capítulo ${c.numero}: ${c.titulo}</span></div>`).join('')}
-      ${items.length?`<div class="cap-item section-header"><div class="cap-icon" style="background:rgba(124,58,237,.2);color:var(--violet2)">✦</div><span>📚 Contenido específico: ${items.length} ítems</span></div>${items.map(it=>`<div class="cap-item" id="item-${it.numero}"><div class="cap-icon pending" id="item-icon-${it.numero}">📝</div><span id="item-txt-${it.numero}">${it.tipo}: ${it.titulo}</span></div>`).join('')}`:''}
+      ${items.length?`
+        <div class="cap-item section-header"><div class="cap-icon" style="background:rgba(124,58,237,.2);color:var(--violet2)">✦</div><span>📚 Contenido específico: ${items.length} ítems a generar</span></div>
+        ${items.map(it=>`<div class="cap-item" id="item-${it.numero}"><div class="cap-icon pending" id="item-icon-${it.numero}">📝</div><span id="item-txt-${it.numero}">${it.tipo.charAt(0).toUpperCase()+it.tipo.slice(1)} ${it.indice}: ${it.contexto}</span></div>`).join('')}`:''}
       <div class="cap-item" id="cap-conclusion"><div class="cap-icon pending" id="cap-icon-conclusion">📄</div><span>Conclusión</span></div>`;
 
     let fullContent=`# ${ebookData.titulo_principal}\n\n*${ebookData.subtitulo}*\n\n---\n\n## Introducción\n\n${ebookData.introduccion}\n\n---\n\n`;
@@ -516,23 +556,25 @@ async function generateEbook(){
       if(capTxt)capTxt.textContent=`✅ Capítulo ${cap.numero}: ${cap.titulo}`;
     }
 
-    // Paso 3: Ítems específicos
+    // Paso 3: Ítems específicos (cada uno por separado)
     if(items.length){
-      fullContent+=`# Contenido Específico\n\n`;
+      fullContent+=`\n# 📚 Contenido Específico\n\n`;
       for(const it of items){
         const itEl=document.getElementById(`item-${it.numero}`);
         const itIcon=document.getElementById(`item-icon-${it.numero}`);
         const itTxt=document.getElementById(`item-txt-${it.numero}`);
         if(itEl)itEl.className='cap-item running';
         if(itIcon){itIcon.className='cap-icon running';itIcon.textContent='⟳';}
-        if(itTxt)itTxt.textContent=`Generando: ${it.titulo}...`;
+        if(itTxt)itTxt.textContent=`Generando ${it.tipo} ${it.indice}/${it.total}: ${it.contexto}...`;
+
         const r3=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_item',data:curProject,item:it})});
         const j3=await r3.json();
         if(j3.error)throw new Error(j3.error);
-        fullContent+=`## ${it.tipo} ${it.numero}: ${it.titulo}\n\n${j3.content}\n\n---\n\n`;
+        fullContent+=`## ${it.tipo.charAt(0).toUpperCase()+it.tipo.slice(1)} ${it.indice}: ${it.contexto}\n\n${j3.content}\n\n---\n\n`;
+
         if(itEl)itEl.className='cap-item done';
         if(itIcon){itIcon.className='cap-icon done';itIcon.textContent='✓';}
-        if(itTxt)itTxt.textContent=`✅ ${it.tipo} ${it.numero}: ${it.titulo}`;
+        if(itTxt)itTxt.textContent=`✅ ${it.tipo.charAt(0).toUpperCase()+it.tipo.slice(1)} ${it.indice}/${it.total}: ${it.contexto}`;
       }
     }
 
@@ -546,45 +588,32 @@ async function generateEbook(){
     curResult=fullContent;
     setModStatus('ebook','done','✓ Listo');
     curProject.hasEbook=true;saveCur();
+
     document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-txt" onclick="doTxt()">📄 TXT</button><button class="act-btn act-pdf" onclick="doPDF()">📥 PDF</button>`;
-    document.getElementById('r-body').innerHTML=`<div style="margin-bottom:1rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">✅ <strong>Ebook completo!</strong> ${ebookData.capitulos.length} capítulos${items.length?` + ${items.length} ítems específicos`:''}</div><div class="md">${marked.parse(fullContent.substring(0,500)+'...')}</div>`;
+    document.getElementById('r-body').innerHTML=`
+      <div style="margin-bottom:1rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">
+        ✅ <strong>Ebook completo!</strong> ${ebookData.capitulos.length} capítulos${items.length?` + ${items.length} ítems específicos completos`:''}
+      </div>
+      <div class="md">${marked.parse(fullContent.substring(0,600)+'...')}</div>`;
     toast('¡Ebook completo! 🎉','ok');
   }catch(e){setModStatus('ebook','pending','✕ Error');toast('Error al generar ebook 😓','err');console.error(e);}
 }
 
 // ── BONOS ──
 async function generateBonos(){
-  curMod='bonos';
-  setModStatus('bonos','running','⟳ Generando...');
-  setLoading(true,'Generando bonos...');
-  showResultLoading();
+  curMod='bonos';setModStatus('bonos','running','⟳ Generando...');setLoading(true,'Generando bonos...');showResultLoading();
   try{
     const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bonos',data:curProject})});
-    const json=await res.json();
-    if(json.error)throw new Error(json.error);
+    const json=await res.json();if(json.error)throw new Error(json.error);
     if(json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();}
-    setModStatus('bonos','done','✓ Listo');
-    setLoading(false);
+    setModStatus('bonos','done','✓ Listo');setLoading(false);
     document.getElementById('r-title').textContent='🎁 Pack de Bonos';
-    document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>`;
+    document.getElementById('r-acts').innerHTML='';
     const bonos=curProject.bonos||[];
     document.getElementById('r-body').innerHTML=`
-      <div style="margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">
-        ✅ <strong>${bonos.length} bonos generados!</strong> Click en cada bono para generar y descargar su contenido completo.
-      </div>
+      <div style="margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">✅ <strong>${bonos.length} bonos generados!</strong> Hacé click en cada uno para generar y descargar su contenido completo.</div>
       ${curProject.bonos_frase?`<div style="text-align:center;font-size:.9rem;font-style:italic;color:var(--fuchsia2);margin-bottom:1.5rem">"${curProject.bonos_frase}"</div>`:''}
-      <div class="bonos-grid-display">
-        ${bonos.map((b,i)=>`<div class="bono-display-card">
-          <div class="bono-display-emoji">${b.emoji||'🎁'}</div>
-          <div class="bono-display-num">BONO ${i+1}</div>
-          <div class="bono-display-nombre">${b.nombre}</div>
-          <div class="bono-display-desc">${b.descripcion}</div>
-          <div class="bono-display-precio">${b.precio_original}</div>
-          <div class="bono-display-gratis">HOY GRATIS</div>
-          <button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar PDF</button>
-          <div class="bono-display-status" id="bono-dl-status-${i}"></div>
-        </div>`).join('')}
-      </div>
+      <div class="bonos-grid-display">${bonos.map((b,i)=>`<div class="bono-display-card"><div class="bono-display-emoji">${b.emoji||'🎁'}</div><div class="bono-display-num">BONO ${i+1}</div><div class="bono-display-nombre">${b.nombre}</div><div class="bono-display-desc">${b.descripcion}</div><div class="bono-display-precio">${b.precio_original}</div><div class="bono-display-gratis">HOY GRATIS</div><button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar PDF</button><div class="bono-display-status" id="bono-dl-status-${i}"></div></div>`).join('')}</div>
       ${curProject.bonos_valor?`<div style="text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Valor total: <strong style="color:var(--success)">${curProject.bonos_valor}</strong></div>`:''}`;
     curResult=json.content;
     toast('¡Bonos generados! 🎁','ok');
@@ -596,39 +625,49 @@ async function generateAndDownloadBono(idx){
   const btn=document.getElementById(`bono-dl-btn-${idx}`);
   const status=document.getElementById(`bono-dl-status-${idx}`);
   btn.disabled=true;btn.textContent='⟳ Generando...';
-  if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando...`;
+  if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando contenido...`;
   try{
     const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_contenido',data:curProject,bono_idx:idx})});
     const json=await res.json();if(json.error)throw new Error(json.error);
+    // PDF fondo blanco
     const{jsPDF}=window.jspdf;
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
-    const mg=18,mxW=W-mg*2;
-    const addBg=()=>{doc.setFillColor(5,5,10);doc.rect(0,0,W,H,'F');doc.setFillColor(255,0,110);doc.rect(0,0,W,10,'F');doc.setFillColor(255,0,110);doc.rect(0,H-8,W,8,'F');};
+    const mg=20,mxW=W-mg*2;
+    const addBg=()=>{
+      doc.setFillColor(255,255,255);doc.rect(0,0,W,H,'F');
+      doc.setFillColor(255,0,110);doc.rect(0,0,W,12,'F');
+      doc.setFillColor(255,0,110);doc.rect(0,H-10,W,10,'F');
+    };
     addBg();
-    doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','bold');doc.text('INNOVA FACTORY · by Pao Peressotti · INNOVA PRO',mg,7);
-    doc.setFontSize(6);doc.text('innova-factory.vercel.app',mg,H-3);
-    doc.setFontSize(10);doc.setTextColor(255,77,158);doc.text(`BONO ${idx+1}`,W/2,20,{align:'center'});
-    doc.setFontSize(14);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
-    const tituloWrapped=doc.splitTextToSize(bono.nombre,mxW);doc.text(tituloWrapped,W/2,28,{align:'center'});
-    doc.setDrawColor(255,0,110);doc.setLineWidth(.4);doc.line(mg,36,W-mg,36);
-    let y=44;
+    doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','bold');
+    doc.text('INNOVA FACTORY · by Pao Peressotti',mg,8);
+    doc.setFontSize(6);doc.text('innova-factory.vercel.app',W-mg,H-4,{align:'right'});
+    doc.setFontSize(9);doc.setTextColor(255,0,110);doc.text(`BONO ${idx+1}`,W/2,22,{align:'center'});
+    doc.setFontSize(16);doc.setFont('helvetica','bold');doc.setTextColor(30,30,30);
+    const tw=doc.splitTextToSize(bono.nombre,mxW);doc.text(tw,W/2,30,{align:'center'});
+    doc.setDrawColor(255,0,110);doc.setLineWidth(.5);doc.line(mg,38,W-mg,38);
+    let y=48;
     for(const line of (json.content||'').split('\n')){
-      if(y>H-14){doc.addPage();addBg();y=18;}
-      if(!line.trim()){y+=3;continue;}
-      let fs=9,bold=false,color=[200,200,216];
-      if(line.startsWith('# ')){fs=14;bold=true;color=[255,77,158];y+=3;}
-      else if(line.startsWith('## ')){fs=11;bold=true;color=[168,85,247];y+=2;}
-      else if(line.startsWith('### ')){fs=10;bold=true;color=[255,77,158];y+=1;}
+      if(y>H-16){doc.addPage();addBg();y=20;}
+      if(!line.trim()){y+=4;continue;}
+      let fs=10,bold=false,color=[40,40,40];
+      if(line.startsWith('# ')){fs=16;bold=true;color=[220,0,90];y+=4;}
+      else if(line.startsWith('## ')){fs=13;bold=true;color=[100,30,180];y+=3;}
+      else if(line.startsWith('### ')){fs=11;bold=true;color=[220,0,90];y+=2;}
+      else if(line.startsWith('- ')||line.startsWith('* ')){color=[60,60,60];}
       doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);
-      const clean=line.replace(/^#+\s/,'').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1');
+      const clean=line.replace(/^#+\s/,'').replace(/^[-*]\s/,'• ').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1');
       const wrapped=doc.splitTextToSize(clean,mxW);
-      for(const w of wrapped){if(y>H-14){doc.addPage();addBg();y=18;doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);}doc.text(w,mg,y);y+=fs*0.42+1.5;}
-      y+=1;
+      for(const w of wrapped){
+        if(y>H-16){doc.addPage();addBg();y=20;doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);}
+        doc.text(w,mg,y);y+=fs*0.45+1.5;
+      }
+      y+=1.5;
     }
     doc.save(`bono_${idx+1}_${bono.nombre.replace(/\s+/g,'_').substring(0,30)}.pdf`);
-    btn.textContent='✅ PDF descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';
-    if(status)status.innerHTML=`<span style="color:var(--success)">✓ Listo!</span>`;
+    btn.textContent='✅ Descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';
+    if(status)status.innerHTML=`<span style="color:var(--success)">✓ PDF listo!</span>`;
     toast(`Bono ${idx+1} descargado 📥`,'ok');
   }catch(e){btn.disabled=false;btn.textContent='📥 Generar y descargar PDF';if(status)status.innerHTML=`<span style="color:#ef4444">Error</span>`;toast('Error 😓','err');}
 }
@@ -657,23 +696,20 @@ function goLC3(){lcConfig.urgency=[...selectedUrgency];lcConfig.badge1=document.
 function goLC4(){lcConfig.guarantee=document.getElementById('lc-guarantee').value;lcConfig.guaranteeType=document.getElementById('lc-guarantee-type').value;lcConfig.testimonials=testimonials.filter(t=>t.name.trim());showLCStep(4);}
 function goLC5(){lcConfig.sections=[...selectedSections];lcConfig.cta=document.getElementById('lc-cta').value;lcConfig.url=document.getElementById('lc-url').value;lcConfig.extra=document.getElementById('lc-extra').value;showLCStep(5);renderLC5();}
 
-function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card" id="imgcard-mockup"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup del Producto</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-desc">Imagen 3D premium de tu ebook o curso</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regenerar</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;
+function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card" id="imgcard-mockup"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-desc">Imagen 3D premium</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regenerar</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;
 const bonosDiv=document.getElementById('bonos-preview-lc5');const bonos=curProject.bonos||[];
-if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card" id="bono-card-${i}"><div class="bono-preview-img" id="bono-img-wrap-${i}"><img id="bono-img-${i}" src="" onload="document.getElementById('bono-ph-${i}').style.display='none';this.classList.add('loaded')"><span id="bono-ph-${i}">${b.emoji||'🎁'}</span></div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-desc">${b.descripcion}</div><div class="bono-preview-precio">${b.precio_original}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Generar mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div><p style="font-size:.75rem;color:var(--success);margin-top:.75rem;text-align:center">✓ ${bonos.length} bonos listos</p>`;}
+if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card"><div class="bono-preview-img"><img id="bono-img-${i}" src="" onload="document.getElementById('bono-ph-${i}').style.display='none';this.classList.add('loaded')"><span id="bono-ph-${i}">${b.emoji||'🎁'}</span></div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div>`;}
 else{bonosDiv.innerHTML=`<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center;background:rgba(255,255,255,.03);border-radius:12px;border:1px dashed var(--border)">No generaste bonos aún.</p>`;}}
 
-async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(rebtn)rebtn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,prompt:`${curProject.product} - ${curProject.audience} - ${lcConfig.promise||curProject.transformation}`})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl){imgEl.src=json.url;}if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div><div class="ph-text" style="color:#ef4444">Error</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;if(rebtn)rebtn.disabled=false;toast('Error 😓','err');}}
-
-async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);const img=document.getElementById(`bono-img-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background, golden bokeh, luxury feel. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;if(img){img.src=json.url;}status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;btn.textContent='🔄 Regenerar';btn.disabled=false;toast(`Mockup Bono ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;btn.disabled=false;toast('Error 😓','err');}}
-
+async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(rebtn)rebtn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,prompt:`${curProject.product} - ${curProject.audience} - ${lcConfig.promise||curProject.transformation}`})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl){imgEl.src=json.url;}if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;if(rebtn)rebtn.disabled=false;toast('Error 😓','err');}}
+async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);const img=document.getElementById(`bono-img-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background, golden bokeh. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;if(img){img.src=json.url;}status.innerHTML=`<span style="color:var(--success)">✓</span>`;btn.textContent='🔄 Regen';btn.disabled=false;toast(`Mockup ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;btn.disabled=false;toast('Error 😓','err');}}
 function onImgLoad(type){const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(ph)ph.style.display='none';if(imgEl)imgEl.classList.add('loaded');}
-
-async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const desc1=document.getElementById('hero-desc-1').value.trim();const desc2=document.getElementById('hero-desc-2').value.trim();const desc3=document.getElementById('hero-desc-3').value.trim();if(!desc1&&!desc2&&!desc3){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];const descs=[desc1,desc2,desc3];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Generando foto ${i+1} de 3...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Professional product photography, dark moody background, cinematic lighting, gold accents. NO text, NO books, NO ebooks, NO writing. Scene: ${descs[i]}.`})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev){prev.src=json.url;}if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos listas! 🌟','ok');}
+async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const desc1=document.getElementById('hero-desc-1').value.trim();const desc2=document.getElementById('hero-desc-2').value.trim();const desc3=document.getElementById('hero-desc-3').value.trim();if(!desc1&&!desc2&&!desc3){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];const descs=[desc1,desc2,desc3];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Foto ${i+1}/3...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Professional product photography, dark moody background, cinematic lighting, gold accents. NO text, NO books. Scene: ${descs[i]}.`})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev){prev.src=json.url;}if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos listas! 🌟','ok');}
 
 async function generateLanding(){
   const heroImgsLocal=[...heroImages];const bonoImgsLocal=[...bonoImages];const generatedImgsLocal={...generatedImages};
   lcConfig.images={};lcConfig.heroImages=[];lcConfig.bonoImages=[];
-  curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando contenido con IA...');
+  curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando landing...');
   try{
     const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'landing',data:curProject,landingConfig:lcConfig})});
     const json=await res.json();if(json.error)throw new Error(json.error);
@@ -713,8 +749,7 @@ function buildPremiumLanding(lc,data,c){
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--c1:${c1};--c2:${c2};--bg:${bg};--text:#f2f2f2;--muted:#cfcfcf}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
 .container{max-width:860px;margin:0 auto;padding:0 20px}
 .gold{background:linear-gradient(90deg,#fff4b0,var(--c1),#ffb300,#fff8c0,var(--c1),#fff4b0);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldFlow 4s linear infinite}
@@ -768,16 +803,14 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 .bono-gratis{font-size:.9rem;font-weight:900;color:#22c55e;letter-spacing:2px;text-transform:uppercase}
 .trust-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:700px;margin:0 auto}
 .trust-item{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:100px;text-align:center}
-.trust-icon{font-size:1.5rem}
-.trust-label{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.trust-icon{font-size:1.5rem}.trust-label{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase}
 .testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:900px;margin:0 auto}
 .testi-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:24px}
 .testi-stars{font-size:.9rem;margin-bottom:10px}
 .testi-text{font-size:.88rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:16px}
 .testi-author{display:flex;align-items:center;gap:10px}
 .testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;font-weight:900;font-size:.9rem;color:#fff;flex-shrink:0}
-.testi-name{font-size:.85rem;font-weight:700;color:#fff}
-.testi-place{font-size:.75rem;color:var(--muted)}
+.testi-name{font-size:.85rem;font-weight:700;color:#fff}.testi-place{font-size:.75rem;color:var(--muted)}
 .testi-result{font-size:.75rem;color:var(--c1);font-weight:600;margin-top:2px}
 .price-box{max-width:500px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 12px 50px rgba(0,0,0,.4)}
 .price-box-header{background:var(--c2);padding:20px 24px;text-align:center}
@@ -792,8 +825,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 .price-inc-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:#444;padding:.3rem 0}
 .price-inc-item::before{content:'✓';color:var(--c2);font-weight:700}
 .faq-card{max-width:800px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.2)}
-.faq-item{border-bottom:1px solid #f0ece3}
-.faq-item:last-child{border-bottom:none}
+.faq-item{border-bottom:1px solid #f0ece3}.faq-item:last-child{border-bottom:none}
 .faq-q{width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .faq-q:hover{background:#faf8f3}
 .faq-left{display:flex;align-items:center;gap:12px}
@@ -821,27 +853,25 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 .tk-close{border:0;background:transparent;color:rgba(212,175,55,.95);cursor:pointer;font-size:20px;line-height:1;padding:0 6px}
 footer{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.05);padding:24px 20px;text-align:center;color:var(--muted);font-size:.78rem}
 @media(max-width:600px){.hero-h1{font-size:2rem}.mockup-grid{grid-template-columns:1fr}.learn-grid{grid-template-columns:1fr}.testi-grid{grid-template-columns:1fr}.bonos-grid{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
+</style></head><body>
 <div class="top-bar"><span class="top-badge"><span class="top-dot"></span> El precio está por subir</span>${hasViewers?` <span class="top-badge"><span style="background:#22c55e" class="top-dot"></span><span id="viewers">27</span> viendo ahora</span>`:''}</div>
 <section class="hero"><div class="hero-slides" id="heroSlides">${heroCarouselHTML}</div><div class="hero-overlay"></div><div class="hero-content"><div class="container"><div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div><h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>${c.headline_sub?`<div class="hero-sub-box"><span class="hero-sub-text">${c.headline_sub}</span></div>`:''}${badges.length?`<div class="hero-badges">${badges.map(b=>`<div class="hero-badge-item">⚡ ${b}</div>`).join('')}</div>`:''}<div class="hero-cta-wrap"><a href="${url}" class="btn">${cta}</a><div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><span class="live-dot"></span><span id="viewers2">--</span> personas viendo esto ahora</div></div></div></div><div class="hero-dots" id="heroDots"></div></section>
 <div class="marquee-wrap"><div class="marquee-track">${marqueeHTML}${marqueeHTML}</div></div>
-<section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);opacity:.8;margin-bottom:8px">Tu producto</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2><div class="mockup-grid"><div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" alt="Mockup" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase">📦 Mockup</div>`}</div><div>${logrosHTML}</div></div></div></section>
+<section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);opacity:.8;margin-bottom:8px">Tu producto</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2><div class="mockup-grid"><div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" alt="Mockup" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;text-transform:uppercase">📦 Mockup</div>`}</div><div>${logrosHTML}</div></div></div></section>
 <section style="padding:60px 20px"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);text-align:center;margin-bottom:12px;opacity:.8">¿Es para vos?</p><h2 style="font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px">ESTO ES PARA VOS SI...</h2><div class="pv-list">${paraVosHTML}</div><div style="text-align:center"><p style="font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.85rem;opacity:.7;margin-bottom:16px">✦ ${lc.promise} ✦</p><a href="${url}" class="btn">Sí, esto es para mí →</a></div></div></section>
 <section style="padding:60px 20px;background:rgba(0,0,0,.2)"><div class="container"><p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Contenido incluido</p><h2 style="text-align:center;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;margin-bottom:32px">¿QUÉ VAS A <span class="gold">APRENDER?</span></h2><div class="learn-grid">${aprendHTML}</div><div style="text-align:center;margin-top:24px"><a href="${url}" class="btn">${cta}</a></div></div></section>
-${hasCountdown?`<section style="padding:40px 20px;background:rgba(0,0,0,.1)"><div style="max-width:520px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)"><div style="background:var(--c2);padding:20px 24px;text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">La oferta finaliza en</div></div><div style="padding:28px 24px;background:#fffdf8;text-align:center"><div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px"><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-min">10</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Minutos</div></div><div style="font-size:36px;font-weight:800;color:var(--c1);margin-bottom:18px">:</div><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-sec">00</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Segundos</div></div></div><a href="${url}" style="display:block;background:var(--c2);color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:999px;border:none;cursor:pointer;width:100%;max-width:300px;margin:0 auto;text-decoration:none">${cta}</a></div></div></section>`:''}
-${hasSold?`<section style="padding:32px 20px;text-align:center"><div style="max-width:560px;margin:0 auto"><div style="font-size:.95rem;margin-bottom:10px;font-weight:600">🔥 <strong style="color:var(--c1)">${c.sold_pct||73}% vendido</strong> — ¡Quedan pocos lugares!</div><div class="sold-bar"><div class="sold-fill" style="width:${c.sold_pct||73}%"></div></div><div style="margin-top:10px;font-size:.82rem;color:var(--c1);font-weight:700">⚠️ ${c.stock_text||'Solo quedan 12 lugares disponibles'}</div></div></section>`:''}
-${hasStock?`<div style="text-align:center;padding:8px 20px"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.2);padding:10px 20px;border-radius:12px;font-size:.88rem;font-weight:600;color:#ff6b6b"><span style="width:9px;height:9px;border-radius:50%;background:#ff6b6b;animation:dotPulse 1s infinite;flex-shrink:0;display:inline-block"></span>${c.stock_text||'Solo quedan 12 cupos disponibles'}</div></div>`:''}
-<section style="padding:60px 20px;background:rgba(0,0,0,.15)"><div class="container"><p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Con tu compra hoy te llevás</p><h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">100% GRATIS <span class="gold">4 BONOS EXCLUSIVOS</span></h2><div class="bonos-grid">${bonosHTML}</div><div style="text-align:center;margin-top:32px"><a href="${url}" class="btn">${cta}</a></div></div></section>
+${hasCountdown?`<section style="padding:40px 20px;background:rgba(0,0,0,.1)"><div style="max-width:520px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)"><div style="background:var(--c2);padding:20px 24px;text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">La oferta finaliza en</div></div><div style="padding:28px 24px;background:#fffdf8;text-align:center"><div style="display:flex;justify-content:center;gap:10px;margin-bottom:20px"><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-min">10</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Min</div></div><div style="font-size:36px;font-weight:800;color:var(--c1);margin-bottom:18px">:</div><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-sec">00</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Seg</div></div></div><a href="${url}" style="display:block;background:var(--c2);color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:999px;border:none;cursor:pointer;width:100%;max-width:300px;margin:0 auto;text-decoration:none">${cta}</a></div></div></section>`:''}
+${hasSold?`<section style="padding:32px 20px;text-align:center"><div style="max-width:560px;margin:0 auto"><div style="font-size:.95rem;margin-bottom:10px;font-weight:600">🔥 <strong style="color:var(--c1)">${c.sold_pct||73}% vendido</strong></div><div class="sold-bar"><div class="sold-fill" style="width:${c.sold_pct||73}%"></div></div><div style="margin-top:10px;font-size:.82rem;color:var(--c1);font-weight:700">⚠️ ${c.stock_text||'Solo quedan 12 lugares'}</div></div></section>`:''}
+${hasStock?`<div style="text-align:center;padding:8px 20px"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.2);padding:10px 20px;border-radius:12px;font-size:.88rem;font-weight:600;color:#ff6b6b"><span style="width:9px;height:9px;border-radius:50%;background:#ff6b6b;animation:dotPulse 1s infinite;flex-shrink:0;display:inline-block"></span>${c.stock_text||'Solo quedan 12 cupos'}</div></div>`:''}
+<section style="padding:60px 20px;background:rgba(0,0,0,.15)"><div class="container"><p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Con tu compra hoy</p><h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">100% GRATIS <span class="gold">4 BONOS EXCLUSIVOS</span></h2><div class="bonos-grid">${bonosHTML}</div><div style="text-align:center;margin-top:32px"><a href="${url}" class="btn">${cta}</a></div></div></section>
 <section style="padding:28px 20px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)"><div class="trust-grid">${trustHTML}</div></section>
 <section style="padding:60px 20px;background:rgba(0,0,0,.1)"><div class="container"><p style="text-align:center;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Resultados reales</p><h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Lo que dicen nuestros clientes ❤️</h2><div class="testi-grid">${testiHTML}</div></div></section>
-<section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Invertí en tu transformación</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Tu acceso está <span class="gold">esperándote</span></h2><div class="price-box"><div class="price-box-header"><div class="price-box-label">Oferta especial hoy</div><div class="price-box-title">Tu acceso está reservado</div></div><div class="price-box-body">${data.oldprice?`<div class="price-old">${data.oldprice}</div>`:''}<div class="price-current">${data.price}</div>${data.cuotas?`<div class="price-installments">${data.cuotas}</div>`:''}<a href="${url}" class="price-btn">${cta}</a><div class="price-guarantee">🛡️ ${c.guarantee_text||`Garantía de ${guarantee} días`}</div><div style="text-align:left;margin-top:20px;padding-top:20px;border-top:1px solid #f0ece3"><div style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Incluye</div><div class="price-inc-item">${data.product} completo</div>${bonos.map(b=>`<div class="price-inc-item">Bono: ${b.nombre}</div>`).join('')}<div class="price-inc-item">Acceso inmediato al descargar</div></div></div></div></div></section>
+<section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--c1);margin-bottom:8px;opacity:.8">Invertí en tu transformación</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Tu acceso está <span class="gold">esperándote</span></h2><div class="price-box"><div class="price-box-header"><div class="price-box-label">Oferta especial hoy</div><div class="price-box-title">Tu acceso reservado</div></div><div class="price-box-body">${data.oldprice?`<div class="price-old">${data.oldprice}</div>`:''}<div class="price-current">${data.price}</div>${data.cuotas?`<div class="price-installments">${data.cuotas}</div>`:''}<a href="${url}" class="price-btn">${cta}</a><div class="price-guarantee">🛡️ ${c.guarantee_text||`Garantía ${guarantee} días`}</div><div style="text-align:left;margin-top:20px;padding-top:20px;border-top:1px solid #f0ece3"><div style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Incluye</div><div class="price-inc-item">${data.product} completo</div>${bonos.map(b=>`<div class="price-inc-item">Bono: ${b.nombre}</div>`).join('')}<div class="price-inc-item">Acceso inmediato</div></div></div></div></div></section>
 <section style="padding:48px 20px;text-align:center;background:rgba(212,175,55,.03);border-top:1px solid rgba(212,175,55,.1);border-bottom:1px solid rgba(212,175,55,.1)"><div class="container" style="max-width:600px"><div style="font-size:3.5rem;margin-bottom:12px">🛡️</div><h2 style="font-size:1.8rem;font-weight:900;margin-bottom:12px">Garantía de ${guarantee} días</h2><p style="color:var(--muted);font-size:.95rem;line-height:1.8">${c.guarantee_text||`Si en ${guarantee} días no estás satisfecha, te devolvemos el 100% de tu dinero.`}</p></div></section>
-<section style="padding:60px 20px"><div class="container"><div style="text-align:center;margin-bottom:32px"><h2 style="font-size:clamp(1.5rem,5vw,2rem);font-weight:800">Preguntas <span style="color:var(--c1)">frecuentes</span></h2></div><div class="faq-card">${faqHTML}<div style="padding:14px 20px;text-align:center;font-size:.8rem;color:#888;background:#faf8f3;border-top:1px solid #f0ece3">¿Te quedó alguna duda? <b style="color:var(--c2)">Escribinos</b> y te ayudamos.</div></div></div></section>
+<section style="padding:60px 20px"><div class="container"><div style="text-align:center;margin-bottom:32px"><h2 style="font-size:clamp(1.5rem,5vw,2rem);font-weight:800">Preguntas <span style="color:var(--c1)">frecuentes</span></h2></div><div class="faq-card">${faqHTML}<div style="padding:14px 20px;text-align:center;font-size:.8rem;color:#888;background:#faf8f3;border-top:1px solid #f0ece3">¿Dudas? <b style="color:var(--c2)">Escribinos</b></div></div></div></section>
 <section style="padding:80px 20px;text-align:center"><div class="container"><h2 style="font-size:clamp(1.8rem,6vw,3rem);font-weight:900;margin-bottom:12px"><span class="gold">${c.final_headline||'¿Lista para transformar tu vida?'}</span></h2><p style="color:var(--muted);font-size:1rem;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto">${lc.subpromise||lc.promise}</p><div style="display:flex;flex-direction:column;align-items:center;gap:12px"><a href="${url}" class="btn">${cta}</a><div style="font-size:.78rem;color:var(--muted)">Descarga inmediata · Pago seguro · Garantía ${guarantee} días</div></div></div></section>
 <footer><p>${data.product}</p><p style="margin-top:.5rem">© 2025 · Todos los derechos reservados</p></footer>
-<div class="tk-fomo" id="tkFomo"><div class="tk-card"><div class="tk-avatar"><img id="tkAvatar" src="" alt="Cliente"></div><div class="tk-content"><div class="tk-title" id="tkTitle"></div><div class="tk-sub"><span class="tk-pill" id="tkPlace"></span><span class="tk-pill">Acceso digital inmediato</span><span class="tk-time" id="tkWhen"></span></div></div><button class="tk-close" onclick="document.getElementById('tkFomo').style.display='none'">×</button></div></div>
+<div class="tk-fomo" id="tkFomo"><div class="tk-card"><div class="tk-avatar"><img id="tkAvatar" src="" alt=""></div><div class="tk-content"><div class="tk-title" id="tkTitle"></div><div class="tk-sub"><span class="tk-pill" id="tkPlace"></span><span class="tk-pill">Acceso digital</span><span class="tk-time" id="tkWhen"></span></div></div><button class="tk-close" onclick="document.getElementById('tkFomo').style.display='none'">×</button></div></div>
 <script>
 function updateViewers(){var v=Math.floor(Math.random()*28)+14;var e1=document.getElementById('viewers');var e2=document.getElementById('viewers2');if(e1)e1.textContent=v;if(e2)e2.textContent=v;}
 updateViewers();setInterval(updateViewers,5000);
@@ -855,21 +885,65 @@ var actions=[${popupActionsJS}];var times=["hace 1 min","hace 2 min","hace 3 min
 function showPopup(){var p=pops[pi%pops.length];pi++;var a=actions[Math.floor(Math.random()*actions.length)];var t=times[Math.floor(Math.random()*times.length)];var el=document.getElementById('tkFomo');document.getElementById('tkAvatar').src=p.img;document.getElementById('tkPlace').textContent=p.place;document.getElementById('tkWhen').textContent=t;document.getElementById('tkTitle').innerHTML='<b>'+p.name+'</b> de <b>'+p.place+'</b> '+a;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},5000);}
 setTimeout(showPopup,3500);setInterval(showPopup,14000);
 <\/script>
-</body>
-</html>`;}
+</body></html>`;}
 
 function updateColorPreview(){document.getElementById('cp1').style.background=document.getElementById('lc-color1').value;document.getElementById('cp2').style.background=document.getElementById('lc-color2').value;document.getElementById('cp3').style.background=document.getElementById('lc-color3').value;document.getElementById('lc-color1-txt').value=document.getElementById('lc-color1').value;document.getElementById('lc-color2-txt').value=document.getElementById('lc-color2').value;document.getElementById('lc-color3-txt').value=document.getElementById('lc-color3').value;}
 function syncColor(n){const txt=document.getElementById(`lc-color${n}-txt`).value;if(/^#[0-9A-Fa-f]{6}$/.test(txt)){document.getElementById(`lc-color${n}`).value=txt;document.getElementById(`cp${n}`).style.background=txt;}}
 function toggleChip(el){el.classList.toggle('on');const val=el.dataset.val;const parent=el.closest('.chips').id;if(parent==='urgency-chips'){if(el.classList.contains('on'))selectedUrgency.add(val);else selectedUrgency.delete(val);updateUrgencyDetails();}else{if(el.classList.contains('on'))selectedSections.add(val);else selectedSections.delete(val);}}
-function updateUrgencyDetails(){const c=document.getElementById('urgency-details');let html='';if(selectedUrgency.has('countdown'))html+=`<div class="field"><label>Fecha límite para el countdown</label><input type="datetime-local" id="lc-countdown-date" style="color-scheme:dark"></div>`;if(selectedUrgency.has('stock')||selectedUrgency.has('limited'))html+=`<div class="field"><label>¿Cuántos lugares quedan?</label><input type="number" id="lc-stock-left" placeholder="Ej: 12" min="1"></div>`;if(selectedUrgency.has('sold'))html+=`<div class="field"><label>¿Qué porcentaje está vendido?</label><input type="number" id="lc-sold-pct" placeholder="Ej: 78" min="1" max="99"></div>`;c.innerHTML=html;}
+function updateUrgencyDetails(){const c=document.getElementById('urgency-details');let html='';if(selectedUrgency.has('countdown'))html+=`<div class="field"><label>Fecha límite countdown</label><input type="datetime-local" id="lc-countdown-date" style="color-scheme:dark"></div>`;if(selectedUrgency.has('stock')||selectedUrgency.has('limited'))html+=`<div class="field"><label>¿Cuántos lugares quedan?</label><input type="number" id="lc-stock-left" placeholder="Ej: 12" min="1"></div>`;if(selectedUrgency.has('sold'))html+=`<div class="field"><label>¿Qué % está vendido?</label><input type="number" id="lc-sold-pct" placeholder="Ej: 78" min="1" max="99"></div>`;c.innerHTML=html;}
 function initTestimonials(){testimonials=[];const list=document.getElementById('testi-list');if(list)list.innerHTML='';addTesti();addTesti();addTesti();}
 function addTesti(){const idx=testimonials.length;testimonials.push({name:'',lastname:'',text:''});const list=document.getElementById('testi-list');if(!list)return;const div=document.createElement('div');div.className='testi-item';div.id=`testi-${idx}`;div.innerHTML=`<input type="text" placeholder="Nombre" oninput="updateTesti(${idx},'name',this.value)"><input type="text" placeholder="Apellido" oninput="updateTesti(${idx},'lastname',this.value)"><button class="del-btn" onclick="removeTesti(${idx})">✕</button><textarea placeholder="Frase del testimonio" style="grid-column:1/4" oninput="updateTesti(${idx},'text',this.value)"></textarea>`;list.appendChild(div);}
 function updateTesti(idx,field,val){if(testimonials[idx])testimonials[idx][field]=val;}
 function removeTesti(idx){const el=document.getElementById(`testi-${idx}`);if(el)el.remove();if(testimonials[idx])testimonials[idx]={name:'',lastname:'',text:''};}
 function doCopy(){if(!curResult)return;navigator.clipboard.writeText(curResult).then(()=>toast('Copiado 📋','ok'));}
 function doTxt(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([curResult],{type:'text/plain'}));a.download=`innova_${curMod}_${(curProject.product||'').replace(/\s+/g,'_')}.txt`;a.click();toast('TXT descargado 📄','ok');}
-function doDownloadHtml(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([curResult],{type:'text/html'}));a.download=`landing_${(curProject.product||'mi-producto').replace(/\s+/g,'_')}.html`;a.click();toast('Landing HTML descargada 🌐','ok');}
-function doPDF(){if(!curResult)return;toast('Generando PDF...','ok');try{const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();const mg=18,mxW=W-mg*2;const addBg=()=>{doc.setFillColor(5,5,10);doc.rect(0,0,W,H,'F');doc.setFillColor(255,0,110);doc.rect(0,0,W,10,'F');doc.setFillColor(255,0,110);doc.rect(0,H-8,W,8,'F');};addBg();doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','bold');doc.text('INNOVA FACTORY · by Pao Peressotti · INNOVA PRO',mg,7);doc.setFontSize(6);doc.text('innova-factory.vercel.app',mg,H-3);const mod=MODS.find(m=>m.id===curMod);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.setTextColor(255,77,158);doc.text((mod?.name||curMod).toUpperCase(),W/2,22,{align:'center'});doc.setFontSize(10);doc.setTextColor(200,200,220);doc.text(curProject.product||'',W/2,30,{align:'center'});doc.setDrawColor(255,0,110);doc.setLineWidth(.4);doc.line(mg,34,W-mg,34);let y=42;const textContent=typeof curResult==='string'?curResult:JSON.stringify(curResult);for(const line of textContent.split('\n')){if(y>H-14){doc.addPage();addBg();y=18;}if(!line.trim()){y+=3;continue;}let fs=9,bold=false,color=[200,200,216];if(line.startsWith('# ')){fs=14;bold=true;color=[255,77,158];y+=3;}else if(line.startsWith('## ')){fs=11;bold=true;color=[168,85,247];y+=2;}else if(line.startsWith('### ')){fs=10;bold=true;color=[255,77,158];y+=1;}doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);const clean=line.replace(/^#+\s/,'').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1');const wrapped=doc.splitTextToSize(clean,mxW);for(const w of wrapped){if(y>H-14){doc.addPage();addBg();y=18;doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);}doc.text(w,mg,y);y+=fs*0.42+1.5;}y+=1;}doc.save(`innova_${curMod}_${(curProject.product||'').replace(/\s+/g,'_')}.pdf`);toast('PDF descargado 📥','ok');}catch(e){toast('Error al generar PDF','err');}}
+function doDownloadHtml(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([curResult],{type:'text/html'}));a.download=`landing_${(curProject.product||'mi-producto').replace(/\s+/g,'_')}.html`;a.click();toast('Landing descargada 🌐','ok');}
+function doPDF(){
+  if(!curResult)return;
+  toast('Generando PDF...','ok');
+  try{
+    const{jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
+    const mg=20,mxW=W-mg*2;
+    const addBg=()=>{
+      doc.setFillColor(255,255,255);doc.rect(0,0,W,H,'F');
+      doc.setFillColor(255,0,110);doc.rect(0,0,W,12,'F');
+      doc.setFillColor(124,58,237);doc.rect(0,H-10,W,10,'F');
+    };
+    addBg();
+    doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','bold');
+    doc.text('INNOVA FACTORY · by Pao Peressotti · INNOVA PRO',mg,8);
+    doc.setFontSize(6);doc.text('innova-factory.vercel.app',W-mg,H-4,{align:'right'});
+    const mod=MODS.find(m=>m.id===curMod);
+    doc.setFontSize(18);doc.setFont('helvetica','bold');doc.setTextColor(220,0,100);
+    doc.text((mod?.name||curMod).toUpperCase(),W/2,24,{align:'center'});
+    doc.setFontSize(11);doc.setTextColor(80,80,80);
+    doc.text(curProject.product||'',W/2,32,{align:'center'});
+    doc.setDrawColor(220,0,100);doc.setLineWidth(.5);doc.line(mg,37,W-mg,37);
+    let y=46;
+    const textContent=typeof curResult==='string'?curResult:JSON.stringify(curResult);
+    for(const line of textContent.split('\n')){
+      if(y>H-16){doc.addPage();addBg();y=20;}
+      if(!line.trim()){y+=4;continue;}
+      let fs=10,bold=false,color=[50,50,50];
+      if(line.startsWith('# ')){fs=17;bold=true;color=[200,0,80];y+=5;}
+      else if(line.startsWith('## ')){fs=13;bold=true;color=[100,30,180];y+=4;}
+      else if(line.startsWith('### ')){fs=11;bold=true;color=[200,0,80];y+=2;}
+      else if(line.startsWith('- ')||line.startsWith('* ')){color=[60,60,80];}
+      doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);
+      const clean=line.replace(/^#+\s/,'').replace(/^[-*]\s/,'• ').replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1');
+      const wrapped=doc.splitTextToSize(clean,mxW);
+      for(const w of wrapped){
+        if(y>H-16){doc.addPage();addBg();y=20;doc.setFontSize(fs);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);}
+        doc.text(w,mg,y);y+=fs*0.45+1.5;
+      }
+      y+=2;
+    }
+    doc.save(`innova_${curMod}_${(curProject.product||'').replace(/\s+/g,'_')}.pdf`);
+    toast('PDF descargado 📥','ok');
+  }catch(e){toast('Error al generar PDF','err');console.error(e);}
+}
 function setLoading(on,msg='Generando con IA...'){document.getElementById('loading').classList.toggle('on',on);document.getElementById('ld-msg').textContent=msg;}
 function toast(msg,type='ok'){const c=document.getElementById('toasts');const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<span>${type==='ok'?'✓':'✗'}</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3500);}
 function saveCur(){const i=projects.findIndex(p=>p.product===curProject.product);if(i>=0)projects[i]=curProject;localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();}
