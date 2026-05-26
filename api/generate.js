@@ -11,29 +11,26 @@ export default async function handler(req, res) {
     let prompt = '';
 
     if (step === 'ebook_indice') {
-      prompt = `Eres experto en infoproductos digitales. Crea la estructura de un ebook profesional en español.
+      prompt = `Eres experto en infoproductos. Crea la estructura de un ebook profesional en español.
 
 Producto: ${data.product}
 Público: ${data.audience}
 Problema: ${data.problem}
 Transformación: ${data.transformation}
 
-IMPORTANTE: Los capítulos NO deben incluir las recetas/técnicas/ejercicios específicos — esos se generan por separado.
-Los capítulos deben ser de CONTEXTO, FUNDAMENTOS y ESTRATEGIA.
+Los capítulos deben ser de CONTEXTO, FUNDAMENTOS y ESTRATEGIA. NO incluyas las recetas/técnicas/ítems específicos en los capítulos — esos se generan por separado.
 
 Devuelve SOLO JSON puro sin markdown:
 {
   "titulo_principal": "título magnético del ebook",
   "subtitulo": "subtítulo que complementa",
-  "introduccion": "introducción de 200 palabras que engancha al lector",
+  "introduccion": "introducción de 3 párrafos que engancha al lector, mínimo 200 palabras",
   "capitulos": [
-    {"numero": 1, "titulo": "Título capítulo 1", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 2, "titulo": "Título capítulo 2", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 3, "titulo": "Título capítulo 3", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 4, "titulo": "Título capítulo 4", "descripcion": "De qué trata en 1 oración"},
-    {"numero": 5, "titulo": "Título capítulo 5", "descripcion": "De qué trata en 1 oración"}
+    {"numero": 1, "titulo": "Título capítulo 1", "descripcion": "De qué trata en 2-3 oraciones"},
+    {"numero": 2, "titulo": "Título capítulo 2", "descripcion": "De qué trata en 2-3 oraciones"},
+    {"numero": 3, "titulo": "Título capítulo 3", "descripcion": "De qué trata en 2-3 oraciones"}
   ],
-  "conclusion": "conclusión de 150 palabras con CTA poderoso"
+  "conclusion": "conclusión de 2 párrafos con CTA poderoso"
 }`;
 
     } else if (step === 'ebook_capitulo') {
@@ -44,66 +41,97 @@ Público: ${data.audience}
 Capítulo: ${capitulo.titulo}
 Descripción: ${capitulo.descripcion}
 
-Escribí un capítulo COMPLETO de 500 palabras en markdown con:
-- Introducción
-- 3 secciones con subtítulos ##
-- Ejemplos prácticos
-- Tips numerados
-- Cierre
+Devuelve SOLO JSON puro sin markdown:
+{
+  "titulo": "${capitulo.titulo}",
+  "intro": "párrafo introductorio del capítulo, 3-4 oraciones",
+  "secciones": [
+    {
+      "subtitulo": "Subtítulo de la sección",
+      "contenido": "2-3 párrafos de contenido rico y detallado",
+      "bullets": ["punto clave 1", "punto clave 2", "punto clave 3"]
+    },
+    {
+      "subtitulo": "Subtítulo de la sección",
+      "contenido": "2-3 párrafos de contenido rico y detallado",
+      "bullets": ["punto clave 1", "punto clave 2", "punto clave 3"]
+    },
+    {
+      "subtitulo": "Subtítulo de la sección",
+      "contenido": "2-3 párrafos de contenido rico y detallado",
+      "bullets": ["punto clave 1", "punto clave 2", "punto clave 3"]
+    }
+  ],
+  "cierre": "párrafo de cierre del capítulo"
+}`;
 
-Sin JSON. Sin intro tipo "aquí está el capítulo".`;
-
-    } else if (step === 'ebook_item') {
-      prompt = `Eres experto en infoproductos. Desarrollá este ítem de forma COMPLETA y DETALLADA en español.
+    } else if (step === 'ebook_item_html') {
+      const esReceta = item.tipo === 'receta';
+      prompt = `Eres experto en infoproductos. Generá el contenido completo de este ítem en español.
 
 Producto: ${data.product}
 Público: ${data.audience}
 Tipo: ${item.tipo}
-Número: ${item.numero}
-Título: ${item.titulo}
-Contexto adicional: ${item.contexto || ''}
+Número: ${item.indice} de ${item.total}
+Tema: ${item.contexto}
+Título sugerido: ${item.titulo}
 
-${item.tipo === 'receta' ? `Desarrollá la receta COMPLETA con:
-## Ingredientes
-- Lista detallada con cantidades exactas en gramos/ml/unidades
-
-## Preparación paso a paso
-1. Paso numerado con detalle
-2. Paso numerado con detalle
-(mínimo 8 pasos detallados)
-
-## Tiempo y porciones
-- Tiempo de preparación, cocción y total
-- Cantidad de porciones
-
-## Tips profesionales
-- 3 tips para vender mejor este producto
-
-## Variaciones
-- 2 variaciones de la receta base` : ''}
-
-${item.tipo === 'técnica' ? `Desarrollá la técnica COMPLETA con:
-## Qué es y para qué sirve
-## Materiales necesarios
-## Paso a paso detallado (mínimo 8 pasos)
-## Errores comunes a evitar
-## Tips pro` : ''}
-
-${item.tipo === 'ejercicio' ? `Desarrollá el ejercicio COMPLETO con:
-## Descripción y beneficios
-## Músculos trabajados
-## Paso a paso (mínimo 8 pasos con detalle)
-## Variaciones y progresiones
-## Precauciones` : ''}
-
-${!['receta','técnica','ejercicio'].includes(item.tipo) ? `Desarrollá el contenido COMPLETO con:
-## Introducción
-## Desarrollo detallado paso a paso (mínimo 8 pasos)
-## Ejemplos prácticos
-## Tips y recomendaciones
-## Conclusión` : ''}
-
-Mínimo 500 palabras. Sin JSON. Directo al contenido.`;
+${esReceta ? `Generá una receta COMPLETA y PROFESIONAL. Devuelve SOLO JSON puro sin markdown:
+{
+  "titulo": "nombre atractivo de la receta",
+  "descripcion": "descripción apetitosa de 2 oraciones que seduce al lector",
+  "tiempo": "X min",
+  "porciones": "X porciones",
+  "dificultad": "Fácil/Media/Difícil",
+  "ingredientes": [
+    "200g ingrediente con cantidad exacta",
+    "2 cucharadas ingrediente",
+    "1 taza ingrediente"
+  ],
+  "pasos": [
+    "Paso 1 detallado y específico",
+    "Paso 2 detallado y específico",
+    "Paso 3 detallado y específico",
+    "Paso 4 detallado y específico",
+    "Paso 5 detallado y específico",
+    "Paso 6 detallado y específico",
+    "Paso 7 detallado y específico",
+    "Paso 8 detallado y específico"
+  ],
+  "tip": "tip profesional específico y útil para este ítem",
+  "presentacion": "cómo presentar y servir para vender mejor",
+  "info_extra": [
+    {"label": "Calorías", "valor": "XXX"},
+    {"label": "Tiempo prep", "valor": "XX min"},
+    {"label": "Dificultad", "valor": "Fácil"},
+    {"label": "Porciones", "valor": "X"}
+  ]
+}` : `Generá el contenido COMPLETO de esta ${item.tipo}. Devuelve SOLO JSON puro sin markdown:
+{
+  "titulo": "título atractivo",
+  "descripcion": "descripción de 2 oraciones que engancha",
+  "duracion": "tiempo estimado si aplica",
+  "nivel": "Básico/Intermedio/Avanzado",
+  "materiales": ["material 1", "material 2", "material 3"],
+  "pasos": [
+    "Paso 1 detallado",
+    "Paso 2 detallado",
+    "Paso 3 detallado",
+    "Paso 4 detallado",
+    "Paso 5 detallado",
+    "Paso 6 detallado",
+    "Paso 7 detallado",
+    "Paso 8 detallado"
+  ],
+  "tip": "tip profesional clave",
+  "resultado_esperado": "qué logra el alumno al completar esto",
+  "info_extra": [
+    {"label": "Duración", "valor": "XX min"},
+    {"label": "Nivel", "valor": "Básico"},
+    {"label": "Materiales", "valor": "X items"},
+    {"label": "Resultado", "valor": "Inmediato"}
+  ]
+}`}`;
 
     } else if (step === 'bono_contenido') {
       const bono = data.bonos[bono_idx];
@@ -211,24 +239,24 @@ SOLO JSON puro:
   "valor_total": "USD 138",
   "frase_remate": "frase poderosa máximo 10 palabras"
 }`,
-        copies: `Copywriter AIDA experto. Para: Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
+        copies: `Copywriter AIDA experto en español para: Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
 1. 5 emails de lanzamiento completos
 2. 5 posts Instagram con hashtags
 3. 7 scripts de stories
 4. 3 anuncios Facebook/Instagram
 5. 2 mensajes WhatsApp`,
-        creativos: `Director creativo. Para: ${data.product}.
-1. Brief portada ebook
+        creativos: `Director creativo para: ${data.product}.
+1. Brief portada ebook completo
 2. Brief banner 1080x1080 y 1080x1920
-3. 6 slides carrusel
+3. 6 slides carrusel descripción detallada
 4. Paleta de marca HEX + tipografías
-5. 5 prompts Midjourney/DALL-E`,
-        trafico: `Experto en tráfico digital. Para: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
-1. Plan orgánico 30 días
-2. Estrategia Facebook/Instagram Ads
+5. 5 prompts Midjourney/DALL-E listos para usar`,
+        trafico: `Experto en tráfico digital para: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
+1. Plan orgánico 30 días detallado
+2. Estrategia Facebook/Instagram Ads con presupuesto
 3. Funnel de ventas completo
 4. Cronograma lanzamiento 2 semanas
-5. KPIs y métricas`,
+5. KPIs y métricas clave`,
       };
       prompt = prompts[step] || `Genera contenido profesional en español para: ${data.product}. Módulo: ${step}.`;
     }
@@ -260,7 +288,7 @@ SOLO JSON puro:
       }
     }
 
-    if (step === 'ebook_indice') {
+    if (step === 'ebook_indice' || step === 'ebook_capitulo' || step === 'ebook_item_html') {
       try {
         const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         const parsed = JSON.parse(clean);
