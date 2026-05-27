@@ -85,7 +85,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .wiz-btns .btn{flex:1}
 .gen-header{text-align:center;margin-bottom:2rem}
 .gen-header h2{font-family:var(--font-h);font-size:2rem;margin-bottom:.4rem}
-.gen-header p{color:var(--muted)}
 .modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-bottom:2rem}
 .mod-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .mod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--fuchsia),var(--violet));transform:scaleX(0);transition:transform .3s}
@@ -110,7 +109,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .act-copy{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
 .act-copy:hover{color:var(--text);border-color:var(--violet)}
 .act-html{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--cyan)}
-.result-body{padding:2rem;max-height:600px;overflow-y:auto}
+.result-body{padding:2rem;max-height:700px;overflow-y:auto}
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;min-height:200px;color:var(--muted);text-align:center}
 .placeholder .big{font-size:3rem;opacity:.35}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--fuchsia);border-radius:50%;animation:spin .8s linear infinite}
@@ -170,6 +169,28 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .hero-foto-preview{width:60px;height:45px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hero-foto-preview img{width:100%;height:100%;object-fit:cover;display:none}
 .hero-foto-preview img.loaded{display:block}
+/* ── CREATIVOS ── */
+.creativos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:1.5rem}
+.creativo-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .25s}
+.creativo-card:hover{border-color:rgba(255,0,110,.4);transform:translateY(-3px)}
+.creativo-header{padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.creativo-estilo{font-size:.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:.3rem .8rem;border-radius:100px}
+.estilo-urgencia{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.estilo-aspiracional{background:rgba(124,58,237,.15);color:var(--violet2);border:1px solid rgba(124,58,237,.3)}
+.estilo-oferta{background:rgba(212,175,55,.15);color:#d4af37;border:1px solid rgba(212,175,55,.3)}
+.creativo-size-tabs{display:flex;gap:.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.size-tab{padding:.3rem .7rem;border-radius:8px;font-size:.7rem;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:transparent;transition:all .2s;font-family:var(--font-b)}
+.size-tab.active{background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-color:transparent;color:#fff}
+.creativo-body{padding:1rem 1.2rem}
+.creativo-titulo{font-family:var(--font-h);font-size:.85rem;font-weight:700;color:#fff;margin-bottom:.25rem}
+.creativo-sub{font-size:.75rem;color:var(--muted);margin-bottom:.75rem;line-height:1.4}
+.creativo-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.creativo-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.5rem .9rem;border-radius:100px;font-size:.72rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-b)}
+.creativo-btn.gen-img{background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff}
+.creativo-btn.gen-img:disabled{opacity:.5;cursor:not-allowed}
+.creativo-btn.dl-btn{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--cyan)}
+.creativo-btn.dl-btn:disabled{opacity:.4;cursor:not-allowed}
+.creativo-status{font-size:.68rem;color:var(--muted);margin-top:.5rem;min-height:16px}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -180,7 +201,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 .fab{position:fixed;bottom:2rem;left:2rem;width:56px;height:56px;background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-radius:50%;display:grid;place-items:center;font-size:1.6rem;cursor:pointer;border:none;color:#fff;box-shadow:0 8px 24px rgba(255,0,110,.4);transition:transform .25s;z-index:100}
 .fab:hover{transform:scale(1.1)}
-@media(max-width:768px){nav{padding:1rem 1.5rem}.view{padding:1.5rem}.wiz-card{padding:1.5rem}.modules-grid{grid-template-columns:1fr}.testi-item{grid-template-columns:1fr}.testi-item textarea{grid-column:1}.img-gen-grid{grid-template-columns:1fr}}
+@media(max-width:768px){nav{padding:1rem 1.5rem}.view{padding:1.5rem}.wiz-card{padding:1.5rem}.modules-grid{grid-template-columns:1fr}.testi-item{grid-template-columns:1fr}.testi-item textarea{grid-column:1}.img-gen-grid{grid-template-columns:1fr}.creativos-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -222,19 +243,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       <div class="field">
         <label>¿Qué contenido específico querés? (opcional)</label>
         <textarea id="f-contenido" placeholder="Ej: 15 recetas de empanadas argentinas, 5 técnicas de masa" style="min-height:70px"></textarea>
-        <div class="field-hint">💡 Escribí <strong>número + tipo + descripción</strong> separados por coma. Ej: "10 recetas de alfajores keto, 5 técnicas de decoración"</div>
+        <div class="field-hint">💡 Escribí <strong>número + tipo + descripción</strong> separados por coma.</div>
       </div>
       <div class="field">
         <label>Colores de tu marca (para el ebook)</label>
         <div class="row2">
-          <div class="color-row">
-            <input type="color" id="ebook-color1" value="#7c3aed" onchange="document.getElementById('ebook-c1-txt').value=this.value">
-            <input type="text" id="ebook-c1-txt" value="#7c3aed" style="flex:1" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('ebook-color1').value=this.value">
-          </div>
-          <div class="color-row">
-            <input type="color" id="ebook-color2" value="#ff006e" onchange="document.getElementById('ebook-c2-txt').value=this.value">
-            <input type="text" id="ebook-c2-txt" value="#ff006e" style="flex:1" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('ebook-color2').value=this.value">
-          </div>
+          <div class="color-row"><input type="color" id="ebook-color1" value="#7c3aed" onchange="document.getElementById('ebook-c1-txt').value=this.value"><input type="text" id="ebook-c1-txt" value="#7c3aed" style="flex:1" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('ebook-color1').value=this.value"></div>
+          <div class="color-row"><input type="color" id="ebook-color2" value="#ff006e" onchange="document.getElementById('ebook-c2-txt').value=this.value"><input type="text" id="ebook-c2-txt" value="#ff006e" style="flex:1" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value))document.getElementById('ebook-color2').value=this.value"></div>
         </div>
       </div>
       <div class="wiz-btns">
@@ -281,116 +296,78 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   </div>
   <div id="landing-config" style="display:none">
     <div class="wiz-wrap" style="max-width:800px">
-      <div id="lc1">
-        <div class="wiz-card">
-          <h2>🎨 Diseño de tu Landing</h2>
-          <p class="sub">Configurá el look & feel</p>
-          <div class="section-label">Colores de marca</div>
-          <div class="row2">
-            <div class="field"><label>Color principal</label>
-              <div class="color-row"><input type="color" id="lc-color1" value="#ff006e" onchange="updateColorPreview()"><div class="color-preview" id="cp1" style="background:#ff006e"></div><input type="text" id="lc-color1-txt" value="#ff006e" style="width:100px" oninput="syncColor(1)"></div>
-            </div>
-            <div class="field"><label>Color secundario</label>
-              <div class="color-row"><input type="color" id="lc-color2" value="#7c3aed" onchange="updateColorPreview()"><div class="color-preview" id="cp2" style="background:#7c3aed"></div><input type="text" id="lc-color2-txt" value="#7c3aed" style="width:100px" oninput="syncColor(2)"></div>
-            </div>
-          </div>
-          <div class="field"><label>Color de fondo</label>
-            <div class="color-row"><input type="color" id="lc-color3" value="#05050a" onchange="updateColorPreview()"><div class="color-preview" id="cp3" style="background:#05050a;border:1px solid var(--border)"></div><input type="text" id="lc-color3-txt" value="#05050a" style="width:100px" oninput="syncColor(3)"></div>
-          </div>
-          <div class="section-label" style="margin-top:1.5rem">Promesa principal</div>
-          <div class="field"><label>Promesa en GRANDE</label><textarea id="lc-promise" placeholder="Ej: Convertí tu pasión en $1.000 mensuales" style="min-height:80px"></textarea></div>
-          <div class="field"><label>Subpromesa</label><input id="lc-subpromise" type="text" placeholder="El método paso a paso que ya transformó a más de 500 mujeres"></div>
-          <div class="wiz-btns">
-            <button class="btn btn-ghost" onclick="cancelLanding()">← Volver</button>
-            <button class="btn btn-primary" onclick="goLC2()">Siguiente →</button>
-          </div>
+      <div id="lc1"><div class="wiz-card">
+        <h2>🎨 Diseño de tu Landing</h2><p class="sub">Configurá el look & feel</p>
+        <div class="section-label">Colores de marca</div>
+        <div class="row2">
+          <div class="field"><label>Color principal</label><div class="color-row"><input type="color" id="lc-color1" value="#ff006e" onchange="updateColorPreview()"><div class="color-preview" id="cp1" style="background:#ff006e"></div><input type="text" id="lc-color1-txt" value="#ff006e" style="width:100px" oninput="syncColor(1)"></div></div>
+          <div class="field"><label>Color secundario</label><div class="color-row"><input type="color" id="lc-color2" value="#7c3aed" onchange="updateColorPreview()"><div class="color-preview" id="cp2" style="background:#7c3aed"></div><input type="text" id="lc-color2-txt" value="#7c3aed" style="width:100px" oninput="syncColor(2)"></div></div>
         </div>
-      </div>
-      <div id="lc2" style="display:none">
-        <div class="wiz-card">
-          <h2>⚡ Urgencia y Escasez</h2>
-          <p class="sub">Elementos de FOMO</p>
-          <div class="chips" id="urgency-chips">
-            <button class="chip" data-val="countdown" onclick="toggleChip(this)">⏰ Countdown</button>
-            <button class="chip" data-val="stock" onclick="toggleChip(this)">📦 Cupos limitados</button>
-            <button class="chip" data-val="viewers" onclick="toggleChip(this)">👁️ Personas viendo</button>
-            <button class="chip" data-val="sold" onclick="toggleChip(this)">🔥 Barra vendidos</button>
-            <button class="chip" data-val="limited" onclick="toggleChip(this)">🚫 Solo X cupos</button>
-          </div>
-          <div id="urgency-details" style="margin-top:1.5rem"></div>
-          <div class="section-label" style="margin-top:1.5rem">Badges</div>
-          <div class="field"><label>Badge 1</label><input id="lc-badge1" type="text" placeholder="Ej: 3 cuotas sin interés"></div>
-          <div class="field"><label>Badge 2</label><input id="lc-badge2" type="text" placeholder="Ej: Acceso inmediato"></div>
-          <div class="field"><label>Badge 3</label><input id="lc-badge3" type="text" placeholder="Ej: Soporte personalizado"></div>
-          <div class="wiz-btns">
-            <button class="btn btn-ghost" onclick="goLC1()">← Atrás</button>
-            <button class="btn btn-primary" onclick="goLC3()">Siguiente →</button>
-          </div>
+        <div class="field"><label>Color de fondo</label><div class="color-row"><input type="color" id="lc-color3" value="#05050a" onchange="updateColorPreview()"><div class="color-preview" id="cp3" style="background:#05050a;border:1px solid var(--border)"></div><input type="text" id="lc-color3-txt" value="#05050a" style="width:100px" oninput="syncColor(3)"></div></div>
+        <div class="section-label" style="margin-top:1.5rem">Promesa principal</div>
+        <div class="field"><label>Promesa en GRANDE</label><textarea id="lc-promise" placeholder="Ej: Convertí tu pasión en $1.000 mensuales" style="min-height:80px"></textarea></div>
+        <div class="field"><label>Subpromesa</label><input id="lc-subpromise" type="text" placeholder="El método paso a paso que ya transformó a más de 500 mujeres"></div>
+        <div class="wiz-btns"><button class="btn btn-ghost" onclick="cancelLanding()">← Volver</button><button class="btn btn-primary" onclick="goLC2()">Siguiente →</button></div>
+      </div></div>
+      <div id="lc2" style="display:none"><div class="wiz-card">
+        <h2>⚡ Urgencia y Escasez</h2><p class="sub">Elementos de FOMO</p>
+        <div class="chips" id="urgency-chips">
+          <button class="chip" data-val="countdown" onclick="toggleChip(this)">⏰ Countdown</button>
+          <button class="chip" data-val="stock" onclick="toggleChip(this)">📦 Cupos limitados</button>
+          <button class="chip" data-val="viewers" onclick="toggleChip(this)">👁️ Personas viendo</button>
+          <button class="chip" data-val="sold" onclick="toggleChip(this)">🔥 Barra vendidos</button>
+          <button class="chip" data-val="limited" onclick="toggleChip(this)">🚫 Solo X cupos</button>
         </div>
-      </div>
-      <div id="lc3" style="display:none">
-        <div class="wiz-card">
-          <h2>🛡️ Garantía y Testimonios</h2>
-          <div class="row2">
-            <div class="field"><label>Días de garantía</label>
-              <select id="lc-guarantee"><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="60">60 días</option></select>
-            </div>
-            <div class="field"><label>Tipo</label>
-              <select id="lc-guarantee-type"><option>Devolución total</option><option>Satisfacción garantizada</option><option>Resultados o devuelvo el dinero</option></select>
-            </div>
-          </div>
-          <div class="section-label" style="margin-top:1.5rem">Testimonios</div>
-          <div class="testi-list" id="testi-list"></div>
-          <button class="add-btn" onclick="addTesti()">+ Agregar testimonio</button>
-          <div class="wiz-btns" style="margin-top:2rem">
-            <button class="btn btn-ghost" onclick="goLC2()">← Atrás</button>
-            <button class="btn btn-primary" onclick="goLC4()">Siguiente →</button>
-          </div>
+        <div id="urgency-details" style="margin-top:1.5rem"></div>
+        <div class="section-label" style="margin-top:1.5rem">Badges</div>
+        <div class="field"><label>Badge 1</label><input id="lc-badge1" type="text" placeholder="Ej: 3 cuotas sin interés"></div>
+        <div class="field"><label>Badge 2</label><input id="lc-badge2" type="text" placeholder="Ej: Acceso inmediato"></div>
+        <div class="field"><label>Badge 3</label><input id="lc-badge3" type="text" placeholder="Ej: Soporte personalizado"></div>
+        <div class="wiz-btns"><button class="btn btn-ghost" onclick="goLC1()">← Atrás</button><button class="btn btn-primary" onclick="goLC3()">Siguiente →</button></div>
+      </div></div>
+      <div id="lc3" style="display:none"><div class="wiz-card">
+        <h2>🛡️ Garantía y Testimonios</h2>
+        <div class="row2">
+          <div class="field"><label>Días de garantía</label><select id="lc-guarantee"><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="60">60 días</option></select></div>
+          <div class="field"><label>Tipo</label><select id="lc-guarantee-type"><option>Devolución total</option><option>Satisfacción garantizada</option><option>Resultados o devuelvo el dinero</option></select></div>
         </div>
-      </div>
-      <div id="lc4" style="display:none">
-        <div class="wiz-card">
-          <h2>✨ Secciones Extra</h2>
-          <div class="chips" id="sections-chips">
-            <button class="chip on" data-val="benefits" onclick="toggleChip(this)">✅ Beneficios</button>
-            <button class="chip on" data-val="bonos" onclick="toggleChip(this)">🎁 Bonos</button>
-            <button class="chip on" data-val="faq" onclick="toggleChip(this)">❓ FAQ</button>
-            <button class="chip on" data-val="cta_multiple" onclick="toggleChip(this)">🎯 Múltiples CTAs</button>
-          </div>
-          <div class="field" style="margin-top:1.5rem"><label>Texto CTA</label><input id="lc-cta" type="text" value="¡Quiero empezar ahora! →"></div>
-          <div class="field"><label>URL de compra</label><input id="lc-url" type="text" placeholder="https://hotmart.com/tu-producto"></div>
-          <div class="field"><label>Algo más (opcional)</label><textarea id="lc-extra" placeholder="Info adicional"></textarea></div>
-          <div class="wiz-btns">
-            <button class="btn btn-ghost" onclick="goLC3()">← Atrás</button>
-            <button class="btn btn-primary" onclick="goLC5()">Crear Imágenes →</button>
-          </div>
+        <div class="section-label" style="margin-top:1.5rem">Testimonios</div>
+        <div class="testi-list" id="testi-list"></div>
+        <button class="add-btn" onclick="addTesti()">+ Agregar testimonio</button>
+        <div class="wiz-btns" style="margin-top:2rem"><button class="btn btn-ghost" onclick="goLC2()">← Atrás</button><button class="btn btn-primary" onclick="goLC4()">Siguiente →</button></div>
+      </div></div>
+      <div id="lc4" style="display:none"><div class="wiz-card">
+        <h2>✨ Secciones Extra</h2>
+        <div class="chips" id="sections-chips">
+          <button class="chip on" data-val="benefits" onclick="toggleChip(this)">✅ Beneficios</button>
+          <button class="chip on" data-val="bonos" onclick="toggleChip(this)">🎁 Bonos</button>
+          <button class="chip on" data-val="faq" onclick="toggleChip(this)">❓ FAQ</button>
+          <button class="chip on" data-val="cta_multiple" onclick="toggleChip(this)">🎯 Múltiples CTAs</button>
         </div>
-      </div>
-      <div id="lc5" style="display:none">
-        <div class="wiz-card">
-          <h2>🎨 Imágenes</h2>
-          <p class="sub">Describí tus fotos (~$0.04 c/u)</p>
-          <div class="section-label">Mockup</div>
-          <div class="img-gen-grid" id="img-mockup-grid"></div>
-          <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos</div>
-          <div class="hero-foto-inputs">
-            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 1</div><input type="text" id="hero-desc-1" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-1" src="" onload="this.classList.add('loaded')"><span id="hero-ph-1" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
-            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 2</div><input type="text" id="hero-desc-2" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
-            <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 3</div><input type="text" id="hero-desc-3" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
-          </div>
-          <div style="text-align:center;margin-top:1rem">
-            <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar 3 fotos</button>
-            <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
-          </div>
-          <div class="section-label" style="margin-top:2rem">Mockups de Bonos</div>
-          <div id="bonos-preview-lc5"></div>
-          <div class="img-cost-note">💡 Podés saltear y editar el HTML después</div>
-          <div class="wiz-btns" style="margin-top:2rem">
-            <button class="btn btn-ghost" onclick="goLC4()">← Atrás</button>
-            <button class="btn btn-primary" onclick="generateLanding()">🚀 ¡Generar Landing!</button>
-          </div>
+        <div class="field" style="margin-top:1.5rem"><label>Texto CTA</label><input id="lc-cta" type="text" value="¡Quiero empezar ahora! →"></div>
+        <div class="field"><label>URL de compra</label><input id="lc-url" type="text" placeholder="https://hotmart.com/tu-producto"></div>
+        <div class="field"><label>Algo más (opcional)</label><textarea id="lc-extra" placeholder="Info adicional"></textarea></div>
+        <div class="wiz-btns"><button class="btn btn-ghost" onclick="goLC3()">← Atrás</button><button class="btn btn-primary" onclick="goLC5()">Crear Imágenes →</button></div>
+      </div></div>
+      <div id="lc5" style="display:none"><div class="wiz-card">
+        <h2>🎨 Imágenes</h2><p class="sub">Describí tus fotos (~$0.04 c/u)</p>
+        <div class="section-label">Mockup</div>
+        <div class="img-gen-grid" id="img-mockup-grid"></div>
+        <div class="section-label" style="margin-top:2rem">Hero — 3 Fotos</div>
+        <div class="hero-foto-inputs">
+          <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 1</div><input type="text" id="hero-desc-1" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-1" src="" onload="this.classList.add('loaded')"><span id="hero-ph-1" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
+          <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 2</div><input type="text" id="hero-desc-2" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-2" src="" onload="this.classList.add('loaded')"><span id="hero-ph-2" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
+          <div class="hero-foto-row"><div><div class="hero-foto-num">📷 Foto 3</div><input type="text" id="hero-desc-3" placeholder="Describí la escena" style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:var(--font-b);font-size:.82rem;outline:none;width:100%;margin-top:.4rem"></div><div class="hero-foto-preview"><img id="hero-prev-3" src="" onload="this.classList.add('loaded')"><span id="hero-ph-3" style="font-size:1.2rem;opacity:.3">🖼️</span></div></div>
         </div>
-      </div>
+        <div style="text-align:center;margin-top:1rem">
+          <button class="img-gen-btn generate" onclick="generateAllHero()" id="hero-gen-all-btn">✨ Generar 3 fotos</button>
+          <div class="img-gen-status" id="hero-status" style="justify-content:center;margin-top:.5rem"></div>
+        </div>
+        <div class="section-label" style="margin-top:2rem">Mockups de Bonos</div>
+        <div id="bonos-preview-lc5"></div>
+        <div class="img-cost-note">💡 Podés saltear y editar el HTML después</div>
+        <div class="wiz-btns" style="margin-top:2rem"><button class="btn btn-ghost" onclick="goLC4()">← Atrás</button><button class="btn btn-primary" onclick="generateLanding()">🚀 ¡Generar Landing!</button></div>
+      </div></div>
     </div>
   </div>
 </div>
@@ -404,13 +381,14 @@ const MODS=[
   {id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos con contenido descargable'},
   {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'HTML espectacular listo para usar',special:true},
   {id:'copies',icon:'✍️',name:'Copies AIDA',desc:'Emails, posts, stories y ads'},
-  {id:'creativos',icon:'🎨',name:'Creativos & Diseño',desc:'Briefs y prompts para IA'},
+  {id:'creativos',icon:'🎨',name:'Anuncios Publicitarios',desc:'3 anuncios en 3 tamaños listos para publicar'},
   {id:'trafico',icon:'📈',name:'Estrategia de Tráfico',desc:'Plan orgánico, paid y cronograma'},
 ];
 let projects=JSON.parse(localStorage.getItem('innova_projects')||'[]');
 let curProject={},lcConfig={},curResult='',curMod='';
 let selectedUrgency=new Set(),selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials=[],generatedImages={},heroImages=[],bonoImages=[];
+let creativosData=null;
 
 document.addEventListener('DOMContentLoaded',()=>{renderStars();renderDash();renderMods();initTestimonials();});
 
@@ -425,373 +403,231 @@ function goStep2(){const product=document.getElementById('f-product').value.trim
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
 function showModulesPanel(){['step1','step2','landing-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
-function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else generate(id);}
 
-// ── PARSER DE ÍTEMS ──
-function parsearItems(texto){
-  if(!texto||!texto.trim())return[];
-  const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};
-  const items=[];let contador=1;
-  const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);
-  for(const parte of partes){
-    const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);
-    if(match){
-      const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;
-      const tipo=tiposMap[tipoRaw]||tipoRaw;
-      for(let i=1;i<=Math.min(cantidad,20);i++){
-        items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});
-      }
-    } else {
-      items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});
-    }
+function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
+
+// ── MÓDULO CREATIVOS ──
+async function generateCreativos(){
+  curMod='creativos';
+  setModStatus('creativos','running','⟳ Generando...');
+  setLoading(true,'🎨 Creando anuncios con IA...');
+  document.getElementById('result-panel').style.display='block';
+  document.getElementById('r-title').textContent='🎨 Anuncios Publicitarios';
+  document.getElementById('r-acts').innerHTML='';
+  document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando copies y briefs...</div></div>`;
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'creativos',data:curProject})});
+    const json=await res.json();
+    if(json.error)throw new Error(json.error);
+    let parsed=json.content;
+    if(typeof parsed==='string'){try{parsed=JSON.parse(parsed.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());}catch(e){}}
+    if(!parsed||!parsed.anuncios)throw new Error('No se pudo parsear la respuesta');
+    creativosData=parsed;
+    setModStatus('creativos','done','✓ Listo');
+    setLoading(false);
+    renderCreativosPanel(parsed);
+    toast('¡Copies generados! Ahora generá los fondos 🎨','ok');
+  }catch(e){
+    setModStatus('creativos','pending','✕ Error');
+    setLoading(false);
+    document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;
+    toast('Error: '+e.message,'err');
   }
-  return items;
 }
 
-// ── EBOOK NIVEL GAMMA CON FOTOS ──
-async function generateEbook(){
-  curMod='ebook';
-  if(!curProject.items_parsed)curProject.items_parsed=parsearItems(curProject.contenido_especifico||'');
-  const items=curProject.items_parsed||[];
+function renderCreativosPanel(data){
+  const estiloClass={urgencia:'estilo-urgencia',aspiracional:'estilo-aspiracional',oferta:'estilo-oferta'};
   const c1=curProject.ebook_color1||'#7c3aed';
   const c2=curProject.ebook_color2||'#ff006e';
+  document.getElementById('r-body').innerHTML=`
+    <div style="margin-bottom:1.2rem;padding:.9rem 1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.82rem;color:var(--muted);line-height:1.6">
+      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Click en <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong> en cada anuncio para crear la imagen con DALL-E 3.<br>
+      <strong style="color:var(--violet2)">Paso 2:</strong> Elegí el tamaño (Stories/Post/Banner) y descargá como PNG listo para publicar.
+    </div>
+    <div class="creativos-grid" id="creativos-grid"></div>`;
+  const grid=document.getElementById('creativos-grid');
+  grid.innerHTML=data.anuncios.map((a,i)=>`
+    <div class="creativo-card" id="creativo-${i}">
+      <div class="creativo-header">
+        <span class="creativo-estilo ${estiloClass[a.estilo]||'estilo-urgencia'}">${a.estilo.toUpperCase()}</span>
+        <span style="font-size:.7rem;color:var(--muted)">Anuncio ${i+1}</span>
+      </div>
+      <div class="creativo-size-tabs">
+        <button class="size-tab active" onclick="switchSize(${i},'stories')" id="tab-${i}-stories">📱 Stories</button>
+        <button class="size-tab" onclick="switchSize(${i},'post')" id="tab-${i}-post">⬛ Post</button>
+        <button class="size-tab" onclick="switchSize(${i},'banner')" id="tab-${i}-banner">📺 Banner</button>
+      </div>
+      <div id="preview-wrap-${i}">${buildAdPreview(a,c1,c2,'stories',i)}</div>
+      <div class="creativo-body">
+        <div class="creativo-titulo">${a.titulo}</div>
+        <div class="creativo-sub">${a.subtitulo}</div>
+        <div class="creativo-actions">
+          <button class="creativo-btn gen-img" id="gen-btn-${i}" onclick="generateFondoCreativo(${i})">✨ Generar fondo</button>
+          <button class="creativo-btn dl-btn" id="dl-btn-${i}" onclick="descargarAnuncio(${i})" disabled>📥 Descargar PNG</button>
+        </div>
+        <div class="creativo-status" id="status-${i}">Fondo pendiente — generá la imagen primero</div>
+      </div>
+    </div>`).join('');
+}
 
-  setModStatus('ebook','running','⟳ Generando...');
-  const panel=document.getElementById('result-panel');
-  panel.style.display='block';
-  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-  document.getElementById('r-title').textContent='📘 Ebook Nivel Gamma';
-  document.getElementById('r-acts').innerHTML='';
-  document.getElementById('r-body').innerHTML=`<div class="ebook-progress"><div class="ebook-progress-title">✨ Construyendo tu ebook premium con fotos IA...</div><div class="cap-list" id="cap-list"><div class="cap-item running"><div class="cap-icon running">⟳</div><span>Generando estructura...</span></div></div></div>`;
+function buildAdPreview(a,c1,c2,size,idx){
+  const bgUrl=(creativosData&&creativosData._fondos&&creativosData._fondos[idx])?`url('${creativosData._fondos[idx]}')`:'none';
+  const heights={stories:'420px',post:'280px',banner:'160px'};
+  const h=heights[size]||'280px';
+  const ts={stories:'1.3rem',post:'1.1rem',banner:'.9rem'}[size]||'1.1rem';
+  const ss={stories:'.82rem',post:'.75rem',banner:'.68rem'}[size]||'.75rem';
+  const pd={stories:'1.4rem',post:'1.1rem',banner:'.9rem'}[size]||'1.1rem';
+  return `<div style="width:100%;height:${h};position:relative;overflow:hidden;background:#111">
+    <div style="position:absolute;inset:0;background:${bgUrl};background-size:cover;background-position:center"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.15) 100%)"></div>
+    <div style="position:absolute;inset:0;padding:${pd};display:flex;flex-direction:column;justify-content:flex-end;z-index:2">
+      <div style="display:inline-block;font-size:.52rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:.22rem .6rem;border-radius:100px;background:${c1};color:#fff;margin-bottom:.45rem;width:fit-content">${a.estilo.toUpperCase()}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:${ts};font-weight:800;color:#fff;text-transform:uppercase;line-height:1.1;margin-bottom:.3rem">${a.titulo}</div>
+      <div style="font-size:${ss};color:rgba(255,255,255,.85);line-height:1.4;margin-bottom:.35rem">${a.subtitulo}</div>
+      <div style="font-size:${ss};color:rgba(255,255,255,.65);margin-bottom:.5rem">${a.cuerpo}</div>
+      ${a.precio_tachado?`<div style="font-size:.6rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:.15rem">${a.precio_tachado}</div>`:''}
+      <div style="font-size:.85rem;font-weight:800;color:${c2};margin-bottom:.6rem">${a.precio}</div>
+      <div style="display:inline-block;background:${c1};color:#fff;font-size:${ss};font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:.5rem 1rem;border-radius:100px;width:fit-content">${a.cta}</div>
+    </div>
+  </div>`;
+}
 
+function switchSize(idx,size){
+  ['stories','post','banner'].forEach(s=>{const t=document.getElementById(`tab-${idx}-${s}`);if(t)t.classList.toggle('active',s===size);});
+  const wrap=document.getElementById(`preview-wrap-${idx}`);
+  if(!wrap||!creativosData)return;
+  const a=creativosData.anuncios[idx];
+  const c1=curProject.ebook_color1||'#7c3aed';
+  const c2=curProject.ebook_color2||'#ff006e';
+  wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
+}
+
+async function generateFondoCreativo(idx){
+  if(!creativosData||!creativosData.anuncios[idx])return;
+  const a=creativosData.anuncios[idx];
+  const btn=document.getElementById(`gen-btn-${idx}`);
+  const status=document.getElementById(`status-${idx}`);
+  btn.disabled=true;btn.textContent='⟳ Generando...';
+  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Generando con DALL-E 3... (~30 seg)</span>`;
   try{
-    // Paso 1: Índice
-    const r1=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_indice',data:curProject})});
-    const j1=await r1.json();
-    if(j1.error)throw new Error(j1.error);
-    const indice=j1.content;
-
-    const capList=document.getElementById('cap-list');
-    capList.innerHTML=`
-      <div class="cap-item done"><div class="cap-icon done">✓</div><span>✅ <strong>${indice.titulo_principal}</strong></span></div>
-      ${indice.capitulos.map(c=>`<div class="cap-item" id="cap-${c.numero}"><div class="cap-icon pending" id="cap-icon-${c.numero}">📄</div><span id="cap-txt-${c.numero}">Capítulo ${c.numero}: ${c.titulo}</span></div>`).join('')}
-      ${items.length?`<div class="cap-item section-header"><div class="cap-icon" style="background:rgba(124,58,237,.2);color:var(--violet2)">✦</div><span>📚 ${items.length} ítems + 📸 fotos IA</span></div>${items.map(it=>`<div class="cap-item" id="item-${it.numero}"><div class="cap-icon pending" id="item-icon-${it.numero}">📝</div><span id="item-txt-${it.numero}">${it.tipo} ${it.indice}/${it.total}: ${it.contexto}</span></div>`).join('')}`:''}
-      <div class="cap-item" id="cap-conclusion"><div class="cap-icon pending" id="cap-icon-conclusion">📄</div><span>Conclusión</span></div>`;
-
-    // Paso 2: Capítulos
-    const capitulosData=[];
-    for(const cap of indice.capitulos){
-      const el=document.getElementById(`cap-${cap.numero}`);const icon=document.getElementById(`cap-icon-${cap.numero}`);const txt=document.getElementById(`cap-txt-${cap.numero}`);
-      if(el)el.className='cap-item running';if(icon){icon.className='cap-icon running';icon.textContent='⟳';}if(txt)txt.textContent=`Generando: ${cap.titulo}...`;
-      const r2=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_capitulo',data:curProject,capitulo:cap})});
-      const j2=await r2.json();
-      capitulosData.push(j2.content);
-      if(el)el.className='cap-item done';if(icon){icon.className='cap-icon done';icon.textContent='✓';}if(txt)txt.textContent=`✅ Capítulo ${cap.numero}: ${cap.titulo}`;
-    }
-
-    // Paso 3: Ítems + foto en paralelo
-    const itemsData=[];
-    for(const it of items){
-      const el=document.getElementById(`item-${it.numero}`);const icon=document.getElementById(`item-icon-${it.numero}`);const txt=document.getElementById(`item-txt-${it.numero}`);
-      if(el)el.className='cap-item running';if(icon){icon.className='cap-icon running';icon.textContent='⟳';}
-      if(txt)txt.textContent=`Generando ${it.tipo} ${it.indice}/${it.total} + foto...`;
-
-      // Contenido e imagen en paralelo
-      const fotoPrompt=it.tipo==='receta'
-        ?`Professional food photography, ${it.contexto}, dark moody background, cinematic lighting, top view, restaurant quality plating, garnished beautifully, high end cuisine photography, no text, no words, no people`
-        :`Professional lifestyle photography, ${it.contexto}, dark moody studio background, cinematic lighting, high quality, no text, no words`;
-
-      const [r3,imgRes]=await Promise.all([
-        fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_item_html',data:curProject,item:it})}),
-        fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:fotoPrompt})})
-      ]);
-
-      const j3=await r3.json();
-      const imgJson=await imgRes.json();
-      const fotoUrl=imgJson.url||null;
-
-      itemsData.push({...j3.content,_tipo:it.tipo,_indice:it.indice,_foto:fotoUrl});
-
-      if(el)el.className='cap-item done';if(icon){icon.className='cap-icon done';icon.textContent='✓';}
-      if(txt)txt.textContent=`✅ ${it.tipo} ${it.indice}/${it.total}: ${j3.content?.titulo||it.contexto} ${fotoUrl?'📸':''}`;
-    }
-
-    // Conclusión
-    const concEl=document.getElementById('cap-conclusion');const concIcon=document.getElementById('cap-icon-conclusion');
-    if(concEl)concEl.className='cap-item done';if(concIcon){concIcon.className='cap-icon done';concIcon.textContent='✓';}
-
-    // Construir HTML Gamma
-    const htmlEbook=buildGammaEbook(indice,capitulosData,itemsData,c1,c2,curProject);
-    curResult=htmlEbook;
-    setModStatus('ebook','done','✓ Listo');
-    curProject.hasEbook=true;saveCur();
-
-    document.getElementById('r-acts').innerHTML=`
-      <button class="act-btn act-html" onclick="doDownloadHtml()">📥 Descargar Ebook HTML</button>
-      <button class="act-btn act-copy" onclick="doCopy()">📋 Copiar código</button>`;
-    document.getElementById('r-body').innerHTML=`
-      <div style="margin-bottom:1rem;padding:1rem 1.2rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;font-size:.85rem;color:var(--success)">
-        ✅ <strong>Ebook Gamma con fotos generado!</strong> ${indice.capitulos.length} capítulos + ${items.length} ítems con fotos IA
-        <br><span style="font-size:.75rem;opacity:.8;margin-top:.3rem;display:block">💡 Descargá el HTML → abrí en Chrome → botón "🖨️ PDF" flotante abajo a la derecha</span>
-      </div>`;
-    toast('¡Ebook Gamma listo! 🎉','ok');
-
-  }catch(e){setModStatus('ebook','pending','✕ Error');toast('Error: '+e.message,'err');console.error(e);}
+    const res=await fetch('/api/creativos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:a.prompt_fondo,size:'1080x1920'})});
+    const json=await res.json();
+    if(json.error)throw new Error(json.error);
+    if(!creativosData._fondos)creativosData._fondos={};
+    creativosData._fondos[idx]=json.url;
+    const activeTab=document.querySelector(`#creativo-${idx} .size-tab.active`);
+    const size=activeTab?(activeTab.textContent.includes('Stories')?'stories':activeTab.textContent.includes('Post')?'post':'banner'):'stories';
+    const wrap=document.getElementById(`preview-wrap-${idx}`);
+    const c1=curProject.ebook_color1||'#7c3aed';
+    const c2=curProject.ebook_color2||'#ff006e';
+    wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
+    btn.textContent='🔄 Regenerar';btn.disabled=false;
+    const dlBtn=document.getElementById(`dl-btn-${idx}`);
+    if(dlBtn)dlBtn.disabled=false;
+    status.innerHTML=`<span style="color:var(--success)">✓ Fondo listo — elegí tamaño y descargá como PNG</span>`;
+    toast(`Anuncio ${idx+1} con fondo listo 🎨`,'ok');
+  }catch(e){
+    btn.disabled=false;btn.textContent='✨ Generar fondo';
+    status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;
+    toast('Error al generar imagen 😓','err');
+  }
 }
 
-// ── BUILDER GAMMA EBOOK ──
-function buildGammaEbook(indice,capitulos,items,c1,c2,data){
-  const bg='#0f0f14';const bgCard='#1a1a24';
-
-  const portadaHTML=`
-  <div class="eb-page eb-cover" style="background:linear-gradient(135deg,${bg} 0%,#1a1030 50%,${bg} 100%)">
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,${c1}22,${c2}15)"></div>
-    <div style="position:relative;z-index:1;max-width:700px;padding:60px 40px;text-align:center">
-      <div style="display:inline-block;padding:.4rem 1.2rem;border-radius:100px;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;background:${c1}22;border:1px solid ${c1}44;color:${c1}">EBOOK PREMIUM</div>
-      <h1 style="font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;letter-spacing:-.02em;color:#fff">${indice.titulo_principal}</h1>
-      <p style="font-size:1.1rem;color:#aaa;max-width:500px;margin:0 auto 2.5rem;font-weight:300">${indice.subtitulo}</p>
-      <div style="height:2px;width:200px;margin:0 auto 2.5rem;border-radius:2px;background:linear-gradient(90deg,transparent,${c1},${c2},transparent)"></div>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border:1px solid ${c1}44;border-radius:100px;font-size:.82rem;color:#ccc">
-          <span style="color:${c1}">📖</span><span>${capitulos.length} Capítulos</span>
-        </div>
-        ${items.length?`<div style="display:flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border:1px solid ${c2}44;border-radius:100px;font-size:.82rem;color:#ccc"><span style="color:${c2}">📸</span><span>${items.length} ${items[0]?._tipo||'Ítems'} con fotos</span></div>`:''}
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border:1px solid #ffffff22;border-radius:100px;font-size:.82rem;color:#ccc"><span>⭐</span><span>Nivel Premium</span></div>
-      </div>
-    </div>
-  </div>`;
-
-  const introHTML=`
-  <div class="eb-page">
-    <div style="display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;padding:.3rem .8rem;border:1px solid ${c1}44;border-radius:100px;margin-bottom:1.5rem;color:${c1}">INTRODUCCIÓN</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:2rem;line-height:1.2;color:${c1}">Tu Transformación Comienza Aquí</h2>
-    <div>${indice.introduccion.split('\n\n').map(p=>`<p style="font-size:1.05rem;color:#c8c8d8;line-height:1.85;margin-bottom:1.5rem;font-weight:300">${p}</p>`).join('')}</div>
-  </div>`;
-
-  const capitulosHTML=capitulos.map((cap,idx)=>{
-    if(!cap||typeof cap==='string')return'';
-    const seccionesHTML=(cap.secciones||[]).map(sec=>`
-      <div style="margin-bottom:2.5rem">
-        <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:${c1}">${sec.subtitulo}</h3>
-        ${sec.contenido?`<div>${sec.contenido.split('\n').map(p=>p.trim()?`<p style="font-size:.95rem;color:#c0c0d0;line-height:1.8;margin-bottom:1rem">${p}</p>`:'').join('')}</div>`:''}
-        ${sec.bullets&&sec.bullets.length?`<div style="padding:1.2rem 1.5rem;border-radius:12px;margin-top:1rem;background:${c1}11;border-left:3px solid ${c1}"><ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">${sec.bullets.map(b=>`<li style="font-size:.92rem;color:#d0d0e0;padding-left:1rem;position:relative">→ ${b}</li>`).join('')}</ul></div>`:''}
-      </div>`).join('');
-    return `
-    <div class="eb-page">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:.75rem;color:${c1}55">CAPÍTULO ${idx+1}</div>
-      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:1.5rem;line-height:1.2;color:${c1}">${cap.titulo||indice.capitulos[idx]?.titulo||''}</h2>
-      ${cap.intro?`<p style="font-size:1.05rem;color:#aaa;margin-bottom:2.5rem;line-height:1.8;font-weight:300;border-left:3px solid #ffffff22;padding-left:1.2rem">${cap.intro}</p>`:''}
-      ${seccionesHTML}
-      ${cap.cierre?`<div style="padding:1.2rem 1.5rem;border-radius:0 12px 12px 0;margin-top:2rem;border-left:3px solid ${c2};background:${c2}11"><p style="font-size:.95rem;color:#c0c0d0;font-style:italic">${cap.cierre}</p></div>`:''}
-    </div>`;
-  }).join('');
-
-  const itemsHTML=items.map((it)=>{
-    if(!it)return'';
-    const ingredientes=it.ingredientes||it.materiales||[];
-    const pasos=it.pasos||[];
-    const infoExtra=it.info_extra||[];
-    const fotoUrl=it._foto||null;
-
-    return `
-    <div class="eb-page">
-      ${fotoUrl?`
-      <div style="width:100%;height:340px;border-radius:20px;margin-bottom:2rem;position:relative;overflow:hidden">
-        <img src="${fotoUrl}" alt="${it.titulo||''}" style="width:100%;height:100%;object-fit:cover;display:block">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,${bg} 100%)"></div>
-        <div style="position:absolute;bottom:1.5rem;left:1.5rem">
-          <div style="display:inline-block;padding:.4rem 1rem;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:3px;background:${c1}cc;color:#fff;margin-bottom:.5rem">${it._tipo?.toUpperCase()||'ÍTEM'} ${it._indice}</div>
-        </div>
-      </div>`:`
-      <div style="display:inline-block;padding:.4rem 1rem;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:3px;margin-bottom:1rem;background:${c1}22;color:${c1};border:1px solid ${c1}44">${it._tipo?.toUpperCase()||'ÍTEM'} ${it._indice}</div>`}
-      <h2 style="font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;margin-bottom:.75rem;line-height:1.2;color:#fff">${it.titulo||''}</h2>
-      <p style="font-size:1rem;color:#aaa;margin-bottom:1.5rem;line-height:1.7;font-weight:300;max-width:600px">${it.descripcion||''}</p>
-      ${(it.tiempo||it.duracion||it.porciones||it.nivel||it.dificultad)?`
-      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
-        ${it.tiempo?`<span style="display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;background:${c1}22;border:1px solid ${c1}44;color:${c1}">⏱ ${it.tiempo}</span>`:''}
-        ${it.duracion?`<span style="display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;background:${c1}22;border:1px solid ${c1}44;color:${c1}">⏱ ${it.duracion}</span>`:''}
-        ${it.porciones?`<span style="display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;background:${c2}22;border:1px solid ${c2}44;color:${c2}">👥 ${it.porciones}</span>`:''}
-        ${it.dificultad?`<span style="display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;background:#ffffff11;border:1px solid #ffffff22;color:#aaa">⚡ ${it.dificultad}</span>`:''}
-        ${it.nivel?`<span style="display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;background:#ffffff11;border:1px solid #ffffff22;color:#aaa">📊 ${it.nivel}</span>`:''}
-      </div>`:''}
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
-        <div style="padding:1.5rem;border-radius:16px;background:${bgCard};border:1px solid ${c1}22">
-          <div style="font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.2rem;color:${c1}">${it._tipo==='receta'?'Ingredientes':'Materiales'}</div>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem">
-            ${ingredientes.map(ing=>`<li style="display:flex;align-items:flex-start;gap:.7rem;font-size:.9rem;color:#c8c8d8"><span style="width:6px;height:6px;border-radius:50%;margin-top:.45rem;flex-shrink:0;background:${c1};display:inline-block"></span>${ing}</li>`).join('')}
-          </ul>
-        </div>
-        <div style="padding:1.5rem;border-radius:16px;background:${bgCard};border:1px solid ${c2}22">
-          <div style="font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.2rem;color:${c2}">Paso a Paso</div>
-          <ol style="list-style:none;display:flex;flex-direction:column;gap:.9rem">
-            ${pasos.map((paso,i)=>`<li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.9rem;color:#c8c8d8;line-height:1.6"><span style="width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;flex-shrink:0;margin-top:.1rem;background:${c2};color:#fff">${i+1}</span><span>${paso}</span></li>`).join('')}
-          </ol>
-        </div>
-      </div>
-      ${infoExtra.length?`
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;background:${bgCard};border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;text-align:center">
-        ${infoExtra.map(m=>`<div style="display:flex;flex-direction:column;gap:.3rem"><div style="font-size:1.6rem;font-weight:800;line-height:1;color:${c1}">${m.valor}</div><div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:2px">${m.label}</div></div>`).join('')}
-      </div>`:''}
-      ${it.tip?`
-      <div style="padding:1.2rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;background:${c1}15;border:1px solid ${c1}33;border-left:4px solid ${c1}">
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;color:${c1}">💡 Tip Profesional</div>
-        <p style="font-size:.9rem;color:#c8c8d8;line-height:1.7">${it.tip}</p>
-      </div>`:''}
-      ${it.presentacion||it.resultado_esperado?`
-      <div style="padding-top:1rem;margin-top:1rem;border-top:1px solid #ffffff11">
-        <strong style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:.5rem;color:#aaa">${it._tipo==='receta'?'Presentación sugerida:':'Resultado esperado:'}</strong>
-        <p style="font-size:.9rem;color:#aaa;line-height:1.7">${it.presentacion||it.resultado_esperado}</p>
-      </div>`:''}
-    </div>`;
-  }).join('');
-
-  const conclusionHTML=`
-  <div class="eb-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-    <div style="display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;padding:.3rem .8rem;border:1px solid ${c2}44;border-radius:100px;margin-bottom:1.5rem;color:${c2}">CONCLUSIÓN</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:2rem;line-height:1.2;color:${c2}">¡Es tu Momento!</h2>
-    <div style="max-width:600px">${indice.conclusion.split('\n\n').map(p=>`<p style="font-size:1.05rem;color:#c8c8d8;line-height:1.85;margin-bottom:1.5rem;font-weight:300">${p}</p>`).join('')}</div>
-    <div style="margin-top:3rem;padding:2.5rem;border-radius:20px;max-width:500px;background:linear-gradient(135deg,${c1}22,${c2}15);border:1px solid ${c1}33">
-      <p style="font-size:1.1rem;font-weight:600;color:#fff">${data.product}</p>
-      <p style="color:#aaa;margin-top:.5rem">Creado con INNOVA FACTORY · by Pao Peressotti</p>
-    </div>
-  </div>`;
-
-  return `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${indice.titulo_principal}</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px}
-body{font-family:'Sora',sans-serif;background:${bg};color:#e8e8f0;line-height:1.7;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.eb-page{min-height:100vh;padding:80px 10%;position:relative;border-bottom:1px solid #ffffff08;page-break-after:always}
-.eb-cover{display:flex;align-items:center;justify-content:center;text-align:center;padding:0;overflow:hidden;position:relative}
-.eb-fab{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.75rem;align-items:flex-end}
-.eb-fab-btn{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .25s;white-space:nowrap}
-.eb-fab-btn:hover{transform:scale(1.05)}
-@media print{
-  .eb-fab{display:none!important}
-  .eb-page{padding:60px 8%;page-break-after:always}
-  body{background:${bg}!important}
-  img{max-width:100%!important}
+async function descargarAnuncio(idx){
+  if(!creativosData||!creativosData.anuncios[idx])return;
+  const a=creativosData.anuncios[idx];
+  const fondoUrl=creativosData._fondos&&creativosData._fondos[idx];
+  const c1=curProject.ebook_color1||'#7c3aed';
+  const c2=curProject.ebook_color2||'#ff006e';
+  const activeTab=document.querySelector(`#creativo-${idx} .size-tab.active`);
+  const sizeKey=activeTab?(activeTab.textContent.includes('Stories')?'stories':activeTab.textContent.includes('Post')?'post':'banner'):'stories';
+  const dims={stories:{w:1080,h:1920,label:'1080x1920'},post:{w:1080,h:1080,label:'1080x1080'},banner:{w:1200,h:628,label:'1200x628'}};
+  const dim=dims[sizeKey];
+  const status=document.getElementById(`status-${idx}`);
+  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Preparando PNG...</span>`;
+  try{
+    const canvas=document.createElement('canvas');
+    canvas.width=dim.w;canvas.height=dim.h;
+    const ctx=canvas.getContext('2d');
+    if(fondoUrl){
+      const img=new Image();img.crossOrigin='anonymous';
+      await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=fondoUrl;});
+      ctx.drawImage(img,0,0,dim.w,dim.h);
+    }else{ctx.fillStyle='#111111';ctx.fillRect(0,0,dim.w,dim.h);}
+    const grad=ctx.createLinearGradient(0,0,0,dim.h);
+    grad.addColorStop(0,'rgba(0,0,0,0.1)');grad.addColorStop(0.45,'rgba(0,0,0,0.45)');grad.addColorStop(1,'rgba(0,0,0,0.93)');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,dim.w,dim.h);
+    const pad=Math.round(dim.w*0.08);
+    const titleSize=Math.round(dim.h*(sizeKey==='banner'?0.11:0.065));
+    const subSize=Math.round(dim.h*(sizeKey==='banner'?0.075:0.037));
+    let y=Math.round(dim.h*0.6);
+    // Badge
+    const badgeH=Math.round(subSize*1.4);
+    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,Math.round(dim.w*0.22),badgeH,badgeH/2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.font=`700 ${Math.round(badgeH*0.55)}px sans-serif`;ctx.textBaseline='middle';
+    ctx.fillText(a.estilo.toUpperCase(),pad+Math.round(badgeH*0.4),y+badgeH/2);
+    y+=badgeH+Math.round(subSize*0.8);
+    // Título
+    ctx.fillStyle='#ffffff';ctx.font=`800 ${titleSize}px sans-serif`;ctx.textBaseline='top';
+    const titleWords=a.titulo.split(' ');let line='';
+    for(const w of titleWords){const test=line+w+' ';if(ctx.measureText(test).width>dim.w-pad*2&&line){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);line=w+' ';}else line=test;}
+    if(line.trim()){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);}
+    y+=Math.round(subSize*0.4);
+    // Subtítulo
+    ctx.fillStyle='rgba(255,255,255,0.88)';ctx.font=`400 ${subSize}px sans-serif`;
+    ctx.fillText(a.subtitulo.substring(0,60),pad,y);y+=Math.round(subSize*1.6);
+    // Cuerpo
+    ctx.fillStyle='rgba(255,255,255,0.62)';ctx.font=`300 ${Math.round(subSize*0.85)}px sans-serif`;
+    ctx.fillText(a.cuerpo.substring(0,70),pad,y);y+=Math.round(subSize*1.8);
+    // Precio tachado
+    if(a.precio_tachado){ctx.fillStyle='rgba(255,255,255,0.38)';ctx.font=`400 ${Math.round(subSize*0.78)}px sans-serif`;ctx.fillText(a.precio_tachado,pad,y);y+=Math.round(subSize*1.2);}
+    // Precio
+    ctx.fillStyle=c2;ctx.font=`800 ${Math.round(subSize*1.3)}px sans-serif`;
+    ctx.fillText(a.precio,pad,y);y+=Math.round(subSize*2.2);
+    // CTA
+    const ctaText=a.cta.toUpperCase();ctx.font=`800 ${subSize}px sans-serif`;
+    const ctaW=ctx.measureText(ctaText).width+Math.round(subSize*2.2);const ctaH=Math.round(subSize*1.9);
+    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,ctaW,ctaH,ctaH/2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.textBaseline='middle';ctx.fillText(ctaText,pad+Math.round(subSize*1.1),y+ctaH/2);
+    canvas.toBlob(blob=>{
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a');link.href=url;
+      link.download=`anuncio_${idx+1}_${a.estilo}_${dim.label}.png`;link.click();
+      URL.revokeObjectURL(url);
+      status.innerHTML=`<span style="color:var(--success)">✓ Descargado: anuncio_${idx+1}_${a.estilo}_${dim.label}.png</span>`;
+      toast(`Anuncio ${idx+1} descargado 📥`,'ok');
+    },'image/png');
+  }catch(e){status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;toast('Error al descargar 😓','err');}
 }
-@media(max-width:700px){
-  .eb-page{padding:40px 6%}
-  .eb-grid{grid-template-columns:1fr!important}
-  .eb-macros{grid-template-columns:repeat(2,1fr)!important}
-}
-</style>
-</head>
-<body>
-${portadaHTML}
-${introHTML}
-${capitulosHTML}
-${items.length?`
-<div class="eb-page" style="display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,${c1}22,${c2}15)">
-  <div>
-    <div style="display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;padding:.3rem .8rem;border:1px solid ${c1}44;border-radius:100px;margin-bottom:1.5rem;color:${c1}">CONTENIDO ESPECÍFICO</div>
-    <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:#fff;margin-bottom:1rem">Las ${items.length} ${items[0]?._tipo?.charAt(0).toUpperCase()+(items[0]?._tipo?.slice(1)||'')||'Ítems'}</h2>
-    <p style="color:#aaa;font-size:1rem;max-width:500px">Cada una desarrollada con todos los detalles, fotos y tips profesionales</p>
-  </div>
-</div>
-${itemsHTML}`:''}
-${conclusionHTML}
 
-<!-- BOTÓN PDF FLOTANTE -->
-<div class="eb-fab">
-  <button class="eb-fab-btn" onclick="window.print()" style="background:linear-gradient(135deg,${c1},${c2});color:#fff;box-shadow:0 8px 24px ${c1}44">
-    🖨️ Descargar PDF
-  </button>
-  <button class="eb-fab-btn" onclick="document.body.style.background='#fff';document.body.style.color='#111';this.textContent='↩ Volver oscuro';this.onclick=function(){document.body.style.background='${bg}';document.body.style.color='#e8e8f0';this.textContent='☀️ Modo claro'}" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);font-size:.75rem;padding:.6rem 1.2rem">
-    ☀️ Modo claro
-  </button>
-</div>
+// ── EBOOK ──
+async function generateEbook(){curMod='ebook';if(!curProject.items_parsed)curProject.items_parsed=parsearItems(curProject.contenido_especifico||'');const items=curProject.items_parsed||[];const c1=curProject.ebook_color1||'#7c3aed';const c2=curProject.ebook_color2||'#ff006e';setModStatus('ebook','running','⟳ Generando...');const panel=document.getElementById('result-panel');panel.style.display='block';panel.scrollIntoView({behavior:'smooth',block:'nearest'});document.getElementById('r-title').textContent='📘 Ebook Nivel Gamma';document.getElementById('r-acts').innerHTML='';document.getElementById('r-body').innerHTML=`<div class="ebook-progress"><div class="ebook-progress-title">✨ Construyendo tu ebook premium con fotos IA...</div><div class="cap-list" id="cap-list"><div class="cap-item running"><div class="cap-icon running">⟳</div><span>Generando estructura...</span></div></div></div>`;
+try{const r1=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_indice',data:curProject})});const j1=await r1.json();if(j1.error)throw new Error(j1.error);const indice=j1.content;const capList=document.getElementById('cap-list');capList.innerHTML=`<div class="cap-item done"><div class="cap-icon done">✓</div><span>✅ <strong>${indice.titulo_principal}</strong></span></div>${indice.capitulos.map(c=>`<div class="cap-item" id="cap-${c.numero}"><div class="cap-icon pending" id="cap-icon-${c.numero}">📄</div><span id="cap-txt-${c.numero}">Capítulo ${c.numero}: ${c.titulo}</span></div>`).join('')}${items.length?`<div class="cap-item section-header"><div class="cap-icon" style="background:rgba(124,58,237,.2);color:var(--violet2)">✦</div><span>📚 ${items.length} ítems + 📸 fotos IA</span></div>${items.map(it=>`<div class="cap-item" id="item-${it.numero}"><div class="cap-icon pending" id="item-icon-${it.numero}">📝</div><span id="item-txt-${it.numero}">${it.tipo} ${it.indice}/${it.total}: ${it.contexto}</span></div>`).join('')}`:''}<div class="cap-item" id="cap-conclusion"><div class="cap-icon pending" id="cap-icon-conclusion">📄</div><span>Conclusión</span></div>`;
+const capitulosData=[];for(const cap of indice.capitulos){const el=document.getElementById(`cap-${cap.numero}`);const icon=document.getElementById(`cap-icon-${cap.numero}`);const txt=document.getElementById(`cap-txt-${cap.numero}`);if(el)el.className='cap-item running';if(icon){icon.className='cap-icon running';icon.textContent='⟳';}if(txt)txt.textContent=`Generando: ${cap.titulo}...`;const r2=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_capitulo',data:curProject,capitulo:cap})});const j2=await r2.json();capitulosData.push(j2.content);if(el)el.className='cap-item done';if(icon){icon.className='cap-icon done';icon.textContent='✓';}if(txt)txt.textContent=`✅ Capítulo ${cap.numero}: ${cap.titulo}`;}
+const itemsData=[];for(const it of items){const el=document.getElementById(`item-${it.numero}`);const icon=document.getElementById(`item-icon-${it.numero}`);const txt=document.getElementById(`item-txt-${it.numero}`);if(el)el.className='cap-item running';if(icon){icon.className='cap-icon running';icon.textContent='⟳';}if(txt)txt.textContent=`Generando ${it.tipo} ${it.indice}/${it.total} + foto...`;const fotoPrompt=it.tipo==='receta'?`Professional food photography, ${it.contexto}, dark moody background, cinematic lighting, top view, restaurant quality plating, no text, no words, no people`:`Professional lifestyle photography, ${it.contexto}, dark moody studio background, cinematic lighting, high quality, no text, no words`;const [r3,imgRes]=await Promise.all([fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'ebook_item_html',data:curProject,item:it})}),fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:fotoPrompt})})]);const j3=await r3.json();const imgJson=await imgRes.json();const fotoUrl=imgJson.url||null;itemsData.push({...j3.content,_tipo:it.tipo,_indice:it.indice,_foto:fotoUrl});if(el)el.className='cap-item done';if(icon){icon.className='cap-icon done';icon.textContent='✓';}if(txt)txt.textContent=`✅ ${it.tipo} ${it.indice}/${it.total}: ${j3.content?.titulo||it.contexto} ${fotoUrl?'📸':''}`;}
+const concEl=document.getElementById('cap-conclusion');const concIcon=document.getElementById('cap-icon-conclusion');if(concEl)concEl.className='cap-item done';if(concIcon){concIcon.className='cap-icon done';concIcon.textContent='✓';}
+const htmlEbook=buildGammaEbook(indice,capitulosData,itemsData,c1,c2,curProject);curResult=htmlEbook;setModStatus('ebook','done','✓ Listo');curProject.hasEbook=true;saveCur();document.getElementById('r-acts').innerHTML=`<button class="act-btn act-html" onclick="doDownloadHtml()">📥 Descargar Ebook HTML</button><button class="act-btn act-copy" onclick="doCopy()">📋 Copiar código</button>`;document.getElementById('r-body').innerHTML=`<div style="margin-bottom:1rem;padding:1rem 1.2rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;font-size:.85rem;color:var(--success)">✅ <strong>Ebook Gamma listo!</strong> ${indice.capitulos.length} capítulos + ${items.length} ítems con fotos IA<br><span style="font-size:.75rem;opacity:.8;margin-top:.3rem;display:block">💡 Descargá el HTML → abrí en Chrome → botón "🖨️ PDF" flotante</span></div>`;toast('¡Ebook Gamma listo! 🎉','ok');}catch(e){setModStatus('ebook','pending','✕ Error');toast('Error: '+e.message,'err');console.error(e);}}
 
-</body>
-</html>`;}
+function buildGammaEbook(indice,capitulos,items,c1,c2,data){const bg='#0f0f14';const bgCard='#1a1a24';const portadaHTML=`<div class="eb-page eb-cover" style="background:linear-gradient(135deg,${bg} 0%,#1a1030 50%,${bg} 100%)"><div style="position:absolute;inset:0;background:linear-gradient(135deg,${c1}22,${c2}15)"></div><div style="position:relative;z-index:1;max-width:700px;padding:60px 40px;text-align:center"><div style="display:inline-block;padding:.4rem 1.2rem;border-radius:100px;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;background:${c1}22;border:1px solid ${c1}44;color:${c1}">EBOOK PREMIUM</div><h1 style="font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;color:#fff">${indice.titulo_principal}</h1><p style="font-size:1.1rem;color:#aaa;max-width:500px;margin:0 auto 2.5rem;font-weight:300">${indice.subtitulo}</p><div style="height:2px;width:200px;margin:0 auto 2.5rem;border-radius:2px;background:linear-gradient(90deg,transparent,${c1},${c2},transparent)"></div></div></div>`;
+const introHTML=`<div class="eb-page"><div style="display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;padding:.3rem .8rem;border:1px solid ${c1}44;border-radius:100px;margin-bottom:1.5rem;color:${c1}">INTRODUCCIÓN</div><h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:2rem;color:${c1}">Tu Transformación Comienza Aquí</h2><div>${indice.introduccion.split('\n\n').map(p=>`<p style="font-size:1.05rem;color:#c8c8d8;line-height:1.85;margin-bottom:1.5rem;font-weight:300">${p}</p>`).join('')}</div></div>`;
+const capitulosHTML=capitulos.map((cap,idx)=>{if(!cap||typeof cap==='string')return'';const seccionesHTML=(cap.secciones||[]).map(sec=>`<div style="margin-bottom:2.5rem"><h3 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:${c1}">${sec.subtitulo}</h3>${sec.contenido?`<div>${sec.contenido.split('\n').map(p=>p.trim()?`<p style="font-size:.95rem;color:#c0c0d0;line-height:1.8;margin-bottom:1rem">${p}</p>`:'').join('')}</div>`:''}${sec.bullets&&sec.bullets.length?`<div style="padding:1.2rem 1.5rem;border-radius:12px;margin-top:1rem;background:${c1}11;border-left:3px solid ${c1}"><ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">${sec.bullets.map(b=>`<li style="font-size:.92rem;color:#d0d0e0;padding-left:1rem">→ ${b}</li>`).join('')}</ul></div>`:''}</div>`).join('');return`<div class="eb-page"><div style="font-size:.7rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:.75rem;color:${c1}55">CAPÍTULO ${idx+1}</div><h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:1.5rem;color:${c1}">${cap.titulo||indice.capitulos[idx]?.titulo||''}</h2>${cap.intro?`<p style="font-size:1.05rem;color:#aaa;margin-bottom:2.5rem;line-height:1.8;font-weight:300;border-left:3px solid #ffffff22;padding-left:1.2rem">${cap.intro}</p>`:''}${seccionesHTML}${cap.cierre?`<div style="padding:1.2rem 1.5rem;border-radius:0 12px 12px 0;margin-top:2rem;border-left:3px solid ${c2};background:${c2}11"><p style="font-size:.95rem;color:#c0c0d0;font-style:italic">${cap.cierre}</p></div>`:''}</div>`;}).join('');
+const itemsHTML=items.map((it)=>{if(!it)return'';const ingredientes=it.ingredientes||it.materiales||[];const pasos=it.pasos||[];const infoExtra=it.info_extra||[];const fotoUrl=it._foto||null;return`<div class="eb-page">${fotoUrl?`<div style="width:100%;height:340px;border-radius:20px;margin-bottom:2rem;position:relative;overflow:hidden"><img src="${fotoUrl}" alt="${it.titulo||''}" style="width:100%;height:100%;object-fit:cover;display:block"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,${bg} 100%)"></div><div style="position:absolute;bottom:1.5rem;left:1.5rem"><div style="display:inline-block;padding:.4rem 1rem;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:3px;background:${c1}cc;color:#fff">${it._tipo?.toUpperCase()||'ÍTEM'} ${it._indice}</div></div></div>`:`<div style="display:inline-block;padding:.4rem 1rem;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:3px;margin-bottom:1rem;background:${c1}22;color:${c1};border:1px solid ${c1}44">${it._tipo?.toUpperCase()||'ÍTEM'} ${it._indice}</div>`}<h2 style="font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;margin-bottom:.75rem;color:#fff">${it.titulo||''}</h2><p style="font-size:1rem;color:#aaa;margin-bottom:1.5rem;line-height:1.7;font-weight:300">${it.descripcion||''}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem"><div style="padding:1.5rem;border-radius:16px;background:${bgCard};border:1px solid ${c1}22"><div style="font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.2rem;color:${c1}">${it._tipo==='receta'?'Ingredientes':'Materiales'}</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem">${ingredientes.map(ing=>`<li style="display:flex;align-items:flex-start;gap:.7rem;font-size:.9rem;color:#c8c8d8"><span style="width:6px;height:6px;border-radius:50%;margin-top:.45rem;flex-shrink:0;background:${c1};display:inline-block"></span>${ing}</li>`).join('')}</ul></div><div style="padding:1.5rem;border-radius:16px;background:${bgCard};border:1px solid ${c2}22"><div style="font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.2rem;color:${c2}">Paso a Paso</div><ol style="list-style:none;display:flex;flex-direction:column;gap:.9rem">${pasos.map((paso,i)=>`<li style="display:flex;align-items:flex-start;gap:.75rem;font-size:.9rem;color:#c8c8d8;line-height:1.6"><span style="width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;flex-shrink:0;margin-top:.1rem;background:${c2};color:#fff">${i+1}</span><span>${paso}</span></li>`).join('')}</ol></div></div>${infoExtra.length?`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;background:${bgCard};border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;text-align:center">${infoExtra.map(m=>`<div><div style="font-size:1.6rem;font-weight:800;color:${c1}">${m.valor}</div><div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:2px">${m.label}</div></div>`).join('')}</div>`:''
+}${it.tip?`<div style="padding:1.2rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;background:${c1}15;border-left:4px solid ${c1}"><div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;color:${c1}">💡 Tip Profesional</div><p style="font-size:.9rem;color:#c8c8d8;line-height:1.7">${it.tip}</p></div>`:''}</div>`;}).join('');
+const conclusionHTML=`<div class="eb-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:2rem;color:${c2}">¡Es tu Momento!</h2><div style="max-width:600px">${indice.conclusion.split('\n\n').map(p=>`<p style="font-size:1.05rem;color:#c8c8d8;line-height:1.85;margin-bottom:1.5rem;font-weight:300">${p}</p>`).join('')}</div><div style="margin-top:3rem;padding:2.5rem;border-radius:20px;max-width:500px;background:linear-gradient(135deg,${c1}22,${c2}15);border:1px solid ${c1}33"><p style="font-size:1.1rem;font-weight:600;color:#fff">${data.product}</p><p style="color:#aaa;margin-top:.5rem">Creado con INNOVA FACTORY · by Pao Peressotti</p></div></div>`;
+return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${indice.titulo_principal}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:${bg};color:#e8e8f0;line-height:1.7;-webkit-print-color-adjust:exact;print-color-adjust:exact}.eb-page{min-height:100vh;padding:80px 10%;position:relative;border-bottom:1px solid #ffffff08;page-break-after:always}.eb-cover{display:flex;align-items:center;justify-content:center;text-align:center;padding:0;overflow:hidden;position:relative}.eb-fab{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.75rem;align-items:flex-end}.eb-fab-btn{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}@media print{.eb-fab{display:none!important}.eb-page{padding:60px 8%}}@media(max-width:700px){.eb-page{padding:40px 6%}}</style></head><body>${portadaHTML}${introHTML}${capitulosHTML}${items.length?`<div class="eb-page" style="display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,${c1}22,${c2}15)"><div><h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:#fff;margin-bottom:1rem">Las ${items.length} ${items[0]?._tipo?.charAt(0).toUpperCase()+(items[0]?._tipo?.slice(1)||'')||'Ítems'}</h2></div></div>${itemsHTML}`:''}${conclusionHTML}<div class="eb-fab"><button class="eb-fab-btn" onclick="window.print()" style="background:linear-gradient(135deg,${c1},${c2});color:#fff">🖨️ Descargar PDF</button></div></body></html>`;}
 
 // ── BONOS ──
-async function generateBonos(){
-  curMod='bonos';setModStatus('bonos','running','⟳ Generando...');setLoading(true,'Generando bonos...');
-  document.getElementById('result-panel').style.display='block';
-  document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando bonos...</div></div>`;
-  try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bonos',data:curProject})});
-    const json=await res.json();if(json.error)throw new Error(json.error);
-    if(json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();}
-    setModStatus('bonos','done','✓ Listo');setLoading(false);
-    document.getElementById('r-title').textContent='🎁 Pack de Bonos';
-    document.getElementById('r-acts').innerHTML='';
-    const bonos=curProject.bonos||[];
-    document.getElementById('r-body').innerHTML=`
-      <div style="margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">✅ <strong>${bonos.length} bonos generados!</strong> Click para generar el contenido completo.</div>
-      ${curProject.bonos_frase?`<div style="text-align:center;font-size:.9rem;font-style:italic;color:var(--fuchsia2);margin-bottom:1.5rem">"${curProject.bonos_frase}"</div>`:''}
-      <div class="bonos-grid-display">${bonos.map((b,i)=>`<div class="bono-display-card"><div class="bono-display-emoji">${b.emoji||'🎁'}</div><div class="bono-display-num">BONO ${i+1}</div><div class="bono-display-nombre">${b.nombre}</div><div class="bono-display-desc">${b.descripcion}</div><div class="bono-display-precio">${b.precio_original}</div><div class="bono-display-gratis">HOY GRATIS</div><button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar</button><div class="bono-display-status" id="bono-dl-status-${i}"></div></div>`).join('')}</div>
-      ${curProject.bonos_valor?`<div style="text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Valor total: <strong style="color:var(--success)">${curProject.bonos_valor}</strong></div>`:''}`;
-    curResult=json.content;
-    toast('¡Bonos generados! 🎁','ok');
-  }catch(e){setModStatus('bonos','pending','✕ Error');setLoading(false);toast('Error 😓','err');}
-}
+async function generateBonos(){curMod='bonos';setModStatus('bonos','running','⟳ Generando...');setLoading(true,'Generando bonos...');document.getElementById('result-panel').style.display='block';document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando bonos...</div></div>`;
+try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bonos',data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);if(json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();}setModStatus('bonos','done','✓ Listo');setLoading(false);document.getElementById('r-title').textContent='🎁 Pack de Bonos';document.getElementById('r-acts').innerHTML='';const bonos=curProject.bonos||[];document.getElementById('r-body').innerHTML=`<div style="margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">✅ <strong>${bonos.length} bonos generados!</strong></div>${curProject.bonos_frase?`<div style="text-align:center;font-size:.9rem;font-style:italic;color:var(--fuchsia2);margin-bottom:1.5rem">"${curProject.bonos_frase}"</div>`:''}<div class="bonos-grid-display">${bonos.map((b,i)=>`<div class="bono-display-card"><div class="bono-display-emoji">${b.emoji||'🎁'}</div><div class="bono-display-num">BONO ${i+1}</div><div class="bono-display-nombre">${b.nombre}</div><div class="bono-display-desc">${b.descripcion}</div><div class="bono-display-precio">${b.precio_original}</div><div class="bono-display-gratis">HOY GRATIS</div><button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar</button><div class="bono-display-status" id="bono-dl-status-${i}"></div></div>`).join('')}</div>${curProject.bonos_valor?`<div style="text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Valor total: <strong style="color:var(--success)">${curProject.bonos_valor}</strong></div>`:''}`;curResult=json.content;toast('¡Bonos generados! 🎁','ok');}catch(e){setModStatus('bonos','pending','✕ Error');setLoading(false);toast('Error 😓','err');}}
 
-async function generateAndDownloadBono(idx){
-  const bono=curProject.bonos[idx];if(!bono)return;
-  const btn=document.getElementById(`bono-dl-btn-${idx}`);const status=document.getElementById(`bono-dl-status-${idx}`);
-  btn.disabled=true;btn.textContent='⟳ Generando...';
-  if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando...`;
-  try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_contenido',data:curProject,bono_idx:idx})});
-    const json=await res.json();if(json.error)throw new Error(json.error);
-    const c1=curProject.ebook_color1||'#7c3aed';const c2=curProject.ebook_color2||'#ff006e';
-    const bonoHtml=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${bono.nombre}</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;padding:60px 10%;line-height:1.7;-webkit-print-color-adjust:exact}
-.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}
-.fab button{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;background:linear-gradient(135deg,${c1},${c2});color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
-h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin-bottom:.75rem;line-height:1.2}
-h2{font-size:1.4rem;font-weight:700;color:${c1};margin:2rem 0 .75rem}
-h3{font-size:1.1rem;font-weight:600;color:${c2};margin:1.5rem 0 .5rem}
-p{font-size:.95rem;color:#c8c8d8;margin-bottom:1rem;line-height:1.8}
-ul,ol{padding-left:1.5rem;margin-bottom:1rem}
-li{color:#c8c8d8;margin-bottom:.4rem;font-size:.9rem}
-strong{color:#fff}
-.cover{min-height:40vh;display:flex;align-items:center;padding:60px 0;border-bottom:1px solid ${c1}33;margin-bottom:3rem}
-.tag{display:inline-block;padding:.3rem .9rem;background:${c1}22;border:1px solid ${c1}44;color:${c1};border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}
-.footer{margin-top:4rem;padding-top:2rem;border-top:1px solid #ffffff11;text-align:center;color:#555;font-size:.75rem}
-@media print{.fab{display:none!important}}
-</style></head><body>
-<div class="cover"><div><div class="tag">BONO ${idx+1}</div><h1>${bono.nombre}</h1><p style="font-size:1rem;color:#aaa;font-weight:300;max-width:600px">${bono.descripcion}</p></div></div>
-<div>${(json.content||'').split('\n').map(l=>{if(!l.trim())return'<br>';if(l.startsWith('## '))return`<h2>${l.replace('## ','')}</h2>`;if(l.startsWith('# '))return`<h2>${l.replace('# ','')}</h2>`;if(l.startsWith('### '))return`<h3>${l.replace('### ','')}</h3>`;if(l.startsWith('- ')||l.startsWith('* '))return`<li>${l.replace(/^[-*]\s/,'')}</li>`;return`<p>${l.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</p>`;}).join('')}</div>
-<div class="footer">Creado con INNOVA FACTORY · by Pao Peressotti</div>
-<div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div>
-</body></html>`;
-    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bonoHtml],{type:'text/html'}));a.download=`bono_${idx+1}_${bono.nombre.replace(/\s+/g,'_').substring(0,30)}.html`;a.click();
-    btn.textContent='✅ Descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';
-    if(status)status.innerHTML=`<span style="color:var(--success)">✓ Abrí en Chrome → botón PDF</span>`;
-    toast(`Bono ${idx+1} listo 📥`,'ok');
-  }catch(e){btn.disabled=false;btn.textContent='📥 Generar y descargar';if(status)status.innerHTML=`<span style="color:#ef4444">Error</span>`;toast('Error 😓','err');}
-}
+async function generateAndDownloadBono(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-dl-btn-${idx}`);const status=document.getElementById(`bono-dl-status-${idx}`);btn.disabled=true;btn.textContent='⟳ Generando...';if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando...`;
+try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_contenido',data:curProject,bono_idx:idx})});const json=await res.json();if(json.error)throw new Error(json.error);const c1=curProject.ebook_color1||'#7c3aed';const c2=curProject.ebook_color2||'#ff006e';const bonoHtml=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${bono.nombre}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;padding:60px 10%;line-height:1.7;-webkit-print-color-adjust:exact}.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}.fab button{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;background:linear-gradient(135deg,${c1},${c2});color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin-bottom:.75rem}h2{font-size:1.4rem;font-weight:700;color:${c1};margin:2rem 0 .75rem}p{font-size:.95rem;color:#c8c8d8;margin-bottom:1rem;line-height:1.8}ul,ol{padding-left:1.5rem;margin-bottom:1rem}li{color:#c8c8d8;margin-bottom:.4rem;font-size:.9rem}strong{color:#fff}.cover{min-height:40vh;display:flex;align-items:center;padding:60px 0;border-bottom:1px solid ${c1}33;margin-bottom:3rem}.tag{display:inline-block;padding:.3rem .9rem;background:${c1}22;border:1px solid ${c1}44;color:${c1};border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}@media print{.fab{display:none!important}}</style></head><body><div class="cover"><div><div class="tag">BONO ${idx+1}</div><h1>${bono.nombre}</h1><p style="font-size:1rem;color:#aaa;font-weight:300">${bono.descripcion}</p></div></div><div>${(json.content||'').split('\n').map(l=>{if(!l.trim())return'<br>';if(l.startsWith('## '))return`<h2>${l.replace('## ','')}</h2>`;if(l.startsWith('# '))return`<h2>${l.replace('# ','')}</h2>`;if(l.startsWith('- ')||l.startsWith('* '))return`<li>${l.replace(/^[-*]\s/,'')}</li>`;return`<p>${l.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</p>`;}).join('')}</div><div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div></body></html>`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bonoHtml],{type:'text/html'}));a.download=`bono_${idx+1}_${bono.nombre.replace(/\s+/g,'_').substring(0,30)}.html`;a.click();btn.textContent='✅ Descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';if(status)status.innerHTML=`<span style="color:var(--success)">✓ Abrí en Chrome → botón PDF</span>`;toast(`Bono ${idx+1} listo 📥`,'ok');}catch(e){btn.disabled=false;btn.textContent='📥 Generar y descargar';if(status)status.innerHTML=`<span style="color:#ef4444">Error</span>`;toast('Error 😓','err');}}
 
-async function generate(modId){
-  curMod=modId;const mod=MODS.find(m=>m.id===modId);
-  setModStatus(modId,'running','⟳ Generando...');setLoading(true,`Generando ${mod.name}...`);
-  document.getElementById('result-panel').style.display='block';
-  document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
-  try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});
-    const json=await res.json();if(json.error)throw new Error(json.error);
-    curResult=json.content;setModStatus(modId,'done','✓ Listo');
-    document.getElementById('r-title').textContent=mod.name;
-    document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-html" onclick="doTxt()">📄 TXT</button>`;
-    document.getElementById('r-body').innerHTML=`<div style="white-space:pre-wrap;font-size:.88rem;color:#c8c8d8;line-height:1.8">${typeof json.content==='string'?json.content:JSON.stringify(json.content,null,2)}</div>`;
-    setLoading(false);toast(`${mod.name} generado 🎉`,'ok');
-  }catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;toast('Error 😓','err');}
-}
+async function generate(modId){curMod=modId;const mod=MODS.find(m=>m.id===modId);setModStatus(modId,'running','⟳ Generando...');setLoading(true,`Generando ${mod.name}...`);document.getElementById('result-panel').style.display='block';document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
+try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);curResult=json.content;setModStatus(modId,'done','✓ Listo');document.getElementById('r-title').textContent=mod.name;document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-html" onclick="doTxt()">📄 TXT</button>`;document.getElementById('r-body').innerHTML=`<div style="white-space:pre-wrap;font-size:.88rem;color:#c8c8d8;line-height:1.8">${typeof json.content==='string'?json.content:JSON.stringify(json.content,null,2)}</div>`;setLoading(false);toast(`${mod.name} generado 🎉`,'ok');}catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;toast('Error 😓','err');}}
 
 function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);const card=document.getElementById('mc-'+id);if(!el||!card)return;el.className=`mod-status s-${cls}`;el.textContent=txt;if(cls==='done')card.classList.add('done');}
-
 function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
@@ -800,127 +636,37 @@ function goLC2(){const promise=document.getElementById('lc-promise').value.trim(
 function goLC3(){lcConfig.urgency=[...selectedUrgency];lcConfig.badge1=document.getElementById('lc-badge1').value;lcConfig.badge2=document.getElementById('lc-badge2').value;lcConfig.badge3=document.getElementById('lc-badge3').value;lcConfig.countdownDate=document.getElementById('lc-countdown-date')?.value||'';lcConfig.stockLeft=document.getElementById('lc-stock-left')?.value||'15';lcConfig.soldPct=document.getElementById('lc-sold-pct')?.value||'73';showLCStep(3);}
 function goLC4(){lcConfig.guarantee=document.getElementById('lc-guarantee').value;lcConfig.guaranteeType=document.getElementById('lc-guarantee-type').value;lcConfig.testimonials=testimonials.filter(t=>t.name.trim());showLCStep(4);}
 function goLC5(){lcConfig.sections=[...selectedSections];lcConfig.cta=document.getElementById('lc-cta').value;lcConfig.url=document.getElementById('lc-url').value;lcConfig.extra=document.getElementById('lc-extra').value;showLCStep(5);renderLC5();}
-
-function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regen</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;
-const bonosDiv=document.getElementById('bonos-preview-lc5');const bonos=curProject.bonos||[];
-if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card"><div class="bono-preview-img">${b.emoji||'🎁'}</div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div>`;}
-else{bonosDiv.innerHTML=`<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center">No generaste bonos aún.</p>`;}}
-
+function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regen</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;const bonosDiv=document.getElementById('bonos-preview-lc5');const bonos=curProject.bonos||[];if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card"><div class="bono-preview-img">${b.emoji||'🎁'}</div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div>`;}else{bonosDiv.innerHTML=`<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center">No generaste bonos aún.</p>`;}}
 async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,prompt:`${curProject.product} - ${curProject.audience} - ${lcConfig.promise||curProject.transformation}`})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl)imgEl.src=json.url;if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;toast('Error 😓','err');}}
-async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div>`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background, golden bokeh. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;status.innerHTML=`<span style="color:var(--success)">✓</span>`;btn.textContent='🔄';btn.disabled=false;toast(`Mockup ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">Error</span>`;btn.disabled=false;}}
+async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div>`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;status.innerHTML=`<span style="color:var(--success)">✓</span>`;btn.textContent='🔄';btn.disabled=false;toast(`Mockup ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">Error</span>`;btn.disabled=false;}}
 function onImgLoad(type){const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(ph)ph.style.display='none';if(imgEl)imgEl.classList.add('loaded');}
 async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const descs=[document.getElementById('hero-desc-1').value.trim(),document.getElementById('hero-desc-2').value.trim(),document.getElementById('hero-desc-3').value.trim()];if(!descs.some(d=>d)){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Foto ${i+1}/3...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Professional product photography, dark moody background, cinematic lighting. NO text, NO books. Scene: ${descs[i]}.`})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev)prev.src=json.url;if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos listas! 🌟','ok');}
 
-async function generateLanding(){
-  const heroImgsLocal=[...heroImages];const bonoImgsLocal=[...bonoImages];const generatedImgsLocal={...generatedImages};
-  lcConfig.images={};lcConfig.heroImages=[];lcConfig.bonoImages=[];
-  curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando landing...');
-  try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'landing',data:curProject,landingConfig:lcConfig})});
-    const json=await res.json();if(json.error)throw new Error(json.error);
-    lcConfig.heroImages=heroImgsLocal;lcConfig.bonoImages=bonoImgsLocal;lcConfig.images=generatedImgsLocal;
-    const htmlFinal=buildPremiumLanding(lcConfig,curProject,json.content);
-    curResult=htmlFinal;setModStatus('landing','done','✓ Lista');curProject.hasLanding=true;saveCur();
-    document.getElementById('landing-config').style.display='none';showModulesPanel();
-    document.getElementById('result-panel').style.display='block';
-    document.getElementById('r-title').textContent='🌐 Landing Page Pro';
-    document.getElementById('r-acts').innerHTML=`<button class="act-btn act-html" onclick="doDownloadHtml()">🌐 Descargar HTML</button><button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>`;
-    document.getElementById('r-body').innerHTML=`<div style="padding:.75rem 1rem;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);border-radius:10px;font-size:.82rem;color:var(--cyan)">🌐 <strong>Landing generada</strong> — Descargá el HTML.</div>`;
-    setLoading(false);toast('¡Landing generada! 🎉','ok');
-  }catch(e){setLoading(false);toast('Error: '+e.message,'err');}}
+async function generateLanding(){const heroImgsLocal=[...heroImages];const bonoImgsLocal=[...bonoImages];const generatedImgsLocal={...generatedImages};lcConfig.images={};lcConfig.heroImages=[];lcConfig.bonoImages=[];curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando landing...');
+try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'landing',data:curProject,landingConfig:lcConfig})});const json=await res.json();if(json.error)throw new Error(json.error);lcConfig.heroImages=heroImgsLocal;lcConfig.bonoImages=bonoImgsLocal;lcConfig.images=generatedImgsLocal;const htmlFinal=buildPremiumLanding(lcConfig,curProject,json.content);curResult=htmlFinal;setModStatus('landing','done','✓ Lista');curProject.hasLanding=true;saveCur();document.getElementById('landing-config').style.display='none';showModulesPanel();document.getElementById('result-panel').style.display='block';document.getElementById('r-title').textContent='🌐 Landing Page Pro';document.getElementById('r-acts').innerHTML=`<button class="act-btn act-html" onclick="doDownloadHtml()">🌐 Descargar HTML</button><button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>`;document.getElementById('r-body').innerHTML=`<div style="padding:.75rem 1rem;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);border-radius:10px;font-size:.82rem;color:var(--cyan)">🌐 <strong>Landing generada</strong> — Descargá el HTML.</div>`;setLoading(false);toast('¡Landing generada! 🎉','ok');}catch(e){setLoading(false);toast('Error: '+e.message,'err');}}
 
-function buildPremiumLanding(lc,data,c){
-  const c1=lc.color1||'#D4AF37';const c2=lc.color2||'#1a5c3a';const bg=lc.colorBg||'#000000';
-  const cta=lc.cta||'¡Quiero empezar ahora!';const url=lc.url||'#';const guarantee=lc.guarantee||30;
-  const urgency=lc.urgency||[];const hasCountdown=urgency.includes('countdown');const hasSold=urgency.includes('sold');
-  const hasStock=urgency.includes('stock')||urgency.includes('limited');const hasViewers=urgency.includes('viewers');
-  const badges=[lc.badge1,lc.badge2,lc.badge3].filter(Boolean);const bonos=data.bonos||[];
-  const heroImgs=lc.heroImages||[];const bonoImgs=lc.bonoImages||[];
-  const marqueeItems=c.marquee_items||['PRODUCTO PREMIUM','ACCESO INMEDIATO','RESULTADOS REALES','TRANSFORMACIÓN GARANTIZADA'];
-  const marqueeHTML=[...marqueeItems,...marqueeItems].map(i=>`<div class="tk-item">⬡&nbsp;&nbsp;${i}&nbsp;&nbsp;</div>`).join('');
-  const paraVosHTML=(c.para_vos_si||[]).map(i=>`<div class="pv-item"><div class="pv-icon">${i.icon}</div><div><div style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px">${i.title}</div><div style="font-size:.88rem;color:#cfcfcf;line-height:1.6">${i.desc}</div></div></div>`).join('');
-  const aprendHTML=(c.que_vas_aprender||[]).map(i=>`<div class="learn-item"><div class="learn-check" style="background:${c2}">✓</div><div><div style="font-size:.82rem;font-weight:800;color:${c1};letter-spacing:1px;margin-bottom:4px">${i.title}</div><div style="font-size:.8rem;color:#cfcfcf;line-height:1.5">${i.desc}</div></div></div>`).join('');
-  const logrosHTML=`<div style="background:#0a0a0a;border-radius:16px;padding:28px;border-top:3px solid ${c1}"><p style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:${c1};text-align:center;margin-bottom:16px;opacity:.8">Con este producto vas a lograr</p>${(c.logros||[]).map(l=>`<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding:14px;background:#141414;border-radius:10px;border:1px solid #222"><div style="width:40px;height:40px;border-radius:50%;background:#1a1500;border:1.5px solid ${c1};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">${l.icon}</div><div><div style="font-size:.82rem;font-weight:700;color:${c1};text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">${l.titulo}</div><div style="font-size:.75rem;color:#aaa;line-height:1.5">${l.desc}</div></div></div>`).join('')}${c.logros_frase?`<div style="margin-top:14px;padding:12px;background:#0f0f00;border:1px solid ${c1}33;border-radius:10px;text-align:center;font-size:.85rem;color:${c1};font-weight:600;font-style:italic">"${c.logros_frase}"</div>`:''}</div>`;
-  const bonosHTML=bonos.map((b,i)=>`<div style="background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:20px;text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:12px;overflow:hidden;margin-bottom:12px;background:#111;display:flex;align-items:center;justify-content:center">${bonoImgs[i]?`<img src="${bonoImgs[i]}" style="width:100%;height:100%;object-fit:cover">`:`<div style="font-size:2.5rem">${b.emoji||'🎁'}</div>`}</div><div style="font-size:.7rem;font-weight:800;color:${c1};letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">BONO ${i+1}</div><div style="font-size:.85rem;font-weight:800;color:#fff;margin-bottom:6px">${b.nombre}</div><div style="font-size:.75rem;color:#aaa;margin-bottom:10px">${b.descripcion}</div><div style="font-size:.82rem;color:#666;text-decoration:line-through">${b.precio_original}</div><div style="font-size:.9rem;font-weight:900;color:#22c55e;letter-spacing:2px">HOY GRATIS</div></div>`).join('');
-  const heroCarouselHTML=heroImgs.length>=1?heroImgs.map((img,i)=>`<div class="hero-slide ${i===0?'active':''}" style="background-image:url('${img}');background-size:cover;background-position:center"></div>`).join(''):`<div class="hero-slide active" style="background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(212,175,55,.15),transparent 60%)"></div>`;
-  const trustHTML=(c.trust_badges||[]).map(b=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:100px;text-align:center"><div style="font-size:1.5rem">${b.icon}</div><div style="font-size:.7rem;color:#cfcfcf;font-weight:600;letter-spacing:1px;text-transform:uppercase">${b.label}</div></div>`).join('');
-  const testiHTML=(c.testimonials||[]).map(t=>`<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:24px"><div style="font-size:.9rem;margin-bottom:10px">${'⭐'.repeat(t.stars||5)}</div><div style="font-size:.88rem;color:#f2f2f2;line-height:1.7;font-style:italic;margin-bottom:16px">"${t.text}"</div><div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${c1},${c2});display:grid;place-items:center;font-weight:900;font-size:.9rem;color:#fff;flex-shrink:0">${t.name.charAt(0)}</div><div><div style="font-size:.85rem;font-weight:700;color:#fff">${t.name}</div><div style="font-size:.75rem;color:#cfcfcf">${t.place}</div><div style="font-size:.75rem;color:${c1};font-weight:600;margin-top:2px">✓ ${t.result}</div></div></div></div>`).join('');
-  const faqHTML=(c.faq||[]).map((f,i)=>`<div class="faq-item" aria-expanded="false"><button class="faq-q" onclick="toggleFaq(this)"><span style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:${c2};color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;flex-shrink:0">${String(i+1).padStart(2,'0')}</span><span style="font-size:.9rem;font-weight:700;color:#1a1a1a;text-align:left;line-height:1.4">${f.q}</span></span><span style="width:30px;height:30px;border-radius:50%;border:1.5px solid ${c1};display:grid;place-items:center;color:#b8952a;font-size:18px;flex-shrink:0;transition:transform .22s">+</span></button><div class="faq-a"><div style="padding:0 20px 16px 60px;font-size:.88rem;color:#444;line-height:1.65">${f.a}</div></div></div>`).join('');
-  const popupActionsJS=(c.popup_actions||['acaba de comprar','descargó los bonos','activó su acceso']).map(a=>`"${a}"`).join(',');
-
-  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${data.product}</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
-body{font-family:'Montserrat',sans-serif;background:${bg};color:#f2f2f2;overflow-x:hidden;line-height:1.6}
-.container{max-width:860px;margin:0 auto;padding:0 20px}
-.gold{background:linear-gradient(90deg,#fff4b0,${c1},#ffb300,#fff8c0,${c1},#fff4b0);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldFlow 4s linear infinite}
-@keyframes goldFlow{0%{background-position:0%}100%{background-position:300%}}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 40px;background:${c2};color:#fff;border:none;border-radius:999px;font-size:1rem;font-weight:800;cursor:pointer;text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:all .3s;width:100%;max-width:360px}
-.btn:hover{transform:scale(1.03);filter:brightness(1.1)}
-.top-bar{background:linear-gradient(90deg,${c2},${c1},${c2});padding:10px 16px;text-align:center;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;position:sticky;top:0;z-index:200}
-.top-badge{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:11px;display:inline-flex;align-items:center;gap:6px}
-.top-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:dotPulse 1s infinite;display:inline-block}
-@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero{position:relative;min-height:600px;display:flex;align-items:center;overflow:hidden}
-.hero-slides{position:absolute;inset:0;z-index:0}
-.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-color:${bg}}
-.hero-slide.active{opacity:1}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.75) 100%);z-index:1}
-.hero-content{position:relative;z-index:2;width:100%;padding:80px 20px 60px;text-align:center}
-.hero-h1{font-size:clamp(2.2rem,9vw,4.5rem);font-weight:900;text-transform:uppercase;line-height:1.05;margin-bottom:8px}
-.hero-sub-box{border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:16px 28px;display:inline-block;margin:20px auto;max-width:520px}
-.hero-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
-.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s;padding:0}
-.hero-dot.active{background:${c1};width:24px;border-radius:4px}
-.marquee-wrap{border-top:2px solid ${c1};border-bottom:2px solid ${c1};padding:14px 0;overflow:hidden}
-.marquee-track{display:flex;width:max-content;animation:marqueeScroll 20s linear infinite}
-.tk-item{display:inline-flex;align-items:center;padding:0 32px;white-space:nowrap;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:15px;color:${c1}}
-@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.pv-item{display:flex;align-items:flex-start;gap:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px 20px;margin-bottom:16px}
-.pv-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px}
-.learn-item{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:12px}
-.learn-check{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
-.bonos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto 32px}
-.faq-card{max-width:800px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.2)}
-.faq-item{border-bottom:1px solid #f0ece3}.faq-item:last-child{border-bottom:none}
-.faq-q{width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.faq-q:hover{background:#faf8f3}
-.faq-item[aria-expanded="true"] .faq-q span:last-child{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.sold-bar{height:16px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
-.sold-fill{height:100%;background:linear-gradient(90deg,${c2},${c1});border-radius:100px;animation:fillBar 2.5s ease forwards}
-@keyframes fillBar{from{width:0}}
-.tk-fomo{position:fixed;right:18px;bottom:18px;z-index:999999;width:min(370px,calc(100vw - 36px));display:none;opacity:0;transform:translateY(18px);transition:.35s ease}
-.tk-fomo.show{display:block;opacity:1;transform:translateY(0)}
-.tk-card{background:#000;border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 18px 46px rgba(0,0,0,.55)}
-.tk-avatar{width:50px;height:50px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#111;position:relative}
-.tk-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.tk-avatar::after{content:'';position:absolute;right:2px;bottom:2px;width:11px;height:11px;border-radius:99px;background:#22c55e;border:2px solid #000}
-footer{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.05);padding:24px 20px;text-align:center;color:#cfcfcf;font-size:.78rem}
-@media(max-width:600px){.hero-h1{font-size:2rem}.bonos-grid{grid-template-columns:1fr 1fr}}
-</style></head><body>
+function buildPremiumLanding(lc,data,c){const c1=lc.color1||'#D4AF37';const c2=lc.color2||'#1a5c3a';const bg=lc.colorBg||'#000000';const cta=lc.cta||'¡Quiero empezar ahora!';const url=lc.url||'#';const guarantee=lc.guarantee||30;const urgency=lc.urgency||[];const hasCountdown=urgency.includes('countdown');const hasSold=urgency.includes('sold');const hasStock=urgency.includes('stock')||urgency.includes('limited');const hasViewers=urgency.includes('viewers');const badges=[lc.badge1,lc.badge2,lc.badge3].filter(Boolean);const bonos=data.bonos||[];const heroImgs=lc.heroImages||[];const bonoImgs=lc.bonoImages||[];const marqueeItems=c.marquee_items||['PRODUCTO PREMIUM','ACCESO INMEDIATO','RESULTADOS REALES','TRANSFORMACIÓN GARANTIZADA'];const marqueeHTML=[...marqueeItems,...marqueeItems].map(i=>`<div class="tk-item">⬡&nbsp;&nbsp;${i}&nbsp;&nbsp;</div>`).join('');const paraVosHTML=(c.para_vos_si||[]).map(i=>`<div class="pv-item"><div class="pv-icon">${i.icon}</div><div><div style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px">${i.title}</div><div style="font-size:.88rem;color:#cfcfcf;line-height:1.6">${i.desc}</div></div></div>`).join('');const aprendHTML=(c.que_vas_aprender||[]).map(i=>`<div class="learn-item"><div class="learn-check" style="background:${c2}">✓</div><div><div style="font-size:.82rem;font-weight:800;color:${c1};letter-spacing:1px;margin-bottom:4px">${i.title}</div><div style="font-size:.8rem;color:#cfcfcf;line-height:1.5">${i.desc}</div></div></div>`).join('');const logrosHTML=`<div style="background:#0a0a0a;border-radius:16px;padding:28px;border-top:3px solid ${c1}">${(c.logros||[]).map(l=>`<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding:14px;background:#141414;border-radius:10px;border:1px solid #222"><div style="width:40px;height:40px;border-radius:50%;background:#1a1500;border:1.5px solid ${c1};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">${l.icon}</div><div><div style="font-size:.82rem;font-weight:700;color:${c1};text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">${l.titulo}</div><div style="font-size:.75rem;color:#aaa;line-height:1.5">${l.desc}</div></div></div>`).join('')}</div>`;const bonosHTML=bonos.map((b,i)=>`<div style="background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:20px;text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:12px;overflow:hidden;margin-bottom:12px;background:#111;display:flex;align-items:center;justify-content:center">${bonoImgs[i]?`<img src="${bonoImgs[i]}" style="width:100%;height:100%;object-fit:cover">`:`<div style="font-size:2.5rem">${b.emoji||'🎁'}</div>`}</div><div style="font-size:.7rem;font-weight:800;color:${c1};letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">BONO ${i+1}</div><div style="font-size:.85rem;font-weight:800;color:#fff;margin-bottom:6px">${b.nombre}</div><div style="font-size:.75rem;color:#aaa;margin-bottom:10px">${b.descripcion}</div><div style="font-size:.82rem;color:#666;text-decoration:line-through">${b.precio_original}</div><div style="font-size:.9rem;font-weight:900;color:#22c55e;letter-spacing:2px">HOY GRATIS</div></div>`).join('');const heroCarouselHTML=heroImgs.length>=1?heroImgs.map((img,i)=>`<div class="hero-slide ${i===0?'active':''}" style="background-image:url('${img}');background-size:cover;background-position:center"></div>`).join(''):`<div class="hero-slide active" style="background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(212,175,55,.15),transparent 60%)"></div>`;const trustHTML=(c.trust_badges||[]).map(b=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:100px;text-align:center"><div style="font-size:1.5rem">${b.icon}</div><div style="font-size:.7rem;color:#cfcfcf;font-weight:600;letter-spacing:1px;text-transform:uppercase">${b.label}</div></div>`).join('');const testiHTML=(c.testimonials||[]).map(t=>`<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:24px"><div style="font-size:.9rem;margin-bottom:10px">${'⭐'.repeat(t.stars||5)}</div><div style="font-size:.88rem;color:#f2f2f2;line-height:1.7;font-style:italic;margin-bottom:16px">"${t.text}"</div><div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${c1},${c2});display:grid;place-items:center;font-weight:900;font-size:.9rem;color:#fff;flex-shrink:0">${t.name.charAt(0)}</div><div><div style="font-size:.85rem;font-weight:700;color:#fff">${t.name}</div><div style="font-size:.75rem;color:#cfcfcf">${t.place}</div><div style="font-size:.75rem;color:${c1};font-weight:600;margin-top:2px">✓ ${t.result}</div></div></div></div>`).join('');const faqHTML=(c.faq||[]).map((f,i)=>`<div class="faq-item" aria-expanded="false"><button class="faq-q" onclick="toggleFaq(this)"><span style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:28px;border-radius:8px;background:${c2};color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;flex-shrink:0">${String(i+1).padStart(2,'0')}</span><span style="font-size:.9rem;font-weight:700;color:#1a1a1a;text-align:left;line-height:1.4">${f.q}</span></span><span style="width:30px;height:30px;border-radius:50%;border:1.5px solid ${c1};display:grid;place-items:center;color:#b8952a;font-size:18px;flex-shrink:0;transition:transform .22s">+</span></button><div class="faq-a"><div style="padding:0 20px 16px 60px;font-size:.88rem;color:#444;line-height:1.65">${f.a}</div></div></div>`).join('');const popupActionsJS=(c.popup_actions||['acaba de comprar','descargó los bonos','activó su acceso']).map(a=>`"${a}"`).join(',');
+return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${data.product}</title><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'Montserrat',sans-serif;background:${bg};color:#f2f2f2;overflow-x:hidden;line-height:1.6}.container{max-width:860px;margin:0 auto;padding:0 20px}.gold{background:linear-gradient(90deg,#fff4b0,${c1},#ffb300,#fff8c0,${c1},#fff4b0);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldFlow 4s linear infinite}@keyframes goldFlow{0%{background-position:0%}100%{background-position:300%}}.btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 40px;background:${c2};color:#fff;border:none;border-radius:999px;font-size:1rem;font-weight:800;cursor:pointer;text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:all .3s;width:100%;max-width:360px}.btn:hover{transform:scale(1.03)}.top-bar{background:linear-gradient(90deg,${c2},${c1},${c2});padding:10px 16px;text-align:center;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;position:sticky;top:0;z-index:200}.top-badge{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:11px;display:inline-flex;align-items:center;gap:6px}.top-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:dotPulse 1s infinite;display:inline-block}@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}.hero{position:relative;min-height:600px;display:flex;align-items:center;overflow:hidden}.hero-slides{position:absolute;inset:0;z-index:0}.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-color:${bg}}.hero-slide.active{opacity:1}.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.75) 100%);z-index:1}.hero-content{position:relative;z-index:2;width:100%;padding:80px 20px 60px;text-align:center}.hero-h1{font-size:clamp(2.2rem,9vw,4.5rem);font-weight:900;text-transform:uppercase;line-height:1.05;margin-bottom:8px}.hero-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:all .3s;padding:0}.hero-dot.active{background:${c1};width:24px;border-radius:4px}.marquee-wrap{border-top:2px solid ${c1};border-bottom:2px solid ${c1};padding:14px 0;overflow:hidden}.marquee-track{display:flex;width:max-content;animation:marqueeScroll 20s linear infinite}.tk-item{display:inline-flex;align-items:center;padding:0 32px;white-space:nowrap;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:15px;color:${c1}}@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.pv-item{display:flex;align-items:flex-start;gap:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px 20px;margin-bottom:16px}.pv-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px}.learn-item{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:12px}.learn-check{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}.bonos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto 32px}.faq-card{max-width:800px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.2)}.faq-item{border-bottom:1px solid #f0ece3}.faq-item:last-child{border-bottom:none}.faq-q{width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}.faq-q:hover{background:#faf8f3}.faq-item[aria-expanded="true"] .faq-q span:last-child{transform:rotate(45deg)}.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}.sold-bar{height:16px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}.sold-fill{height:100%;background:linear-gradient(90deg,${c2},${c1});border-radius:100px;animation:fillBar 2.5s ease forwards}@keyframes fillBar{from{width:0}}.tk-fomo{position:fixed;right:18px;bottom:18px;z-index:999999;width:min(370px,calc(100vw - 36px));display:none;opacity:0;transform:translateY(18px);transition:.35s ease}.tk-fomo.show{display:block;opacity:1;transform:translateY(0)}.tk-card{background:#000;border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 18px 46px rgba(0,0,0,.55)}.tk-avatar{width:50px;height:50px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#111;position:relative}.tk-avatar img{width:100%;height:100%;object-fit:cover;display:block}.tk-avatar::after{content:'';position:absolute;right:2px;bottom:2px;width:11px;height:11px;border-radius:99px;background:#22c55e;border:2px solid #000}footer{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.05);padding:24px 20px;text-align:center;color:#cfcfcf;font-size:.78rem}@media(max-width:600px){.hero-h1{font-size:2rem}.bonos-grid{grid-template-columns:1fr 1fr}}</style></head><body>
 <div class="top-bar"><span class="top-badge"><span class="top-dot"></span> El precio está por subir</span>${hasViewers?` <span class="top-badge"><span style="background:#22c55e" class="top-dot"></span><span id="viewers">27</span> viendo ahora</span>`:''}</div>
-<section class="hero"><div class="hero-slides">${heroCarouselHTML}</div><div class="hero-overlay"></div><div class="hero-content"><div class="container"><div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div><h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>${c.headline_sub?`<div class="hero-sub-box"><span style="font-size:16px;font-style:italic;font-weight:500;color:#e8e8e8">${c.headline_sub}</span></div>`:''}${badges.length?`<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:24px auto;max-width:500px">${badges.map(b=>`<div style="background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700">⚡ ${b}</div>`).join('')}</div>`:''}<div style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:12px"><a href="${url}" class="btn">${cta}</a><div style="font-size:12px;color:#cfcfcf;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;animation:dotPulse 1.5s infinite;display:inline-block"></span><span id="viewers2">--</span> personas viendo esto ahora</div></div></div></div><div class="hero-dots" id="heroDots"></div></section>
+<section class="hero"><div class="hero-slides">${heroCarouselHTML}</div><div class="hero-overlay"></div><div class="hero-content"><div class="container"><div style="font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;margin-bottom:24px;opacity:.9">${c.preheadline||data.audience}</div><h1 class="hero-h1"><span class="gold">${c.headline1||data.product.toUpperCase()}</span><span style="display:block">${c.headline2||''}</span></h1>${c.headline_sub?`<div style="border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:16px 28px;display:inline-block;margin:20px auto;max-width:520px"><span style="font-size:16px;font-style:italic;font-weight:500;color:#e8e8e8">${c.headline_sub}</span></div>`:''}${badges.length?`<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:24px auto;max-width:500px">${badges.map(b=>`<div style="background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700">⚡ ${b}</div>`).join('')}</div>`:''}<div style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:12px"><a href="${url}" class="btn">${cta}</a><div style="font-size:12px;color:#cfcfcf;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;animation:dotPulse 1.5s infinite;display:inline-block"></span><span id="viewers2">--</span> personas viendo esto ahora</div></div></div></div><div class="hero-dots" id="heroDots"></div></section>
 <div class="marquee-wrap"><div class="marquee-track">${marqueeHTML}${marqueeHTML}</div></div>
-<section style="padding:60px 20px;text-align:center"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:${c1};opacity:.8;margin-bottom:8px">Tu producto</p><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px;margin:32px auto 0;align-items:start"><div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;text-transform:uppercase">📦 Mockup</div>`}</div><div>${logrosHTML}</div></div></div></section>
-<section style="padding:60px 20px"><div class="container"><p style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:${c1};text-align:center;margin-bottom:12px;opacity:.8">¿Es para vos?</p><h2 style="font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px">ESTO ES PARA VOS SI...</h2>${paraVosHTML}<div style="text-align:center;margin-top:2rem"><a href="${url}" class="btn">Sí, esto es para mí →</a></div></div></section>
+<section style="padding:60px 20px;text-align:center"><div class="container"><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:8px">Conocé lo que recibís</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px;margin:32px auto 0;align-items:start"><div>${lc.images&&lc.images.mockup?`<img src="${lc.images.mockup}" style="width:100%;border-radius:16px;">`:`<div style="background:rgba(255,255,255,.04);border:2px dashed rgba(212,175,55,.3);border-radius:16px;min-height:280px;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.5);font-size:13px;font-weight:700;text-transform:uppercase">📦 Mockup</div>`}</div><div>${logrosHTML}</div></div></div></section>
+<section style="padding:60px 20px"><div class="container"><h2 style="font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px">ESTO ES PARA VOS SI...</h2>${paraVosHTML}<div style="text-align:center;margin-top:2rem"><a href="${url}" class="btn">Sí, esto es para mí →</a></div></div></section>
 <section style="padding:60px 20px;background:rgba(0,0,0,.2)"><div class="container"><h2 style="text-align:center;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;margin-bottom:32px">¿QUÉ VAS A <span class="gold">APRENDER?</span></h2>${aprendHTML}<div style="text-align:center;margin-top:24px"><a href="${url}" class="btn">${cta}</a></div></div></section>
-${hasCountdown?`<section style="padding:40px 20px"><div style="max-width:520px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)"><div style="background:${c2};padding:20px 24px;text-align:center;font-size:20px;font-weight:800;color:#fff">La oferta finaliza en</div><div style="padding:28px 24px;background:#fffdf8;text-align:center"><div style="display:flex;justify-content:center;gap:10px;margin-bottom:20px"><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-min">10</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Min</div></div><div style="font-size:36px;font-weight:800;color:${c1};margin-bottom:18px">:</div><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-sec">00</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Seg</div></div></div><a href="${url}" style="display:block;background:${c2};color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:999px;text-decoration:none;max-width:300px;margin:0 auto">${cta}</a></div></div></section>`:''}
+${hasCountdown?`<section style="padding:40px 20px"><div style="max-width:520px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden"><div style="background:${c2};padding:20px 24px;text-align:center;font-size:20px;font-weight:800;color:#fff">La oferta finaliza en</div><div style="padding:28px 24px;background:#fffdf8;text-align:center"><div style="display:flex;justify-content:center;gap:10px;margin-bottom:20px"><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-min">10</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Min</div></div><div style="font-size:36px;font-weight:800;color:${c1};margin-bottom:18px">:</div><div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="background:#fdf6e8;border:1.5px solid #e8dfc8;border-radius:12px;width:76px;height:76px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#1a1a1a" id="cd-sec">00</div><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb">Seg</div></div></div><a href="${url}" style="display:block;background:${c2};color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px 36px;border-radius:999px;text-decoration:none;max-width:300px;margin:0 auto">${cta}</a></div></div></section>`:''}
 ${hasSold?`<section style="padding:32px 20px;text-align:center"><div style="max-width:560px;margin:0 auto"><div style="font-size:.95rem;margin-bottom:10px;font-weight:600">🔥 <strong style="color:${c1}">${c.sold_pct||73}% vendido</strong></div><div class="sold-bar"><div class="sold-fill" style="width:${c.sold_pct||73}%"></div></div></div></section>`:''}
 ${hasStock?`<div style="text-align:center;padding:8px 20px"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.2);padding:10px 20px;border-radius:12px;font-size:.88rem;font-weight:600;color:#ff6b6b">${c.stock_text||'Solo quedan 12 cupos'}</div></div>`:''}
 <section style="padding:60px 20px;background:rgba(0,0,0,.15)"><div class="container"><h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">100% GRATIS <span class="gold">4 BONOS EXCLUSIVOS</span></h2><div class="bonos-grid">${bonosHTML}</div><div style="text-align:center;margin-top:32px"><a href="${url}" class="btn">${cta}</a></div></div></section>
 <section style="padding:28px 20px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)"><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:700px;margin:0 auto">${trustHTML}</div></section>
 <section style="padding:60px 20px;background:rgba(0,0,0,.1)"><div class="container"><h2 style="text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Lo que dicen nuestros clientes ❤️</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:900px;margin:0 auto">${testiHTML}</div></div></section>
-<section style="padding:60px 20px;text-align:center"><div class="container"><h2 style="font-size:clamp(1.5rem,5vw,2.2rem);font-weight:900;margin-bottom:32px">Tu acceso está <span class="gold">esperándote</span></h2><div style="max-width:500px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 12px 50px rgba(0,0,0,.4)"><div style="background:${c2};padding:20px 24px;text-align:center"><div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(212,175,55,.8);margin-bottom:6px">Oferta especial hoy</div><div style="font-size:18px;font-weight:800;color:#fff">Tu acceso reservado</div></div><div style="padding:28px 24px;background:#fffdf8;text-align:center">${data.oldprice?`<div style="font-size:1.2rem;color:#bbb;text-decoration:line-through;margin-bottom:4px">${data.oldprice}</div>`:''}<div style="font-size:4rem;font-weight:900;color:#1a1a1a;line-height:1;margin-bottom:4px">${data.price}</div>${data.cuotas?`<div style="font-size:.9rem;color:#666;margin-bottom:24px">${data.cuotas}</div>`:''}<a href="${url}" style="display:block;background:${c2};color:#fff;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:18px 36px;border-radius:999px;text-decoration:none;max-width:320px;margin:0 auto 16px">${cta}</a><div style="font-size:.8rem;color:#888">🛡️ ${c.guarantee_text||`Garantía ${guarantee} días`}</div></div></div></div></section>
-<section style="padding:48px 20px;text-align:center;background:rgba(212,175,55,.03);border-top:1px solid rgba(212,175,55,.1)"><div style="max-width:600px;margin:0 auto"><div style="font-size:3.5rem;margin-bottom:12px">🛡️</div><h2 style="font-size:1.8rem;font-weight:900;margin-bottom:12px">Garantía de ${guarantee} días</h2><p style="color:#cfcfcf;font-size:.95rem;line-height:1.8">${c.guarantee_text||`Si en ${guarantee} días no estás satisfecha, te devolvemos el 100% de tu dinero.`}</p></div></section>
+<section style="padding:60px 20px;text-align:center"><div class="container"><div style="max-width:500px;margin:0 auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 12px 50px rgba(0,0,0,.4)"><div style="background:${c2};padding:20px 24px;text-align:center"><div style="font-size:18px;font-weight:800;color:#fff">Tu acceso reservado</div></div><div style="padding:28px 24px;background:#fffdf8;text-align:center">${data.oldprice?`<div style="font-size:1.2rem;color:#bbb;text-decoration:line-through;margin-bottom:4px">${data.oldprice}</div>`:''}<div style="font-size:4rem;font-weight:900;color:#1a1a1a;line-height:1;margin-bottom:4px">${data.price}</div>${data.cuotas?`<div style="font-size:.9rem;color:#666;margin-bottom:24px">${data.cuotas}</div>`:''}<a href="${url}" style="display:block;background:${c2};color:#fff;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:18px 36px;border-radius:999px;text-decoration:none;max-width:320px;margin:0 auto 16px">${cta}</a><div style="font-size:.8rem;color:#888">🛡️ ${c.guarantee_text||`Garantía ${guarantee} días`}</div></div></div></div></section>
+<section style="padding:48px 20px;text-align:center"><div style="max-width:600px;margin:0 auto"><div style="font-size:3.5rem;margin-bottom:12px">🛡️</div><h2 style="font-size:1.8rem;font-weight:900;margin-bottom:12px">Garantía de ${guarantee} días</h2><p style="color:#cfcfcf;font-size:.95rem;line-height:1.8">${c.guarantee_text||`Si en ${guarantee} días no estás satisfecha, te devolvemos el 100% de tu dinero.`}</p></div></section>
 <section style="padding:60px 20px"><div class="container"><h2 style="font-size:clamp(1.5rem,5vw,2rem);font-weight:800;text-align:center;margin-bottom:32px">Preguntas <span style="color:${c1}">frecuentes</span></h2><div class="faq-card">${faqHTML}</div></div></section>
 <section style="padding:80px 20px;text-align:center"><div class="container"><h2 style="font-size:clamp(1.8rem,6vw,3rem);font-weight:900;margin-bottom:12px"><span class="gold">${c.final_headline||'¿Lista para transformar tu vida?'}</span></h2><p style="color:#cfcfcf;font-size:1rem;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto">${lc.subpromise||lc.promise}</p><a href="${url}" class="btn">${cta}</a></div></section>
 <footer><p>${data.product}</p><p style="margin-top:.5rem">© 2025 · Todos los derechos reservados</p></footer>
 <div class="tk-fomo" id="tkFomo"><div class="tk-card"><div class="tk-avatar"><img id="tkAvatar" src="" alt=""></div><div style="flex:1;min-width:0"><div style="color:#f2f2f2;font-size:13px;font-weight:800;line-height:1.25" id="tkTitle"></div><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px"><span style="padding:3px 8px;border-radius:999px;border:1px solid rgba(212,175,55,.22);background:rgba(0,0,0,.25);color:rgba(212,175,55,.95);font-weight:700;font-size:10px" id="tkPlace"></span><span style="color:#bdbdbd;font-size:11px" id="tkWhen"></span></div></div><button style="border:0;background:transparent;color:rgba(212,175,55,.95);cursor:pointer;font-size:20px;padding:0 6px" onclick="document.getElementById('tkFomo').style.display='none'">×</button></div></div>
 <script>
-function updateViewers(){var v=Math.floor(Math.random()*28)+14;['viewers','viewers2'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=v;});}
-updateViewers();setInterval(updateViewers,5000);
+function updateViewers(){var v=Math.floor(Math.random()*28)+14;['viewers','viewers2'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=v;});}updateViewers();setInterval(updateViewers,5000);
 var slides=document.querySelectorAll('.hero-slide');var dotsWrap=document.getElementById('heroDots');var cur=0;
 if(slides.length>1){slides.forEach(function(_,i){var d=document.createElement('button');d.className='hero-dot'+(i===0?' active':'');d.onclick=function(){goSlide(i);};dotsWrap.appendChild(d);});setInterval(function(){goSlide((cur+1)%slides.length);},5000);}
 function goSlide(n){slides[cur].classList.remove('active');var dots=document.querySelectorAll('.hero-dot');if(dots[cur])dots[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');if(dots[cur])dots[cur].classList.add('active');}
@@ -940,8 +686,8 @@ function initTestimonials(){testimonials=[];const list=document.getElementById('
 function addTesti(){const idx=testimonials.length;testimonials.push({name:'',text:''});const list=document.getElementById('testi-list');if(!list)return;const div=document.createElement('div');div.className='testi-item';div.id=`testi-${idx}`;div.innerHTML=`<input type="text" placeholder="Nombre" oninput="updateTesti(${idx},'name',this.value)"><input type="text" placeholder="Ciudad" oninput="updateTesti(${idx},'place',this.value)"><button class="del-btn" onclick="removeTesti(${idx})">✕</button><textarea placeholder="Testimonio" style="grid-column:1/4" oninput="updateTesti(${idx},'text',this.value)"></textarea>`;list.appendChild(div);}
 function updateTesti(idx,field,val){if(testimonials[idx])testimonials[idx][field]=val;}
 function removeTesti(idx){const el=document.getElementById(`testi-${idx}`);if(el)el.remove();}
-function doCopy(){if(!curResult)return;navigator.clipboard.writeText(curResult).then(()=>toast('Copiado 📋','ok'));}
-function doTxt(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([curResult],{type:'text/plain'}));a.download=`innova_${curMod}.txt`;a.click();toast('TXT descargado 📄','ok');}
+function doCopy(){if(!curResult)return;navigator.clipboard.writeText(typeof curResult==='string'?curResult:JSON.stringify(curResult,null,2)).then(()=>toast('Copiado 📋','ok'));}
+function doTxt(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([typeof curResult==='string'?curResult:JSON.stringify(curResult,null,2)],{type:'text/plain'}));a.download=`innova_${curMod}.txt`;a.click();toast('TXT descargado 📄','ok');}
 function doDownloadHtml(){if(!curResult)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([curResult],{type:'text/html'}));const name=curMod==='ebook'?`ebook_${(curProject.product||'').replace(/\s+/g,'_')}.html`:`landing_${(curProject.product||'').replace(/\s+/g,'_')}.html`;a.download=name;a.click();toast('HTML descargado 🌐','ok');}
 function setLoading(on,msg='Generando con IA...'){document.getElementById('loading').classList.toggle('on',on);document.getElementById('ld-msg').textContent=msg;}
 function toast(msg,type='ok'){const c=document.getElementById('toasts');const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<span>${type==='ok'?'✓':'✗'}</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3500);}
