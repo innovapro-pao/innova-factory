@@ -5,6 +5,9 @@
     },
     "api/images.js": {
       "maxDuration": 60
+    },
+    "api/creativos.js": {
+      "maxDuration": 60
     }
   }
 }
