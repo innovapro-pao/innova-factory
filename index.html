@@ -191,6 +191,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .creativo-btn.dl-btn{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--cyan)}
 .creativo-btn.dl-btn:disabled{opacity:.4;cursor:not-allowed}
 .creativo-status{font-size:.68rem;color:var(--muted);margin-top:.5rem;min-height:16px}
+.creativo-foto-field{margin:.25rem 0 .75rem}
+.creativo-foto-field label{display:block;font-size:.68rem;color:var(--violet2);margin-bottom:.35rem;font-weight:600;letter-spacing:.03em}
+.creativo-foto-field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;color:var(--text);font-family:var(--font-b);font-size:.78rem;outline:none;resize:vertical;min-height:60px;transition:border-color .2s}
+.creativo-foto-field textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.creativo-foto-hint{font-size:.66rem;color:var(--muted);margin-top:.3rem;line-height:1.4}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -389,6 +394,7 @@ let curProject={},lcConfig={},curResult='',curMod='';
 let selectedUrgency=new Set(),selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);
 let testimonials=[],generatedImages={},heroImages=[],bonoImages=[];
 let creativosData=null;
+let creativoSizes={};
 
 document.addEventListener('DOMContentLoaded',()=>{renderStars();renderDash();renderMods();initTestimonials();});
 
@@ -408,6 +414,16 @@ function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook
 function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
 
 // ── MÓDULO CREATIVOS ──
+// adDims: devuelve proporción REAL por tamaño (cambio 1: que cada tamaño cambie la proporción del anuncio)
+function adDims(size){
+  const map={
+    stories:{w:1080,h:1920,ar:'9/16',label:'1080x1920'},
+    post:{w:1080,h:1080,ar:'1/1',label:'1080x1080'},
+    banner:{w:1200,h:628,ar:'1200/628',label:'1200x628'},
+  };
+  return map[size]||map.post;
+}
+
 async function generateCreativos(){
   curMod='creativos';
   setModStatus('creativos','running','⟳ Generando...');
@@ -424,10 +440,11 @@ async function generateCreativos(){
     if(typeof parsed==='string'){try{parsed=JSON.parse(parsed.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());}catch(e){}}
     if(!parsed||!parsed.anuncios)throw new Error('No se pudo parsear la respuesta');
     creativosData=parsed;
+    creativoSizes={};
     setModStatus('creativos','done','✓ Listo');
     setLoading(false);
     renderCreativosPanel(parsed);
-    toast('¡Copies generados! Ahora generá los fondos 🎨','ok');
+    toast('¡Copies generados! Ahora describí y generá los fondos 🎨','ok');
   }catch(e){
     setModStatus('creativos','pending','✕ Error');
     setLoading(false);
@@ -442,12 +459,16 @@ function renderCreativosPanel(data){
   const c2=curProject.ebook_color2||'#ff006e';
   document.getElementById('r-body').innerHTML=`
     <div style="margin-bottom:1.2rem;padding:.9rem 1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.82rem;color:var(--muted);line-height:1.6">
-      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Click en <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong> en cada anuncio para crear la imagen con DALL-E 3.<br>
-      <strong style="color:var(--violet2)">Paso 2:</strong> Elegí el tamaño (Stories/Post/Banner) y descargá como PNG listo para publicar.
+      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Describí la <strong style="color:var(--fuchsia2)">foto de fondo</strong> que querés en cada anuncio.<br>
+      <strong style="color:var(--violet2)">Paso 2:</strong> Click en <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong> para crear la imagen con IA.<br>
+      <strong style="color:var(--violet2)">Paso 3:</strong> Elegí el tamaño (Stories/Post/Banner) y descargá como PNG listo para publicar.
     </div>
     <div class="creativos-grid" id="creativos-grid"></div>`;
   const grid=document.getElementById('creativos-grid');
-  grid.innerHTML=data.anuncios.map((a,i)=>`
+  grid.innerHTML=data.anuncios.map((a,i)=>{
+    creativoSizes[i]='stories';
+    const fotoSugerida=a.foto_sugerida||a.prompt_fondo||'';
+    return `
     <div class="creativo-card" id="creativo-${i}">
       <div class="creativo-header">
         <span class="creativo-estilo ${estiloClass[a.estilo]||'estilo-urgencia'}">${a.estilo.toUpperCase()}</span>
@@ -462,23 +483,28 @@ function renderCreativosPanel(data){
       <div class="creativo-body">
         <div class="creativo-titulo">${a.titulo}</div>
         <div class="creativo-sub">${a.subtitulo}</div>
+        <div class="creativo-foto-field">
+          <label>📸 Describí la foto de fondo de este anuncio</label>
+          <textarea id="foto-desc-${i}" placeholder="Ej: una mujer emprendedora sonriendo frente a su notebook en un café luminoso">${fotoSugerida}</textarea>
+          <div class="creativo-foto-hint">💡 Cuanto más detallada la descripción, mejor queda la foto. La IA NO escribe texto en la imagen — el texto lo pone la app encima.</div>
+        </div>
         <div class="creativo-actions">
           <button class="creativo-btn gen-img" id="gen-btn-${i}" onclick="generateFondoCreativo(${i})">✨ Generar fondo</button>
           <button class="creativo-btn dl-btn" id="dl-btn-${i}" onclick="descargarAnuncio(${i})" disabled>📥 Descargar PNG</button>
         </div>
-        <div class="creativo-status" id="status-${i}">Fondo pendiente — generá la imagen primero</div>
+        <div class="creativo-status" id="status-${i}">Describí la foto y generá el fondo primero</div>
       </div>
-    </div>`).join('');
+    </div>`;}).join('');
 }
 
+// buildAdPreview: usa aspect-ratio REAL (cambio 1) y SIN CTA en la imagen (cambio 4)
 function buildAdPreview(a,c1,c2,size,idx){
+  const d=adDims(size);
   const bgUrl=(creativosData&&creativosData._fondos&&creativosData._fondos[idx])?`url('${creativosData._fondos[idx]}')`:'none';
-  const heights={stories:'420px',post:'280px',banner:'160px'};
-  const h=heights[size]||'280px';
-  const ts={stories:'1.3rem',post:'1.1rem',banner:'.9rem'}[size]||'1.1rem';
-  const ss={stories:'.82rem',post:'.75rem',banner:'.68rem'}[size]||'.75rem';
-  const pd={stories:'1.4rem',post:'1.1rem',banner:'.9rem'}[size]||'1.1rem';
-  return `<div style="width:100%;height:${h};position:relative;overflow:hidden;background:#111">
+  const ts={stories:'1.3rem',post:'1.15rem',banner:'1rem'}[size]||'1.15rem';
+  const ss={stories:'.82rem',post:'.78rem',banner:'.72rem'}[size]||'.78rem';
+  const pd={stories:'1.4rem',post:'1.2rem',banner:'1rem'}[size]||'1.2rem';
+  return `<div style="width:100%;aspect-ratio:${d.ar};position:relative;overflow:hidden;background:#111">
     <div style="position:absolute;inset:0;background:${bgUrl};background-size:cover;background-position:center"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.15) 100%)"></div>
     <div style="position:absolute;inset:0;padding:${pd};display:flex;flex-direction:column;justify-content:flex-end;z-index:2">
@@ -487,13 +513,14 @@ function buildAdPreview(a,c1,c2,size,idx){
       <div style="font-size:${ss};color:rgba(255,255,255,.85);line-height:1.4;margin-bottom:.35rem">${a.subtitulo}</div>
       <div style="font-size:${ss};color:rgba(255,255,255,.65);margin-bottom:.5rem">${a.cuerpo}</div>
       ${a.precio_tachado?`<div style="font-size:.6rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:.15rem">${a.precio_tachado}</div>`:''}
-      <div style="font-size:.85rem;font-weight:800;color:${c2};margin-bottom:.6rem">${a.precio}</div>
-      <div style="display:inline-block;background:${c1};color:#fff;font-size:${ss};font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:.5rem 1rem;border-radius:100px;width:fit-content">${a.cta}</div>
+      <div style="font-size:.9rem;font-weight:800;color:${c2}">${a.precio}</div>
     </div>
   </div>`;
 }
 
+// switchSize: registra el tamaño activo en creativoSizes (cambio 1)
 function switchSize(idx,size){
+  creativoSizes[idx]=size;
   ['stories','post','banner'].forEach(s=>{const t=document.getElementById(`tab-${idx}-${s}`);if(t)t.classList.toggle('active',s===size);});
   const wrap=document.getElementById(`preview-wrap-${idx}`);
   if(!wrap||!creativosData)return;
@@ -503,24 +530,28 @@ function switchSize(idx,size){
   wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
 }
 
+// generateFondoCreativo: usa la descripción del alumno (cambio 3) y el tamaño activo (cambio 1)
 async function generateFondoCreativo(idx){
   if(!creativosData||!creativosData.anuncios[idx])return;
   const a=creativosData.anuncios[idx];
   const btn=document.getElementById(`gen-btn-${idx}`);
   const status=document.getElementById(`status-${idx}`);
+  const descEl=document.getElementById(`foto-desc-${idx}`);
+  const userDesc=(descEl&&descEl.value.trim())?descEl.value.trim():(a.prompt_fondo||a.foto_sugerida||'');
+  if(!userDesc){status.innerHTML=`<span style="color:#ef4444">Describí primero la foto de fondo 😊</span>`;if(descEl)descEl.focus();return;}
+  const size=creativoSizes[idx]||'stories';
+  const d=adDims(size);
   btn.disabled=true;btn.textContent='⟳ Generando...';
-  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Generando con DALL-E 3... (~30 seg)</span>`;
+  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Generando con IA... (~20 seg)</span>`;
   try{
-    const res=await fetch('/api/creativos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:a.prompt_fondo,size:'1080x1920'})});
+    const res=await fetch('/api/creativos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:userDesc,size:d.label})});
     const json=await res.json();
     if(json.error)throw new Error(json.error);
     if(!creativosData._fondos)creativosData._fondos={};
     creativosData._fondos[idx]=json.url;
-    const activeTab=document.querySelector(`#creativo-${idx} .size-tab.active`);
-    const size=activeTab?(activeTab.textContent.includes('Stories')?'stories':activeTab.textContent.includes('Post')?'post':'banner'):'stories';
-    const wrap=document.getElementById(`preview-wrap-${idx}`);
     const c1=curProject.ebook_color1||'#7c3aed';
     const c2=curProject.ebook_color2||'#ff006e';
+    const wrap=document.getElementById(`preview-wrap-${idx}`);
     wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
     btn.textContent='🔄 Regenerar';btn.disabled=false;
     const dlBtn=document.getElementById(`dl-btn-${idx}`);
@@ -534,16 +565,15 @@ async function generateFondoCreativo(idx){
   }
 }
 
+// descargarAnuncio: usa creativoSizes (cambio 1), recorte object-fit cover, SIN CTA (cambio 4)
 async function descargarAnuncio(idx){
   if(!creativosData||!creativosData.anuncios[idx])return;
   const a=creativosData.anuncios[idx];
   const fondoUrl=creativosData._fondos&&creativosData._fondos[idx];
   const c1=curProject.ebook_color1||'#7c3aed';
   const c2=curProject.ebook_color2||'#ff006e';
-  const activeTab=document.querySelector(`#creativo-${idx} .size-tab.active`);
-  const sizeKey=activeTab?(activeTab.textContent.includes('Stories')?'stories':activeTab.textContent.includes('Post')?'post':'banner'):'stories';
-  const dims={stories:{w:1080,h:1920,label:'1080x1920'},post:{w:1080,h:1080,label:'1080x1080'},banner:{w:1200,h:628,label:'1200x628'}};
-  const dim=dims[sizeKey];
+  const sizeKey=creativoSizes[idx]||'stories';
+  const dim=adDims(sizeKey);
   const status=document.getElementById(`status-${idx}`);
   status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Preparando PNG...</span>`;
   try{
@@ -553,22 +583,28 @@ async function descargarAnuncio(idx){
     if(fondoUrl){
       const img=new Image();img.crossOrigin='anonymous';
       await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=fondoUrl;});
-      ctx.drawImage(img,0,0,dim.w,dim.h);
+      // recorte tipo object-fit:cover para que la foto llene el tamaño sin deformarse
+      const ir=img.width/img.height;const cr=dim.w/dim.h;
+      let sx=0,sy=0,sw=img.width,sh=img.height;
+      if(ir>cr){sw=img.height*cr;sx=(img.width-sw)/2;}
+      else{sh=img.width/cr;sy=(img.height-sh)/2;}
+      ctx.drawImage(img,sx,sy,sw,sh,0,0,dim.w,dim.h);
     }else{ctx.fillStyle='#111111';ctx.fillRect(0,0,dim.w,dim.h);}
     const grad=ctx.createLinearGradient(0,0,0,dim.h);
     grad.addColorStop(0,'rgba(0,0,0,0.1)');grad.addColorStop(0.45,'rgba(0,0,0,0.45)');grad.addColorStop(1,'rgba(0,0,0,0.93)');
     ctx.fillStyle=grad;ctx.fillRect(0,0,dim.w,dim.h);
     const pad=Math.round(dim.w*0.08);
-    const titleSize=Math.round(dim.h*(sizeKey==='banner'?0.11:0.065));
-    const subSize=Math.round(dim.h*(sizeKey==='banner'?0.075:0.037));
-    let y=Math.round(dim.h*0.6);
+    const titleSize=Math.round(dim.h*(sizeKey==='banner'?0.085:0.062));
+    const subSize=Math.round(dim.h*(sizeKey==='banner'?0.055:0.034));
+    // arranco más abajo para anclar el texto al fondo
+    let y=Math.round(dim.h*(sizeKey==='banner'?0.42:0.55));
     // Badge
     const badgeH=Math.round(subSize*1.4);
-    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,Math.round(dim.w*0.22),badgeH,badgeH/2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.font=`700 ${Math.round(badgeH*0.55)}px sans-serif`;ctx.textBaseline='middle';
-    ctx.fillText(a.estilo.toUpperCase(),pad+Math.round(badgeH*0.4),y+badgeH/2);
-    y+=badgeH+Math.round(subSize*0.8);
-    // Título
+    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,Math.round(ctx.measureText?dim.w*0.26:dim.w*0.26),badgeH,badgeH/2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.font=`700 ${Math.round(badgeH*0.5)}px sans-serif`;ctx.textBaseline='middle';
+    ctx.fillText(a.estilo.toUpperCase(),pad+Math.round(badgeH*0.45),y+badgeH/2);
+    y+=badgeH+Math.round(subSize*0.7);
+    // Título (con salto de línea)
     ctx.fillStyle='#ffffff';ctx.font=`800 ${titleSize}px sans-serif`;ctx.textBaseline='top';
     const titleWords=a.titulo.split(' ');let line='';
     for(const w of titleWords){const test=line+w+' ';if(ctx.measureText(test).width>dim.w-pad*2&&line){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);line=w+' ';}else line=test;}
@@ -582,14 +618,9 @@ async function descargarAnuncio(idx){
     ctx.fillText(a.cuerpo.substring(0,70),pad,y);y+=Math.round(subSize*1.8);
     // Precio tachado
     if(a.precio_tachado){ctx.fillStyle='rgba(255,255,255,0.38)';ctx.font=`400 ${Math.round(subSize*0.78)}px sans-serif`;ctx.fillText(a.precio_tachado,pad,y);y+=Math.round(subSize*1.2);}
-    // Precio
-    ctx.fillStyle=c2;ctx.font=`800 ${Math.round(subSize*1.3)}px sans-serif`;
-    ctx.fillText(a.precio,pad,y);y+=Math.round(subSize*2.2);
-    // CTA
-    const ctaText=a.cta.toUpperCase();ctx.font=`800 ${subSize}px sans-serif`;
-    const ctaW=ctx.measureText(ctaText).width+Math.round(subSize*2.2);const ctaH=Math.round(subSize*1.9);
-    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,ctaW,ctaH,ctaH/2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.textBaseline='middle';ctx.fillText(ctaText,pad+Math.round(subSize*1.1),y+ctaH/2);
+    // Precio (sin CTA después — el CTA va en la red social)
+    ctx.fillStyle=c2;ctx.font=`800 ${Math.round(subSize*1.4)}px sans-serif`;
+    ctx.fillText(a.precio,pad,y);
     canvas.toBlob(blob=>{
       const url=URL.createObjectURL(blob);
       const link=document.createElement('a');link.href=url;
