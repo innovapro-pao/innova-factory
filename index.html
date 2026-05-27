@@ -262,6 +262,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
   <div class="nav-links">
     <button class="nav-btn active" onclick="showView('dashboard')">Dashboard</button>
     <button class="nav-btn" onclick="showView('generator')">Generador</button>
+    <button class="nav-btn" onclick="showView('traductor')">🌍 Traductor</button>
   </div>
 </nav>
 <div id="dashboard" class="view active">
@@ -417,40 +418,40 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div></div>
     </div>
   </div>
-  <div id="traductor-panel" style="display:none">
-    <div class="trad-wrap">
-      <div class="gen-header">
-        <h2>🌍 Traductor de Ebooks</h2>
-        <p style="color:var(--muted);font-size:.9rem">Subí tu ebook o bono y traducilo al idioma que elijas</p>
-      </div>
-      <div class="trad-card">
-        <h3>📂 Subí tu archivo</h3>
-        <p class="sub">Acepta archivos HTML o PDF. Si es un ebook que generaste antes con INNOVA FACTORY, subí ese mismo archivo.</p>
-        <div class="trad-drop" id="trad-drop" onclick="document.getElementById('trad-file-input').click()">
-          <div class="icon">📄</div>
-          <div class="text">Tocá acá o arrastrá tu archivo</div>
-          <div class="hint">HTML o PDF · Máximo 5 MB</div>
-          <input type="file" id="trad-file-input" accept=".html,.htm,.pdf" onchange="handleTradFile(event)">
-        </div>
-        <div id="trad-file-info" style="display:none"></div>
-      </div>
-      <div class="trad-card">
-        <h3>🌐 Elegí el idioma destino</h3>
-        <p class="sub">¿A qué idioma querés traducir tu contenido?</p>
-        <div class="trad-lang-grid">
-          <button class="trad-lang-chip" data-lang="es" onclick="selectTradLang(this,'es')">🇪🇸 Español</button>
-          <button class="trad-lang-chip" data-lang="en" onclick="selectTradLang(this,'en')">🇬🇧 Inglés</button>
-          <button class="trad-lang-chip" data-lang="pt" onclick="selectTradLang(this,'pt')">🇧🇷 Portugués</button>
-          <button class="trad-lang-chip" data-lang="it" onclick="selectTradLang(this,'it')">🇮🇹 Italiano</button>
-          <button class="trad-lang-chip" data-lang="fr" onclick="selectTradLang(this,'fr')">🇫🇷 Francés</button>
-        </div>
-      </div>
-      <div class="wiz-btns" style="max-width:480px;margin:1.5rem auto 0">
-        <button class="btn btn-ghost" onclick="closeTraductor()">← Volver</button>
-        <button class="btn btn-primary" id="trad-go-btn" onclick="startTraduccion()" disabled>🌍 Traducir ahora</button>
-      </div>
-      <div id="trad-progress-wrap" style="display:none;margin-top:1.5rem"></div>
+</div>
+<div id="traductor" class="view">
+  <div class="trad-wrap">
+    <div class="gen-header">
+      <h2>🌍 Traductor de Ebooks</h2>
+      <p style="color:var(--muted);font-size:.9rem">Subí cualquier ebook o bono (HTML o PDF) y traducilo al idioma que elijas</p>
     </div>
+    <div class="trad-card">
+      <h3>📂 Subí tu archivo</h3>
+      <p class="sub">Puede ser un ebook que generaste antes con INNOVA FACTORY o cualquier otro archivo tuyo.</p>
+      <div class="trad-drop" id="trad-drop" onclick="document.getElementById('trad-file-input').click()">
+        <div class="icon">📄</div>
+        <div class="text">Tocá acá o arrastrá tu archivo</div>
+        <div class="hint">HTML o PDF · Máximo 5 MB</div>
+        <input type="file" id="trad-file-input" accept=".html,.htm,.pdf" onchange="handleTradFile(event)">
+      </div>
+      <div id="trad-file-info" style="display:none"></div>
+    </div>
+    <div class="trad-card">
+      <h3>🌐 Elegí el idioma destino</h3>
+      <p class="sub">¿A qué idioma querés traducir tu contenido?</p>
+      <div class="trad-lang-grid">
+        <button class="trad-lang-chip" data-lang="es" onclick="selectTradLang(this,'es')">🇪🇸 Español</button>
+        <button class="trad-lang-chip" data-lang="en" onclick="selectTradLang(this,'en')">🇬🇧 Inglés</button>
+        <button class="trad-lang-chip" data-lang="pt" onclick="selectTradLang(this,'pt')">🇧🇷 Portugués</button>
+        <button class="trad-lang-chip" data-lang="it" onclick="selectTradLang(this,'it')">🇮🇹 Italiano</button>
+        <button class="trad-lang-chip" data-lang="fr" onclick="selectTradLang(this,'fr')">🇫🇷 Francés</button>
+      </div>
+    </div>
+    <div class="wiz-btns" style="max-width:480px;margin:1.5rem auto 0">
+      <button class="btn btn-ghost" onclick="showView('dashboard')">← Volver al inicio</button>
+      <button class="btn btn-primary" id="trad-go-btn" onclick="startTraduccion()" disabled>🌍 Traducir ahora</button>
+    </div>
+    <div id="trad-progress-wrap" style="display:none;margin-top:1.5rem"></div>
   </div>
 </div>
 </div>
@@ -464,7 +465,6 @@ const MODS=[
   {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'HTML espectacular listo para usar',special:true},
   {id:'copies',icon:'✍️',name:'Copys para Publicidad',desc:'Posts, stories y ads listos para publicar'},
   {id:'creativos',icon:'🎨',name:'Anuncios Publicitarios',desc:'3 anuncios en 3 tamaños listos para publicar'},
-  {id:'traductor',icon:'🌍',name:'Traductor de Ebooks',desc:'Traducí tus ebooks y bonos a 5 idiomas'},
 ];
 let projects=JSON.parse(localStorage.getItem('innova_projects')||'[]');
 let curProject={},lcConfig={},curResult='',curMod='';
@@ -476,17 +476,17 @@ let creativoSizes={};
 document.addEventListener('DOMContentLoaded',()=>{renderStars();renderDash();renderMods();initTestimonials();});
 
 function renderStars(){const c=document.getElementById('stars');for(let i=0;i<120;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2+1;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--o:${Math.random()*.7+.2};--d:${Math.random()*4+2}s`;c.appendChild(s);}}
-function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');const idx=id==='dashboard'?0:1;document.querySelectorAll('.nav-btn')[idx].classList.add('active');}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');const navIdx={dashboard:0,generator:1,traductor:2};const idx=navIdx[id]??0;const btns=document.querySelectorAll('.nav-btn');if(btns[idx])btns[idx].classList.add('active');if(id==='traductor')resetTraductor();}
 function renderDash(){document.getElementById('s-total').textContent=projects.length;document.getElementById('s-ebooks').textContent=projects.filter(p=>p.hasEbook).length;document.getElementById('s-landings').textContent=projects.filter(p=>p.hasLanding).length;const g=document.getElementById('projects-grid');if(!projects.length){g.innerHTML=`<div class="empty-state"><div class="big">🚀</div><p>No tenés proyectos aún.</p></div>`;return;}g.innerHTML=projects.map((p,i)=>`<div class="proj-card" onclick="openProject(${i})"><h3>${p.product}</h3><div class="meta">${p.audience}</div><div class="meta">Precio: ${p.price}</div><div class="proj-badge">✓ Activo</div><div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div></div>`).join('');}
 function openProject(i){curProject={...projects[i]};document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();showView('generator');renderMods();}
 function startNew(){['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget','f-contenido'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('f-platform').selectedIndex=0;showStep(1);showView('generator');}
-function showStep(n){['step1','step2','modules-panel','landing-config','traductor-panel'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
+function showStep(n){['step1','step2','modules-panel','landing-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
 function goStep1(){showStep(1);}
 function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;curProject.ebook_color1=document.getElementById('ebook-color1').value;curProject.ebook_color2=document.getElementById('ebook-color2').value;curProject.items_parsed=parsearItems(curProject.contenido_especifico);showStep(2);}
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
-function showModulesPanel(){['step1','step2','landing-config','traductor-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
+function showModulesPanel(){['step1','step2','landing-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
-function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='traductor')openTraductor();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else generate(id);}
 
 function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
 
@@ -845,7 +845,7 @@ async function generate(modId){curMod=modId;const mod=MODS.find(m=>m.id===modId)
 try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);curResult=json.content;setModStatus(modId,'done','✓ Listo');document.getElementById('r-title').textContent=mod.name;document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-html" onclick="doTxt()">📄 TXT</button>`;document.getElementById('r-body').innerHTML=`<div style="white-space:pre-wrap;font-size:.88rem;color:#c8c8d8;line-height:1.8">${typeof json.content==='string'?json.content:JSON.stringify(json.content,null,2)}</div>`;setLoading(false);toast(`${mod.name} generado 🎉`,'ok');}catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;toast('Error 😓','err');}}
 
 function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);const card=document.getElementById('mc-'+id);if(!el||!card)return;el.className=`mod-status s-${cls}`;el.textContent=txt;if(cls==='done')card.classList.add('done');}
-function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','traductor-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
+function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
 function goLC1(){showLCStep(1);}
@@ -913,20 +913,13 @@ function saveCur(){const i=projects.findIndex(p=>p.product===curProject.product)
 // ── TRADUCTOR ──
 let tradFile=null,tradFileText='',tradFileName='',tradFileIsHtml=false,tradLang=null;
 
-function openTraductor(){
+function resetTraductor(){
   tradFile=null;tradFileText='';tradFileName='';tradFileIsHtml=false;tradLang=null;
-  ['step1','step2','modules-panel','landing-config'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  document.getElementById('traductor-panel').style.display='block';
-  document.getElementById('trad-file-info').style.display='none';
-  document.getElementById('trad-progress-wrap').style.display='none';
-  document.getElementById('trad-progress-wrap').innerHTML='';
+  const fileInput=document.getElementById('trad-file-input');if(fileInput)fileInput.value='';
+  const info=document.getElementById('trad-file-info');if(info){info.style.display='none';info.innerHTML='';}
+  const progWrap=document.getElementById('trad-progress-wrap');if(progWrap){progWrap.style.display='none';progWrap.innerHTML='';}
   document.querySelectorAll('.trad-lang-chip').forEach(c=>c.classList.remove('on'));
-  document.getElementById('trad-go-btn').disabled=true;
-}
-
-function closeTraductor(){
-  document.getElementById('traductor-panel').style.display='none';
-  showModulesPanel();
+  const goBtn=document.getElementById('trad-go-btn');if(goBtn){goBtn.disabled=true;goBtn.textContent='🌍 Traducir ahora';}
 }
 
 async function handleTradFile(event){
@@ -1030,14 +1023,48 @@ async function startTraduccion(){
     }
     const textoFinal=traducciones.join('\n');
     const idiomaNombres={es:'Espanol',en:'English',pt:'Portugues',it:'Italiano',fr:'Francais'};
+    const idiomaNombrePretty={es:'Español',en:'Inglés',pt:'Portugués',it:'Italiano',fr:'Francés'};
     const sufijo=idiomaNombres[tradLang]||tradLang;
+    const langCode=tradLang;
+    // CSS y elementos comunes para arreglar idioma + botón PDF gigante + barra de instrucciones en español
+    const bannerInstrucciones=`<div id="innova-print-banner" style="position:sticky;top:0;left:0;right:0;z-index:99998;background:linear-gradient(90deg,#ff006e,#7c3aed);color:#fff;padding:12px 20px;text-align:center;font-family:'Sora',-apple-system,sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.4)" translate="no">📄 Para guardar este archivo como PDF, tocá el botón rosa fluorescente <span style="background:rgba(255,255,255,.25);padding:3px 10px;border-radius:100px;margin:0 4px">🖨️ Guardar como PDF</span> que está abajo a la derecha</div>`;
+    const botonPdfGigante=`<div id="innova-pdf-fab" style="position:fixed;bottom:30px;right:30px;z-index:99999;animation:innovapdfpulse 2s ease-in-out infinite" translate="no"><button onclick="window.print()" style="display:flex;align-items:center;gap:10px;padding:18px 32px;background:linear-gradient(135deg,#ff006e,#7c3aed);color:#fff;border:3px solid #fff;border-radius:100px;font-family:'Sora',-apple-system,sans-serif;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 12px 40px rgba(255,0,110,.55),0 0 0 6px rgba(255,0,110,.15);letter-spacing:.3px">🖨️ Guardar como PDF</button></div><style>@keyframes innovapdfpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}@media print{#innova-pdf-fab,#innova-print-banner{display:none!important}}</style>`;
+
     let blob,nombreSalida;
     if(tradFileIsHtml){
-      blob=new Blob([textoFinal],{type:'text/html'});
+      // Tomo el HTML traducido y lo "parcho" para arreglar idioma + agregar botón + banner
+      let htmlFinal=textoFinal;
+      // 1) Cambiar lang del html para que Chrome no ofrezca traducir
+      if(/<html[^>]*>/i.test(htmlFinal)){
+        htmlFinal=htmlFinal.replace(/<html[^>]*>/i,`<html lang="${langCode}" translate="no">`);
+      }else{
+        htmlFinal=`<!DOCTYPE html><html lang="${langCode}" translate="no">${htmlFinal}`;
+      }
+      // 2) Agregar meta tags antitraducción en el head (o crearlo si no existe)
+      const metaTags=`<meta name="google" content="notranslate"><meta http-equiv="Content-Language" content="${langCode}"><meta charset="UTF-8">`;
+      if(/<head[^>]*>/i.test(htmlFinal)){
+        htmlFinal=htmlFinal.replace(/<head[^>]*>/i,m=>`${m}\n${metaTags}`);
+      }else if(/<body[^>]*>/i.test(htmlFinal)){
+        htmlFinal=htmlFinal.replace(/<body[^>]*>/i,m=>`<head>${metaTags}</head>\n${m}`);
+      }
+      // 3) Quitar cualquier botón PDF viejo que la IA pueda haber traducido raro
+      htmlFinal=htmlFinal.replace(/<div class="fab"[\s\S]*?<\/div>/gi,'');
+      htmlFinal=htmlFinal.replace(/<div class="eb-fab"[\s\S]*?<\/div>/gi,'');
+      // 4) Inyectar banner arriba (justo después de <body>) y botón PDF gigante (antes de </body>)
+      if(/<body[^>]*>/i.test(htmlFinal)){
+        htmlFinal=htmlFinal.replace(/<body[^>]*>/i,m=>`${m}\n${bannerInstrucciones}`);
+      }
+      if(/<\/body>/i.test(htmlFinal)){
+        htmlFinal=htmlFinal.replace(/<\/body>/i,`${botonPdfGigante}\n</body>`);
+      }else{
+        htmlFinal=htmlFinal+botonPdfGigante;
+      }
+      blob=new Blob([htmlFinal],{type:'text/html'});
       const baseName=tradFileName.replace(/\.[^.]+$/,'');
       nombreSalida=`${baseName}_${sufijo}.html`;
     }else{
-      const htmlSimple=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${tradFileName} - ${sufijo}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;padding:60px 10%;line-height:1.7;-webkit-print-color-adjust:exact}p{margin-bottom:1rem;font-size:.95rem;color:#c8c8d8}.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}.fab button{padding:.85rem 1.5rem;background:linear-gradient(135deg,#ff006e,#7c3aed);color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}@media print{.fab{display:none!important}}</style></head><body>${textoFinal.split('\n').map(l=>l.trim()?`<p>${l.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`:'').join('')}<div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div></body></html>`;
+      // Archivo original era PDF: armo HTML lindo nuevo desde el texto plano traducido
+      const htmlSimple=`<!DOCTYPE html><html lang="${langCode}" translate="no"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta http-equiv="Content-Language" content="${langCode}"><title>${tradFileName} - ${sufijo}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;line-height:1.7;-webkit-print-color-adjust:exact;print-color-adjust:exact}.content-wrap{padding:90px 10% 80px}p{margin-bottom:1rem;font-size:.95rem;color:#c8c8d8}@media print{.content-wrap{padding:40px 8%}}</style></head><body>${bannerInstrucciones}<div class="content-wrap">${textoFinal.split('\n').map(l=>l.trim()?`<p>${l.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`:'').join('')}</div>${botonPdfGigante}</body></html>`;
       blob=new Blob([htmlSimple],{type:'text/html'});
       const baseName=tradFileName.replace(/\.[^.]+$/,'');
       nombreSalida=`${baseName}_${sufijo}.html`;
@@ -1048,9 +1075,9 @@ async function startTraduccion(){
     wrap.innerHTML=`
       <div class="trad-progress" style="border-color:var(--success);background:rgba(16,185,129,.05)">
         <div style="display:flex;align-items:center;gap:.6rem;color:var(--success);font-weight:700;font-size:.95rem">
-          ✅ ¡Traducción lista! Se descargó <strong>${nombreSalida}</strong>
+          ✅ ¡Traducción al ${idiomaNombrePretty[tradLang]} lista! Se descargó <strong>${nombreSalida}</strong>
         </div>
-        <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem">💡 Abrilo en Chrome → tocá el botón rosa 🖨️ Descargar PDF</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-top:.6rem;line-height:1.6">💡 <strong style="color:var(--violet2)">Abrí el archivo en Chrome</strong> (doble click) → vas a ver una <strong style="color:var(--fuchsia2)">barra rosa arriba</strong> con instrucciones y un <strong style="color:var(--fuchsia2)">botón gigante "🖨️ Guardar como PDF"</strong> abajo a la derecha. Tocalo y guardás el PDF.</div>
       </div>`;
     document.getElementById('trad-go-btn').disabled=false;
     document.getElementById('trad-go-btn').textContent='🔄 Traducir otro';
