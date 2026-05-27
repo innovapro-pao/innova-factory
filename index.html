@@ -551,7 +551,6 @@ function buildAdPreview(a,c1,c2,size,idx){
     <div style="position:absolute;inset:0;background:${bgUrl};background-size:cover;background-position:center"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.15) 100%)"></div>
     <div style="position:absolute;inset:0;padding:${pd};display:flex;flex-direction:column;justify-content:flex-end;z-index:2">
-      <div style="display:inline-block;font-size:.52rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:.22rem .6rem;border-radius:100px;background:${c1};color:#fff;margin-bottom:.45rem;width:fit-content">${a.estilo.toUpperCase()}</div>
       <div style="font-family:'Syne',sans-serif;font-size:${ts};font-weight:800;color:#fff;text-transform:uppercase;line-height:1.1;margin-bottom:.3rem">${a.titulo}</div>
       <div style="font-size:${ss};color:rgba(255,255,255,.85);line-height:1.4;margin-bottom:.35rem">${a.subtitulo}</div>
       <div style="font-size:${ss};color:rgba(255,255,255,.65);margin-bottom:.5rem">${a.cuerpo}</div>
@@ -641,13 +640,7 @@ async function descargarAnuncio(idx){
     const subSize=Math.round(dim.h*(sizeKey==='banner'?0.055:0.034));
     // arranco más abajo para anclar el texto al fondo
     let y=Math.round(dim.h*(sizeKey==='banner'?0.42:0.55));
-    // Badge
-    const badgeH=Math.round(subSize*1.4);
-    ctx.fillStyle=c1;ctx.beginPath();ctx.roundRect(pad,y,Math.round(ctx.measureText?dim.w*0.26:dim.w*0.26),badgeH,badgeH/2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.font=`700 ${Math.round(badgeH*0.5)}px sans-serif`;ctx.textBaseline='middle';
-    ctx.fillText(a.estilo.toUpperCase(),pad+Math.round(badgeH*0.45),y+badgeH/2);
-    y+=badgeH+Math.round(subSize*0.7);
-    // Título (con salto de línea)
+    // Título (con salto de línea) — sin badge de estilo en la imagen
     ctx.fillStyle='#ffffff';ctx.font=`800 ${titleSize}px sans-serif`;ctx.textBaseline='top';
     const titleWords=a.titulo.split(' ');let line='';
     for(const w of titleWords){const test=line+w+' ';if(ctx.measureText(test).width>dim.w-pad*2&&line){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);line=w+' ';}else line=test;}
