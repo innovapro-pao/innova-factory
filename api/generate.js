@@ -4,22 +4,17 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
   try {
     const { step, data, landingConfig, capitulo, bono_idx, item } = req.body;
     const key = process.env.ANTHROPIC_API_KEY;
     let prompt = '';
-
     if (step === 'ebook_indice') {
       prompt = `Eres experto en infoproductos. Crea la estructura de un ebook profesional en español.
-
 Producto: ${data.product}
 Público: ${data.audience}
 Problema: ${data.problem}
 Transformación: ${data.transformation}
-
 Los capítulos deben ser de CONTEXTO, FUNDAMENTOS y ESTRATEGIA. NO incluyas las recetas/técnicas/ítems específicos en los capítulos — esos se generan por separado.
-
 Devuelve SOLO JSON puro sin markdown:
 {
   "titulo_principal": "título magnético del ebook",
@@ -32,15 +27,12 @@ Devuelve SOLO JSON puro sin markdown:
   ],
   "conclusion": "conclusión de 2 párrafos con CTA poderoso"
 }`;
-
     } else if (step === 'ebook_capitulo') {
       prompt = `Eres experto en infoproductos. Escribí el capítulo ${capitulo.numero} de un ebook profesional en español.
-
 Producto: ${data.product}
 Público: ${data.audience}
 Capítulo: ${capitulo.titulo}
 Descripción: ${capitulo.descripcion}
-
 Devuelve SOLO JSON puro sin markdown:
 {
   "titulo": "${capitulo.titulo}",
@@ -64,18 +56,15 @@ Devuelve SOLO JSON puro sin markdown:
   ],
   "cierre": "párrafo de cierre del capítulo"
 }`;
-
     } else if (step === 'ebook_item_html') {
       const esReceta = item.tipo === 'receta';
       prompt = `Eres experto en infoproductos. Generá el contenido completo de este ítem en español.
-
 Producto: ${data.product}
 Público: ${data.audience}
 Tipo: ${item.tipo}
 Número: ${item.indice} de ${item.total}
 Tema: ${item.contexto}
 Título sugerido: ${item.titulo}
-
 ${esReceta ? `Generá una receta COMPLETA y PROFESIONAL. Devuelve SOLO JSON puro sin markdown:
 {
   "titulo": "nombre atractivo de la receta",
@@ -132,29 +121,33 @@ ${esReceta ? `Generá una receta COMPLETA y PROFESIONAL. Devuelve SOLO JSON puro
     {"label": "Resultado", "valor": "Inmediato"}
   ]
 }`}`;
-
     } else if (step === 'bono_contenido') {
       const bono = data.bonos[bono_idx];
-      prompt = `Eres experto en infoproductos. Creá el contenido completo del bono en español.
-
-Producto: ${data.product}
+      prompt = `Eres experto en infoproductos. Creá el contenido COMPLETO y EXTENSO del bono en español neutro.
+Producto principal: ${data.product}
 Público: ${data.audience}
-Bono: ${bono.nombre}
+Bono ${bono_idx + 1}: ${bono.nombre}
 Descripción: ${bono.descripcion}
 
-Guía COMPLETA de 500+ palabras en markdown con:
-- Introducción
-- 4 secciones con subtítulos ##
-- Ejemplos prácticos
-- Tips accionables
-- Conclusión
+REGLAS IMPORTANTES:
+- Es un BONO DESCARGABLE en PDF, NO un curso con videos, NO una masterclass, NO una clase en vivo, NO una sesión, NO un webinar.
+- NUNCA menciones videos, grabaciones, plataforma de cursos, acceso a clases, ni nada que requiera multimedia. Solo contenido escrito y descargable.
+- Si el bono incluye ítems numerados (ej: "5 recetas", "10 plantillas", "7 ejercicios"), enumeralos uno por uno con todo su contenido.
+- Si el bono es una pieza única (ej: una guía, un checklist, un cronograma), profundizá en el tema sin inventar ítems internos.
 
-Sin JSON.`;
+ESTRUCTURA:
+Guía COMPLETA de 800-1000 palabras en formato markdown con:
+- Introducción inspiradora (1 párrafo de 3-4 oraciones)
+- Mínimo 5 secciones con subtítulos ##
+- Si el bono incluye ítems numerados, una sección por cada ítem con sus detalles completos
+- Ejemplos prácticos y accionables en cada sección
+- Tips profesionales destacados con **negrita**
+- Conclusión motivadora con próximo paso (1 párrafo)
 
+Devolvé SOLO el contenido en markdown, sin JSON, sin envoltorios.`;
     } else if (step === 'landing' && landingConfig) {
       const lc = landingConfig;
       prompt = `Eres copywriter experto en landing pages de alta conversión para LATAM. Genera SOLO JSON puro sin markdown.
-
 Producto: ${data.product}
 Público: ${data.audience}
 Problema: ${data.problem}
@@ -167,7 +160,6 @@ Subpromesa: ${lc.subpromise || ''}
 CTA: ${lc.cta || '¡Quiero empezar ahora!'}
 Garantía: ${lc.guarantee} días
 Bonos: ${JSON.stringify(data.bonos || [])}
-
 JSON exacto:
 {
   "preheadline": "frase corta llamativa",
@@ -223,37 +215,44 @@ JSON exacto:
   "sold_pct": 73,
   "popup_actions": ["acaba de descargar","activó su acceso","descargó los bonos","ya tiene acceso"]
 }`;
-
     } else {
       const prompts = {
-        bonos: `Crea 4 bonos irresistibles en español para:
-Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
-SOLO JSON puro:
+        bonos: `Eres experto en infoproductos digitales descargables. Creá 4 bonos irresistibles en español para:
+Producto principal: ${data.product}
+Público: ${data.audience}
+Precio: ${data.price}
+
+REGLAS CRÍTICAS:
+- Los bonos son SIEMPRE contenido descargable en PDF (ebooks, guías, plantillas, checklists, planificadores, cronogramas, listas de recursos).
+- PROHIBIDO inventar: masterclasses, videos, clases en vivo, webinars, sesiones grabadas, acceso a plataformas, llamadas, mentorías 1 a 1, comunidades, grupos privados, audios, podcasts.
+- Variá los tipos de bonos: algunos pueden ser colecciones de ítems numerados (ej: "10 plantillas listas para usar", "7 recetas extra", "5 ejercicios bonus"), otros pueden ser piezas únicas (ej: "Guía de errores comunes", "Checklist de lanzamiento", "Cronograma de 30 días").
+- Cada bono debe ser COMPLEMENTARIO al producto principal y aportar valor real.
+- En "tipo_contenido" indicá si es "items_numerados" (cuando el bono tiene varios items adentro como recetas/plantillas/ejercicios) o "pieza_unica" (cuando es una sola guía/checklist/cronograma). Esto define cuántas fotos necesita.
+- Si es "items_numerados", indicá "cantidad_items" (ej: 5, 7, 10).
+- "tema_visual_portada" es una descripción corta en español de qué foto va en la portada del bono (ej: "una libreta abierta sobre un escritorio con flores secas").
+
+Devolvé SOLO JSON puro sin markdown:
 {
   "bonos": [
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 27","emoji":"🎯"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 37","emoji":"📋"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 47","emoji":"⚡"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas","precio_original":"USD 27","emoji":"🏆"}
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 27","emoji":"🎯","tipo_contenido":"items_numerados","cantidad_items":5,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 37","emoji":"📋","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 47","emoji":"⚡","tipo_contenido":"items_numerados","cantidad_items":7,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 27","emoji":"🏆","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"}
   ],
   "valor_total": "USD 138",
   "frase_remate": "frase poderosa máximo 10 palabras"
 }`,
-
         copies: `Copywriter AIDA experto en español para: Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
 1. 5 emails de lanzamiento completos
 2. 5 posts Instagram con hashtags
 3. 7 scripts de stories
 4. 3 anuncios Facebook/Instagram
 5. 2 mensajes WhatsApp`,
-
         creativos: `Eres un director creativo experto en publicidad digital para LATAM. Generá 3 anuncios publicitarios para este producto. Devuelve SOLO JSON puro sin markdown:
-
 Producto: ${data.product}
 Público: ${data.audience}
 Precio: ${data.price}
 Transformación: ${data.transformation}
-
 {
   "anuncios": [
     {
@@ -265,7 +264,7 @@ Transformación: ${data.transformation}
       "cta": "texto del botón máximo 4 palabras",
       "precio": "${data.price}",
       "precio_tachado": "${data.oldprice || ''}",
-      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual premium sin texto, relacionado al producto, estilo publicitario profesional, dark moody background, cinematic lighting, no text no words no people no faces"
+      "prompt_fondo": "prompt en inglés para generación de imagen: fondo visual premium sin texto, relacionado al producto, estilo publicitario profesional, dark moody background, cinematic lighting, no text no words no people no faces"
     },
     {
       "id": 2,
@@ -276,7 +275,7 @@ Transformación: ${data.transformation}
       "cta": "texto del botón máximo 4 palabras",
       "precio": "${data.price}",
       "precio_tachado": "${data.oldprice || ''}",
-      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual lifestyle premium sin texto, estilo aspiracional, beautiful lighting, professional photography aesthetic, no text no words no people no faces"
+      "prompt_fondo": "prompt en inglés para generación de imagen: fondo visual lifestyle premium sin texto, estilo aspiracional, beautiful lighting, professional photography aesthetic, no text no words no people no faces"
     },
     {
       "id": 3,
@@ -287,7 +286,7 @@ Transformación: ${data.transformation}
       "cta": "texto del botón máximo 4 palabras",
       "precio": "${data.price}",
       "precio_tachado": "${data.oldprice || ''}",
-      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual premium de producto digital, dark luxury background, gold accents, no text no words no people no faces"
+      "prompt_fondo": "prompt en inglés para generación de imagen: fondo visual premium de producto digital, dark luxury background, gold accents, no text no words no people no faces"
     }
   ],
   "paleta": {
@@ -296,7 +295,27 @@ Transformación: ${data.transformation}
     "acento": "#color hex para CTAs y precios"
   }
 }`,
+        bono_regenerar: `Eres experto en infoproductos digitales descargables. Creá UN SOLO bono nuevo y DIFERENTE al actual, en español para:
+Producto principal: ${data.product}
+Público: ${data.audience}
+Bono actual que NO te gustó: ${data.bono_actual ? JSON.stringify(data.bono_actual) : ''}
 
+REGLAS CRÍTICAS:
+- Generá un bono COMPLETAMENTE DIFERENTE al actual (otro tema, otro tipo, otro enfoque).
+- Es contenido descargable en PDF. PROHIBIDO mencionar: masterclasses, videos, clases en vivo, webinars, sesiones, plataformas, llamadas, mentorías, comunidades, audios.
+- Tipos válidos: ebooks, guías, plantillas, checklists, planificadores, cronogramas, listas de recursos, recetarios bonus, recopilaciones de ejercicios.
+- En "tipo_contenido": "items_numerados" si tiene varios items adentro, "pieza_unica" si es una sola pieza.
+
+Devolvé SOLO JSON puro sin markdown:
+{
+  "nombre":"NOMBRE EN MAYUSCULAS",
+  "descripcion":"2-3 líneas describiendo el valor concreto",
+  "precio_original":"USD XX",
+  "emoji":"emoji representativo",
+  "tipo_contenido":"items_numerados o pieza_unica",
+  "cantidad_items": 0,
+  "tema_visual_portada":"descripción de la foto de portada en español"
+}`,
         trafico: `Experto en tráfico digital para: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
 1. Plan orgánico 30 días detallado
 2. Estrategia Facebook/Instagram Ads con presupuesto
@@ -306,7 +325,6 @@ Transformación: ${data.transformation}
       };
       prompt = prompts[step] || `Genera contenido profesional en español para: ${data.product}. Módulo: ${step}.`;
     }
-
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -320,10 +338,8 @@ Transformación: ${data.transformation}
         messages: [{ role: 'user', content: prompt }],
       }),
     });
-
     const json = await r.json();
     let text = json?.content?.[0]?.text || 'Error al generar contenido';
-
     if (step === 'bonos') {
       try {
         const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -333,7 +349,15 @@ Transformación: ${data.transformation}
         return res.status(200).json({ content: text, step });
       }
     }
-
+    if (step === 'bono_regenerar') {
+      try {
+        const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const parsed = JSON.parse(clean);
+        return res.status(200).json({ bono: parsed, step });
+      } catch(e) {
+        return res.status(200).json({ content: text, step, error: 'No se pudo parsear el bono' });
+      }
+    }
     if (step === 'ebook_indice' || step === 'ebook_capitulo' || step === 'ebook_item_html') {
       try {
         const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -343,7 +367,6 @@ Transformación: ${data.transformation}
         return res.status(200).json({ content: text, step, isJson: false });
       }
     }
-
     if (step === 'landing' && landingConfig) {
       try {
         text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -353,7 +376,6 @@ Transformación: ${data.transformation}
         return res.status(200).json({ content: text, step, isJson: false });
       }
     }
-
     if (step === 'creativos') {
       try {
         const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -363,9 +385,7 @@ Transformación: ${data.transformation}
         return res.status(200).json({ content: text, step, isJson: false });
       }
     }
-
     return res.status(200).json({ content: text, step });
-
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
