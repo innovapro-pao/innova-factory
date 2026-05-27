@@ -130,16 +130,18 @@ Bono ${bono_idx + 1}: ${bono.nombre}
 Descripción: ${bono.descripcion}
 
 REGLAS IMPORTANTES:
-- Es un BONO DESCARGABLE en PDF, NO un curso con videos, NO una masterclass, NO una clase en vivo, NO una sesión, NO un webinar.
-- NUNCA menciones videos, grabaciones, plataforma de cursos, acceso a clases, ni nada que requiera multimedia. Solo contenido escrito y descargable.
-- Si el bono incluye ítems numerados (ej: "5 recetas", "10 plantillas", "7 ejercicios"), enumeralos uno por uno con todo su contenido.
+- Es un BONO DESCARGABLE en PDF, solo contenido escrito. NO es un curso con videos, NO es una masterclass, NO es una clase en vivo, NO es una sesión, NO es un webinar.
+- NUNCA menciones que el bono "incluye plantillas editables", "incluye diseños listos para descargar", "incluye archivos Excel", "incluye imágenes editables", "incluye videos", "incluye acceso a una plataforma" ni nada que requiera archivos externos al PDF.
+- El contenido del bono DEBE ser autosuficiente: todo lo que prometes en el bono debe estar ESCRITO acá dentro como texto completo. Si decís "te doy 10 ejercicios", listá los 10 ejercicios con sus consignas completas. Si decís "te doy un cronograma de 30 días", escribí los 30 días con qué hacer cada día.
+- PROHIBIDO escribir frases como "puedes descargar la plantilla aquí", "te enviamos el archivo", "haz click para acceder", "encuentra el template en el enlace", "el diseño está disponible en". Todo lo que prometés está EN ESTE TEXTO.
+- Si el bono incluye ítems numerados (ej: "5 recetas", "10 ejercicios"), enumeralos uno por uno con todo su contenido completo y detallado adentro.
 - Si el bono es una pieza única (ej: una guía, un checklist, un cronograma), profundizá en el tema sin inventar ítems internos.
 
 ESTRUCTURA:
 Guía COMPLETA de 800-1000 palabras en formato markdown con:
 - Introducción inspiradora (1 párrafo de 3-4 oraciones)
 - Mínimo 5 secciones con subtítulos ##
-- Si el bono incluye ítems numerados, una sección por cada ítem con sus detalles completos
+- Si el bono incluye ítems numerados, una sección por cada ítem con su contenido completo y desarrollado en el texto
 - Ejemplos prácticos y accionables en cada sección
 - Tips profesionales destacados con **negrita**
 - Conclusión motivadora con próximo paso (1 párrafo)
@@ -217,27 +219,53 @@ JSON exacto:
 }`;
     } else {
       const prompts = {
-        bonos: `Eres experto en infoproductos digitales descargables. Creá 4 bonos irresistibles en español para:
+        bonos: `Eres experto en infoproductos digitales descargables. Creá 4 bonos irresistibles, ÚTILES Y REALISTAS en español para:
 Producto principal: ${data.product}
 Público: ${data.audience}
 Precio: ${data.price}
 
-REGLAS CRÍTICAS:
-- Los bonos son SIEMPRE contenido descargable en PDF (ebooks, guías, plantillas, checklists, planificadores, cronogramas, listas de recursos).
-- PROHIBIDO inventar: masterclasses, videos, clases en vivo, webinars, sesiones grabadas, acceso a plataformas, llamadas, mentorías 1 a 1, comunidades, grupos privados, audios, podcasts.
-- Variá los tipos de bonos: algunos pueden ser colecciones de ítems numerados (ej: "10 plantillas listas para usar", "7 recetas extra", "5 ejercicios bonus"), otros pueden ser piezas únicas (ej: "Guía de errores comunes", "Checklist de lanzamiento", "Cronograma de 30 días").
-- Cada bono debe ser COMPLEMENTARIO al producto principal y aportar valor real.
-- En "tipo_contenido" indicá si es "items_numerados" (cuando el bono tiene varios items adentro como recetas/plantillas/ejercicios) o "pieza_unica" (cuando es una sola guía/checklist/cronograma). Esto define cuántas fotos necesita.
-- Si es "items_numerados", indicá "cantidad_items" (ej: 5, 7, 10).
-- "tema_visual_portada" es una descripción corta en español de qué foto va en la portada del bono (ej: "una libreta abierta sobre un escritorio con flores secas").
+REGLAS CRÍTICAS DE QUÉ SÍ Y QUÉ NO PUEDES PROPONER:
+
+✅ TIPOS DE BONOS PERMITIDOS (cosas que se entregan como TEXTO/PDF descargable):
+- Recetas extra, variantes o versiones especiales
+- Checklists y listas de verificación
+- Guías paso a paso sobre un tema específico
+- Cronogramas y planificadores en formato texto/tabla
+- Glosarios, diccionarios o listas de términos
+- Listas de recursos comentadas (proveedores, herramientas, libros)
+- Compilaciones de tips y trucos profesionales
+- Ejercicios prácticos con instrucciones
+- Casos de estudio y ejemplos reales explicados
+- Cuestionarios y autoevaluaciones
+- Recopilaciones de preguntas frecuentes con respuestas
+- Mini-cursos escritos sobre un sub-tema
+- Calendarios de contenido o publicaciones (en texto)
+
+❌ ABSOLUTAMENTE PROHIBIDO proponer (porque no se puede entregar solo con texto):
+- Plantillas de Instagram, Canva, diseños gráficos editables
+- Etiquetas de producto, flyers, posters, logos
+- Imágenes descargables editables, mockups
+- Archivos Excel, Google Sheets, planillas de cálculo
+- Videos, masterclasses, clases en vivo, webinars, audios, podcasts
+- Acceso a plataformas, comunidades, grupos
+- Mentorías, llamadas, sesiones 1 a 1
+- Software, herramientas, calculadoras interactivas
+- Cualquier cosa que diga "plantilla editable", "diseño listo", "archivo editable"
+
+REGLAS DE FORMATO:
+- Variá los tipos: algunos bonos pueden ser colecciones de ítems numerados (ej: "10 recetas extra", "7 ejercicios bonus"), otros pueden ser piezas únicas (ej: "Guía de errores comunes", "Checklist de lanzamiento", "Cronograma de 30 días").
+- Cada bono debe ser COMPLEMENTARIO al producto principal y aportar valor real ENTREGABLE.
+- "tipo_contenido": "items_numerados" cuando el bono tiene varios items adentro como recetas/ejercicios/casos; "pieza_unica" cuando es una sola guía/checklist/cronograma.
+- "cantidad_items": número de items si es "items_numerados" (ej: 5, 7, 10), 0 si es "pieza_unica".
+- "tema_visual_portada": descripción corta en español de la foto de portada (ej: "una libreta abierta sobre un escritorio con flores secas").
 
 Devolvé SOLO JSON puro sin markdown:
 {
   "bonos": [
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 27","emoji":"🎯","tipo_contenido":"items_numerados","cantidad_items":5,"tema_visual_portada":"descripción de la portada"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 37","emoji":"📋","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 47","emoji":"⚡","tipo_contenido":"items_numerados","cantidad_items":7,"tema_visual_portada":"descripción de la portada"},
-    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto","precio_original":"USD 27","emoji":"🏆","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"}
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto y entregable","precio_original":"USD 27","emoji":"🎯","tipo_contenido":"items_numerados","cantidad_items":5,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto y entregable","precio_original":"USD 37","emoji":"📋","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto y entregable","precio_original":"USD 47","emoji":"⚡","tipo_contenido":"items_numerados","cantidad_items":7,"tema_visual_portada":"descripción de la portada"},
+    {"nombre":"NOMBRE EN MAYUSCULAS","descripcion":"2-3 líneas describiendo el valor concreto y entregable","precio_original":"USD 27","emoji":"🏆","tipo_contenido":"pieza_unica","cantidad_items":0,"tema_visual_portada":"descripción de la portada"}
   ],
   "valor_total": "USD 138",
   "frase_remate": "frase poderosa máximo 10 palabras"
@@ -295,21 +323,42 @@ Transformación: ${data.transformation}
     "acento": "#color hex para CTAs y precios"
   }
 }`,
-        bono_regenerar: `Eres experto en infoproductos digitales descargables. Creá UN SOLO bono nuevo y DIFERENTE al actual, en español para:
+        bono_regenerar: `Eres experto en infoproductos digitales descargables. Creá UN SOLO bono nuevo y DIFERENTE al actual, ÚTIL Y REALISTA, en español para:
 Producto principal: ${data.product}
 Público: ${data.audience}
 Bono actual que NO te gustó: ${data.bono_actual ? JSON.stringify(data.bono_actual) : ''}
 
 REGLAS CRÍTICAS:
 - Generá un bono COMPLETAMENTE DIFERENTE al actual (otro tema, otro tipo, otro enfoque).
-- Es contenido descargable en PDF. PROHIBIDO mencionar: masterclasses, videos, clases en vivo, webinars, sesiones, plataformas, llamadas, mentorías, comunidades, audios.
-- Tipos válidos: ebooks, guías, plantillas, checklists, planificadores, cronogramas, listas de recursos, recetarios bonus, recopilaciones de ejercicios.
-- En "tipo_contenido": "items_numerados" si tiene varios items adentro, "pieza_unica" si es una sola pieza.
+
+✅ TIPOS PERMITIDOS (cosas que se entregan como TEXTO/PDF descargable):
+- Recetas extra, variantes o versiones especiales
+- Checklists y listas de verificación
+- Guías paso a paso sobre un tema específico
+- Cronogramas y planificadores en formato texto
+- Glosarios, diccionarios o listas de términos
+- Listas de recursos comentadas (proveedores, herramientas, libros)
+- Compilaciones de tips y trucos profesionales
+- Ejercicios prácticos con instrucciones
+- Casos de estudio y ejemplos reales explicados
+- Recopilaciones de FAQ con respuestas
+- Mini-cursos escritos sobre un sub-tema
+
+❌ ABSOLUTAMENTE PROHIBIDO:
+- Plantillas de Instagram, Canva, diseños gráficos editables
+- Etiquetas de producto, flyers, posters, logos
+- Imágenes editables, mockups, archivos editables
+- Archivos Excel, Google Sheets, planillas de cálculo
+- Videos, masterclasses, clases en vivo, webinars, audios
+- Acceso a plataformas, comunidades, grupos, mentorías
+- Cualquier cosa que diga "plantilla editable", "diseño listo", "archivo editable"
+
+- "tipo_contenido": "items_numerados" si tiene varios items adentro, "pieza_unica" si es una sola pieza.
 
 Devolvé SOLO JSON puro sin markdown:
 {
   "nombre":"NOMBRE EN MAYUSCULAS",
-  "descripcion":"2-3 líneas describiendo el valor concreto",
+  "descripcion":"2-3 líneas describiendo el valor concreto y entregable",
   "precio_original":"USD XX",
   "emoji":"emoji representativo",
   "tipo_contenido":"items_numerados o pieza_unica",
