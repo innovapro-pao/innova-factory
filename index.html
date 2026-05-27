@@ -136,6 +136,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .bono-display-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem 1rem;border-radius:100px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-b);background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;width:100%;justify-content:center}
 .bono-display-btn:disabled{opacity:.5;cursor:not-allowed}
 .bono-display-status{font-size:.65rem;color:var(--muted);margin-top:.4rem}
+.bono-edit{margin:.5rem 0 .75rem;padding:.75rem;background:rgba(255,0,110,.04);border:1px solid rgba(255,0,110,.15);border-radius:10px;text-align:left}
+.bono-edit-title{font-size:.6rem;color:var(--fuchsia2);font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
+.bono-edit label{display:block;font-size:.6rem;color:var(--muted);margin-bottom:.2rem;font-weight:600;letter-spacing:.02em}
+.bono-edit input,.bono-edit textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:.45rem .6rem;color:var(--text);font-family:var(--font-b);font-size:.72rem;outline:none;transition:border-color .2s;margin-bottom:.4rem}
+.bono-edit input:focus,.bono-edit textarea:focus{border-color:var(--fuchsia);box-shadow:0 0 0 2px rgba(255,0,110,.1)}
+.bono-edit textarea{resize:vertical;min-height:40px;line-height:1.4}
+.bono-edit-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.3rem}
+.bono-regen-btn{display:inline-flex;align-items:center;gap:.25rem;padding:.4rem .7rem;border-radius:100px;font-size:.66rem;font-weight:700;cursor:pointer;border:1px solid rgba(124,58,237,.4);background:rgba(124,58,237,.1);color:var(--violet2);transition:all .2s;font-family:var(--font-b)}
+.bono-regen-btn:hover{background:rgba(124,58,237,.2)}
+.bono-regen-btn:disabled{opacity:.5;cursor:not-allowed}
 .bonos-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
 .bono-preview-card{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:1.2rem;text-align:center}
 .bono-preview-img{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;margin-bottom:.75rem;background:#111;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
@@ -686,10 +696,92 @@ return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="v
 
 // ── BONOS ──
 async function generateBonos(){curMod='bonos';setModStatus('bonos','running','⟳ Generando...');setLoading(true,'Generando bonos...');document.getElementById('result-panel').style.display='block';document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando bonos...</div></div>`;
-try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bonos',data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);if(json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();}setModStatus('bonos','done','✓ Listo');setLoading(false);document.getElementById('r-title').textContent='🎁 Pack de Bonos';document.getElementById('r-acts').innerHTML='';const bonos=curProject.bonos||[];document.getElementById('r-body').innerHTML=`<div style="margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success)">✅ <strong>${bonos.length} bonos generados!</strong></div>${curProject.bonos_frase?`<div style="text-align:center;font-size:.9rem;font-style:italic;color:var(--fuchsia2);margin-bottom:1.5rem">"${curProject.bonos_frase}"</div>`:''}<div class="bonos-grid-display">${bonos.map((b,i)=>`<div class="bono-display-card"><div class="bono-display-emoji">${b.emoji||'🎁'}</div><div class="bono-display-num">BONO ${i+1}</div><div class="bono-display-nombre">${b.nombre}</div><div class="bono-display-desc">${b.descripcion}</div><div class="bono-display-precio">${b.precio_original}</div><div class="bono-display-gratis">HOY GRATIS</div><button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar</button><div class="bono-display-status" id="bono-dl-status-${i}"></div></div>`).join('')}</div>${curProject.bonos_valor?`<div style="text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Valor total: <strong style="color:var(--success)">${curProject.bonos_valor}</strong></div>`:''}`;curResult=json.content;toast('¡Bonos generados! 🎁','ok');}catch(e){setModStatus('bonos','pending','✕ Error');setLoading(false);toast('Error 😓','err');}}
+try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bonos',data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);if(json.bonos){curProject.bonos=json.bonos;curProject.bonos_frase=json.frase_remate;curProject.bonos_valor=json.valor_total;saveCur();renderMods();}setModStatus('bonos','done','✓ Listo');setLoading(false);document.getElementById('r-title').textContent='🎁 Pack de Bonos';document.getElementById('r-acts').innerHTML='';curResult=json.content;renderBonosPanel();toast('¡Bonos generados! Editá lo que necesites 🎁','ok');}catch(e){setModStatus('bonos','pending','✕ Error');setLoading(false);toast('Error 😓','err');}}
 
-async function generateAndDownloadBono(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-dl-btn-${idx}`);const status=document.getElementById(`bono-dl-status-${idx}`);btn.disabled=true;btn.textContent='⟳ Generando...';if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando...`;
-try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_contenido',data:curProject,bono_idx:idx})});const json=await res.json();if(json.error)throw new Error(json.error);const c1=curProject.ebook_color1||'#7c3aed';const c2=curProject.ebook_color2||'#ff006e';const bonoHtml=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${bono.nombre}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;padding:60px 10%;line-height:1.7;-webkit-print-color-adjust:exact}.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}.fab button{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;background:linear-gradient(135deg,${c1},${c2});color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin-bottom:.75rem}h2{font-size:1.4rem;font-weight:700;color:${c1};margin:2rem 0 .75rem}p{font-size:.95rem;color:#c8c8d8;margin-bottom:1rem;line-height:1.8}ul,ol{padding-left:1.5rem;margin-bottom:1rem}li{color:#c8c8d8;margin-bottom:.4rem;font-size:.9rem}strong{color:#fff}.cover{min-height:40vh;display:flex;align-items:center;padding:60px 0;border-bottom:1px solid ${c1}33;margin-bottom:3rem}.tag{display:inline-block;padding:.3rem .9rem;background:${c1}22;border:1px solid ${c1}44;color:${c1};border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}@media print{.fab{display:none!important}}</style></head><body><div class="cover"><div><div class="tag">BONO ${idx+1}</div><h1>${bono.nombre}</h1><p style="font-size:1rem;color:#aaa;font-weight:300">${bono.descripcion}</p></div></div><div>${(json.content||'').split('\n').map(l=>{if(!l.trim())return'<br>';if(l.startsWith('## '))return`<h2>${l.replace('## ','')}</h2>`;if(l.startsWith('# '))return`<h2>${l.replace('# ','')}</h2>`;if(l.startsWith('- ')||l.startsWith('* '))return`<li>${l.replace(/^[-*]\s/,'')}</li>`;return`<p>${l.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</p>`;}).join('')}</div><div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div></body></html>`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bonoHtml],{type:'text/html'}));a.download=`bono_${idx+1}_${bono.nombre.replace(/\s+/g,'_').substring(0,30)}.html`;a.click();btn.textContent='✅ Descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';if(status)status.innerHTML=`<span style="color:var(--success)">✓ Abrí en Chrome → botón PDF</span>`;toast(`Bono ${idx+1} listo 📥`,'ok');}catch(e){btn.disabled=false;btn.textContent='📥 Generar y descargar';if(status)status.innerHTML=`<span style="color:#ef4444">Error</span>`;toast('Error 😓','err');}}
+function renderBonosPanel(){
+  const bonos=curProject.bonos||[];
+  document.getElementById('r-body').innerHTML=`
+    <div style="margin-bottom:1.2rem;padding:.85rem 1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.82rem;color:var(--muted);line-height:1.6">
+      💡 <strong style="color:var(--violet2)">Editá</strong> el nombre o descripción de cualquier bono, o <strong style="color:var(--fuchsia2)">🔄 regenerá</strong> uno completo si no te gusta.<br>
+      Cuando estén perfectos, tocá <strong style="color:var(--fuchsia2)">📥 Generar y descargar</strong> para el contenido completo en HTML.
+    </div>
+    ${curProject.bonos_frase?`<div style="text-align:center;font-size:.9rem;font-style:italic;color:var(--fuchsia2);margin-bottom:1.5rem">"${curProject.bonos_frase}"</div>`:''}
+    <div class="bonos-grid-display">${bonos.map((b,i)=>`
+      <div class="bono-display-card" id="bono-card-${i}">
+        <div class="bono-display-emoji">${b.emoji||'🎁'}</div>
+        <div class="bono-display-num">BONO ${i+1}</div>
+        <div class="bono-edit">
+          <div class="bono-edit-title">✏️ Editá este bono</div>
+          <label>Nombre</label>
+          <input type="text" id="bono-nombre-${i}" oninput="updateBonoTexto(${i},'nombre',this.value)" value="${(b.nombre||'').replace(/"/g,'&quot;')}">
+          <label>Descripción</label>
+          <textarea id="bono-desc-${i}" oninput="updateBonoTexto(${i},'descripcion',this.value)">${b.descripcion||''}</textarea>
+          <div class="bono-edit-actions">
+            <button class="bono-regen-btn" id="bono-regen-btn-${i}" onclick="regenerarBono(${i})">🔄 Regenerar este bono</button>
+          </div>
+        </div>
+        <div class="bono-display-precio">${b.precio_original||''}</div>
+        <div class="bono-display-gratis">HOY GRATIS</div>
+        <button class="bono-display-btn" id="bono-dl-btn-${i}" onclick="generateAndDownloadBono(${i})">📥 Generar y descargar</button>
+        <div class="bono-display-status" id="bono-dl-status-${i}"></div>
+      </div>`).join('')}</div>
+    ${curProject.bonos_valor?`<div style="text-align:center;margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Valor total: <strong style="color:var(--success)">${curProject.bonos_valor}</strong></div>`:''}`;
+}
+
+function updateBonoTexto(idx,campo,valor){
+  if(!curProject.bonos||!curProject.bonos[idx])return;
+  curProject.bonos[idx][campo]=valor;
+  saveCur();
+  const card=document.getElementById(`bono-card-${idx}`);
+  if(card){
+    const nombreVisual=card.querySelector('.bono-display-nombre');
+    if(nombreVisual&&campo==='nombre')nombreVisual.textContent=valor;
+  }
+}
+
+async function regenerarBono(idx){
+  const bono=curProject.bonos[idx];
+  if(!bono)return;
+  const btn=document.getElementById(`bono-regen-btn-${idx}`);
+  const status=document.getElementById(`bono-dl-status-${idx}`);
+  btn.disabled=true;btn.textContent='⟳ Regenerando...';
+  if(status)status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Pidiéndole a la IA otro bono distinto...</span>`;
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_regenerar',data:{...curProject,bono_actual:bono}})});
+    const json=await res.json();
+    if(json.error)throw new Error(json.error);
+    if(!json.bono)throw new Error('No se pudo regenerar — intentá de nuevo');
+    curProject.bonos[idx]={...json.bono};
+    saveCur();
+    renderBonosPanel();
+    toast(`Bono ${idx+1} regenerado 🔄`,'ok');
+  }catch(e){
+    btn.disabled=false;btn.textContent='🔄 Regenerar este bono';
+    if(status)status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;
+    toast('Error al regenerar 😓','err');
+  }
+}
+
+async function generateAndDownloadBono(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-dl-btn-${idx}`);const status=document.getElementById(`bono-dl-status-${idx}`);btn.disabled=true;btn.textContent='⟳ Generando...';if(status)status.innerHTML=`<div class="img-spin" style="display:inline-block;margin-right:4px"></div> Generando contenido + foto de portada...`;
+try{
+  // En paralelo: contenido del bono + foto de portada (Flux)
+  const portadaPrompt=bono.tema_visual_portada?`Professional editorial photography, ${bono.tema_visual_portada}, dark moody background, cinematic lighting, top view, premium aesthetic, no text, no words, no people, no faces`:`Premium editorial flatlay related to ${bono.nombre}, dark moody background, cinematic lighting, no text, no words, no people, no faces`;
+  const [contenidoRes,portadaRes]=await Promise.all([
+    fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'bono_contenido',data:curProject,bono_idx:idx})}),
+    fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:portadaPrompt})})
+  ]);
+  const json=await contenidoRes.json();
+  const portadaJson=await portadaRes.json();
+  if(json.error)throw new Error(json.error);
+  const portadaUrl=portadaJson.url||null;
+  const c1=curProject.ebook_color1||'#7c3aed';
+  const c2=curProject.ebook_color2||'#ff006e';
+  const bonoHtml=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${bono.nombre}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;line-height:1.7;-webkit-print-color-adjust:exact}.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}.fab button{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;background:linear-gradient(135deg,${c1},${c2});color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}.wrap{padding:60px 10%}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin-bottom:.75rem;line-height:1.1}h2{font-size:1.4rem;font-weight:700;color:${c1};margin:2rem 0 .75rem}p{font-size:.95rem;color:#c8c8d8;margin-bottom:1rem;line-height:1.8}ul,ol{padding-left:1.5rem;margin-bottom:1rem}li{color:#c8c8d8;margin-bottom:.4rem;font-size:.9rem}strong{color:#fff}.cover{min-height:55vh;display:flex;align-items:center;padding:60px 10%;border-bottom:1px solid ${c1}33;margin-bottom:0;position:relative;overflow:hidden}.cover-bg{position:absolute;inset:0;z-index:0}.cover-bg img{width:100%;height:100%;object-fit:cover;display:block}.cover-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(15,15,20,.95) 0%,rgba(15,15,20,.75) 50%,rgba(15,15,20,.55) 100%)}.cover-inner{position:relative;z-index:1;max-width:680px}.tag{display:inline-block;padding:.3rem .9rem;background:${c1}22;border:1px solid ${c1}44;color:${c1};border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}@media print{.fab{display:none!important}.cover{min-height:50vh}}</style></head><body><div class="cover">${portadaUrl?`<div class="cover-bg"><img src="${portadaUrl}" alt=""></div>`:''}<div class="cover-inner"><div class="tag">BONO ${idx+1}</div><h1>${bono.nombre}</h1><p style="font-size:1.05rem;color:#dadae8;font-weight:300;margin-top:.5rem">${bono.descripcion}</p></div></div><div class="wrap">${(json.content||'').split('\n').map(l=>{if(!l.trim())return'<br>';if(l.startsWith('## '))return`<h2>${l.replace('## ','')}</h2>`;if(l.startsWith('# '))return`<h2>${l.replace('# ','')}</h2>`;if(l.startsWith('- ')||l.startsWith('* '))return`<li>${l.replace(/^[-*]\s/,'')}</li>`;return`<p>${l.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</p>`;}).join('')}</div><div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div></body></html>`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bonoHtml],{type:'text/html'}));a.download=`bono_${idx+1}_${bono.nombre.replace(/\s+/g,'_').substring(0,30)}.html`;a.click();
+  btn.textContent='✅ Descargado';btn.style.background='rgba(16,185,129,.2)';btn.style.color='var(--success)';
+  if(status)status.innerHTML=`<span style="color:var(--success)">✓ Listo. Abrilo en Chrome → botón PDF</span>`;
+  toast(`Bono ${idx+1} listo con foto 📥`,'ok');
+}catch(e){btn.disabled=false;btn.textContent='📥 Generar y descargar';if(status)status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;toast('Error 😓','err');}}
 
 async function generate(modId){curMod=modId;const mod=MODS.find(m=>m.id===modId);setModStatus(modId,'running','⟳ Generando...');setLoading(true,`Generando ${mod.name}...`);document.getElementById('result-panel').style.display='block';document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando con IA...</div></div>`;
 try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);curResult=json.content;setModStatus(modId,'done','✓ Listo');document.getElementById('r-title').textContent=mod.name;document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-html" onclick="doTxt()">📄 TXT</button>`;document.getElementById('r-body').innerHTML=`<div style="white-space:pre-wrap;font-size:.88rem;color:#c8c8d8;line-height:1.8">${typeof json.content==='string'?json.content:JSON.stringify(json.content,null,2)}</div>`;setLoading(false);toast(`${mod.name} generado 🎉`,'ok');}catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;toast('Error 😓','err');}}
