@@ -7,39 +7,42 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, size } = req.body;
-    const key = process.env.OPENAI_API_KEY;
+    const key = process.env.FAL_API_KEY;
+    if (!key) return res.status(500).json({ error: 'FAL API key not configured' });
+    if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
 
-    // Tamaños DALL-E 3 soportados
+    // Mapeo de tamaños de anuncio -> formato que entiende Flux
     const sizeMap = {
-      '1080x1920': '1024x1792',  // Stories 9:16
-      '1080x1080': '1024x1024',  // Post cuadrado
-      '1200x628':  '1792x1024',  // Banner horizontal
+      '1080x1920': 'portrait_16_9',   // Stories 9:16 (vertical)
+      '1080x1080': 'square_hd',       // Post cuadrado
+      '1200x628':  'landscape_16_9',  // Banner horizontal
     };
+    const imageSize = sizeMap[size] || 'square_hd';
 
-    const dalleSize = sizeMap[size] || '1024x1024';
+    // El fondo NUNCA debe tener texto: el texto lo pone la app en HTML encima
+    const finalPrompt = `${prompt}. Professional advertising background photography, premium quality, cinematic lighting, beautiful composition, NO text, NO words, NO letters, NO typography anywhere in the image.`;
 
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
+    const r = await fetch('https://fal.run/fal-ai/flux-pro/v1.1', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${key}`,
+        'Authorization': `Key ${key}`,
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
-        prompt: prompt,
-        n: 1,
-        size: dalleSize,
-        quality: 'standard',
+        prompt: finalPrompt,
+        image_size: imageSize,
+        num_images: 1,
+        safety_tolerance: '2',
       }),
     });
 
-    const json = await response.json();
-    if (json.error) throw new Error(json.error.message);
+    const json = await r.json();
+    if (json.error) return res.status(500).json({ error: json.error });
 
-    const url = json.data?.[0]?.url;
-    if (!url) throw new Error('No se recibió imagen');
+    const imageUrl = json.images?.[0]?.url;
+    if (!imageUrl) return res.status(500).json({ error: 'No image generated' });
 
-    return res.status(200).json({ url, size });
+    return res.status(200).json({ url: imageUrl, size });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
