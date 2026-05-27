@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window['pdfjsLib'])window['pdfjsLib'].GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <style>
 :root{--black:#05050a;--deep:#0d0d1a;--surface:#12121f;--card:#17172a;--border:#2a2a45;--fuchsia:#ff006e;--fuchsia2:#ff4d9e;--violet:#7c3aed;--violet2:#a855f7;--cyan:#06b6d4;--text:#e8e8f0;--muted:#7c7c9a;--success:#10b981;--font-h:'Syne',sans-serif;--font-b:'DM Sans',sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -206,6 +208,27 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .creativo-foto-field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;color:var(--text);font-family:var(--font-b);font-size:.78rem;outline:none;resize:vertical;min-height:60px;transition:border-color .2s}
 .creativo-foto-field textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .creativo-foto-hint{font-size:.66rem;color:var(--muted);margin-top:.3rem;line-height:1.4}
+/* ── TRADUCTOR ── */
+.trad-wrap{max-width:780px;margin:0 auto}
+.trad-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.2rem}
+.trad-card h3{font-family:var(--font-h);font-size:1.05rem;font-weight:700;margin-bottom:.4rem;color:#fff}
+.trad-card .sub{font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6}
+.trad-drop{border:2px dashed var(--border);border-radius:16px;padding:2.5rem 1.5rem;text-align:center;transition:all .2s;cursor:pointer;background:rgba(255,255,255,.02)}
+.trad-drop:hover,.trad-drop.dragover{border-color:var(--fuchsia);background:rgba(255,0,110,.06)}
+.trad-drop .icon{font-size:2.6rem;margin-bottom:.6rem;opacity:.8}
+.trad-drop .text{font-size:.95rem;font-weight:600;color:#fff;margin-bottom:.3rem}
+.trad-drop .hint{font-size:.78rem;color:var(--muted)}
+.trad-drop input{display:none}
+.trad-file-info{margin-top:.85rem;padding:.7rem 1rem;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:10px;font-size:.82rem;color:var(--success);display:flex;align-items:center;gap:.5rem}
+.trad-lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.7rem;margin-top:.5rem}
+.trad-lang-chip{padding:.85rem 1rem;border-radius:12px;border:1.5px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);font-family:var(--font-b);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.trad-lang-chip:hover{border-color:var(--violet)}
+.trad-lang-chip.on{background:linear-gradient(135deg,var(--fuchsia),var(--violet));border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(255,0,110,.25)}
+.trad-progress{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-top:1rem}
+.trad-progress-bar{height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin-top:.6rem}
+.trad-progress-fill{height:100%;background:linear-gradient(90deg,var(--fuchsia),var(--violet));border-radius:100px;transition:width .4s ease;width:0%}
+.trad-progress-text{font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.trad-progress-text strong{color:var(--fuchsia2)}
 .creativo-texto-edit{margin:.25rem 0 .75rem;padding:.85rem;background:rgba(255,0,110,.04);border:1px solid rgba(255,0,110,.15);border-radius:12px}
 .creativo-texto-edit .edit-title{font-size:.68rem;color:var(--fuchsia2);font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:.35rem}
 .creativo-texto-edit .edit-row{margin-bottom:.55rem}
@@ -394,6 +417,41 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div></div>
     </div>
   </div>
+  <div id="traductor-panel" style="display:none">
+    <div class="trad-wrap">
+      <div class="gen-header">
+        <h2>🌍 Traductor de Ebooks</h2>
+        <p style="color:var(--muted);font-size:.9rem">Subí tu ebook o bono y traducilo al idioma que elijas</p>
+      </div>
+      <div class="trad-card">
+        <h3>📂 Subí tu archivo</h3>
+        <p class="sub">Acepta archivos HTML o PDF. Si es un ebook que generaste antes con INNOVA FACTORY, subí ese mismo archivo.</p>
+        <div class="trad-drop" id="trad-drop" onclick="document.getElementById('trad-file-input').click()">
+          <div class="icon">📄</div>
+          <div class="text">Tocá acá o arrastrá tu archivo</div>
+          <div class="hint">HTML o PDF · Máximo 5 MB</div>
+          <input type="file" id="trad-file-input" accept=".html,.htm,.pdf" onchange="handleTradFile(event)">
+        </div>
+        <div id="trad-file-info" style="display:none"></div>
+      </div>
+      <div class="trad-card">
+        <h3>🌐 Elegí el idioma destino</h3>
+        <p class="sub">¿A qué idioma querés traducir tu contenido?</p>
+        <div class="trad-lang-grid">
+          <button class="trad-lang-chip" data-lang="es" onclick="selectTradLang(this,'es')">🇪🇸 Español</button>
+          <button class="trad-lang-chip" data-lang="en" onclick="selectTradLang(this,'en')">🇬🇧 Inglés</button>
+          <button class="trad-lang-chip" data-lang="pt" onclick="selectTradLang(this,'pt')">🇧🇷 Portugués</button>
+          <button class="trad-lang-chip" data-lang="it" onclick="selectTradLang(this,'it')">🇮🇹 Italiano</button>
+          <button class="trad-lang-chip" data-lang="fr" onclick="selectTradLang(this,'fr')">🇫🇷 Francés</button>
+        </div>
+      </div>
+      <div class="wiz-btns" style="max-width:480px;margin:1.5rem auto 0">
+        <button class="btn btn-ghost" onclick="closeTraductor()">← Volver</button>
+        <button class="btn btn-primary" id="trad-go-btn" onclick="startTraduccion()" disabled>🌍 Traducir ahora</button>
+      </div>
+      <div id="trad-progress-wrap" style="display:none;margin-top:1.5rem"></div>
+    </div>
+  </div>
 </div>
 </div>
 <div id="loading"><div class="ld-spinner"></div><div class="ld-txt" id="ld-msg">Generando con IA...</div></div>
@@ -401,12 +459,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 <button class="fab" onclick="startNew()">+</button>
 <script>
 const MODS=[
-  {id:'ebook',icon:'📘',name:'Ebook Nivel Gamma',desc:'HTML premium con fotos IA — cada receta en su propia página'},
+  {id:'ebook',icon:'📘',name:'Generá tu Ebook Completo',desc:'Paso a paso, premium, listo en PDF'},
   {id:'bonos',icon:'🎁',name:'Pack de Bonos',desc:'4 bonos con contenido descargable'},
   {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'HTML espectacular listo para usar',special:true},
-  {id:'copies',icon:'✍️',name:'Copies AIDA',desc:'Emails, posts, stories y ads'},
+  {id:'copies',icon:'✍️',name:'Copys para Publicidad',desc:'Posts, stories y ads listos para publicar'},
   {id:'creativos',icon:'🎨',name:'Anuncios Publicitarios',desc:'3 anuncios en 3 tamaños listos para publicar'},
-  {id:'trafico',icon:'📈',name:'Estrategia de Tráfico',desc:'Plan orgánico, paid y cronograma'},
+  {id:'traductor',icon:'🌍',name:'Traductor de Ebooks',desc:'Traducí tus ebooks y bonos a 5 idiomas'},
 ];
 let projects=JSON.parse(localStorage.getItem('innova_projects')||'[]');
 let curProject={},lcConfig={},curResult='',curMod='';
@@ -422,13 +480,13 @@ function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.
 function renderDash(){document.getElementById('s-total').textContent=projects.length;document.getElementById('s-ebooks').textContent=projects.filter(p=>p.hasEbook).length;document.getElementById('s-landings').textContent=projects.filter(p=>p.hasLanding).length;const g=document.getElementById('projects-grid');if(!projects.length){g.innerHTML=`<div class="empty-state"><div class="big">🚀</div><p>No tenés proyectos aún.</p></div>`;return;}g.innerHTML=projects.map((p,i)=>`<div class="proj-card" onclick="openProject(${i})"><h3>${p.product}</h3><div class="meta">${p.audience}</div><div class="meta">Precio: ${p.price}</div><div class="proj-badge">✓ Activo</div><div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div></div>`).join('');}
 function openProject(i){curProject={...projects[i]};document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();showView('generator');renderMods();}
 function startNew(){['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget','f-contenido'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('f-platform').selectedIndex=0;showStep(1);showView('generator');}
-function showStep(n){['step1','step2','modules-panel','landing-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
+function showStep(n){['step1','step2','modules-panel','landing-config','traductor-panel'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
 function goStep1(){showStep(1);}
 function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;curProject.ebook_color1=document.getElementById('ebook-color1').value;curProject.ebook_color2=document.getElementById('ebook-color2').value;curProject.items_parsed=parsearItems(curProject.contenido_especifico);showStep(2);}
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
-function showModulesPanel(){['step1','step2','landing-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
+function showModulesPanel(){['step1','step2','landing-config','traductor-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
-function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='traductor')openTraductor();else generate(id);}
 
 function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
 
@@ -787,7 +845,7 @@ async function generate(modId){curMod=modId;const mod=MODS.find(m=>m.id===modId)
 try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:modId,data:curProject})});const json=await res.json();if(json.error)throw new Error(json.error);curResult=json.content;setModStatus(modId,'done','✓ Listo');document.getElementById('r-title').textContent=mod.name;document.getElementById('r-acts').innerHTML=`<button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button><button class="act-btn act-html" onclick="doTxt()">📄 TXT</button>`;document.getElementById('r-body').innerHTML=`<div style="white-space:pre-wrap;font-size:.88rem;color:#c8c8d8;line-height:1.8">${typeof json.content==='string'?json.content:JSON.stringify(json.content,null,2)}</div>`;setLoading(false);toast(`${mod.name} generado 🎉`,'ok');}catch(e){setModStatus(modId,'pending','✕ Error');setLoading(false);document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;toast('Error 😓','err');}}
 
 function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);const card=document.getElementById('mc-'+id);if(!el||!card)return;el.className=`mod-status s-${cls}`;el.textContent=txt;if(cls==='done')card.classList.add('done');}
-function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
+function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','traductor-panel'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
 function goLC1(){showLCStep(1);}
@@ -851,6 +909,159 @@ function doDownloadHtml(){if(!curResult)return;const a=document.createElement('a
 function setLoading(on,msg='Generando con IA...'){document.getElementById('loading').classList.toggle('on',on);document.getElementById('ld-msg').textContent=msg;}
 function toast(msg,type='ok'){const c=document.getElementById('toasts');const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<span>${type==='ok'?'✓':'✗'}</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3500);}
 function saveCur(){const i=projects.findIndex(p=>p.product===curProject.product);if(i>=0)projects[i]=curProject;localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();}
+
+// ── TRADUCTOR ──
+let tradFile=null,tradFileText='',tradFileName='',tradFileIsHtml=false,tradLang=null;
+
+function openTraductor(){
+  tradFile=null;tradFileText='';tradFileName='';tradFileIsHtml=false;tradLang=null;
+  ['step1','step2','modules-panel','landing-config'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  document.getElementById('traductor-panel').style.display='block';
+  document.getElementById('trad-file-info').style.display='none';
+  document.getElementById('trad-progress-wrap').style.display='none';
+  document.getElementById('trad-progress-wrap').innerHTML='';
+  document.querySelectorAll('.trad-lang-chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('trad-go-btn').disabled=true;
+}
+
+function closeTraductor(){
+  document.getElementById('traductor-panel').style.display='none';
+  showModulesPanel();
+}
+
+async function handleTradFile(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){toast('El archivo es muy grande (máx 5MB)','err');return;}
+  tradFile=file;tradFileName=file.name;
+  const info=document.getElementById('trad-file-info');
+  info.style.display='flex';
+  info.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Leyendo archivo...</span>`;
+  try{
+    const isPdf=file.name.toLowerCase().endsWith('.pdf');
+    tradFileIsHtml=!isPdf;
+    if(isPdf){
+      if(!window.pdfjsLib)throw new Error('PDF.js no se cargó — recargá la página');
+      const arrayBuffer=await file.arrayBuffer();
+      const pdf=await window.pdfjsLib.getDocument({data:arrayBuffer}).promise;
+      let fullText='';
+      for(let i=1;i<=pdf.numPages;i++){
+        const page=await pdf.getPage(i);
+        const content=await page.getTextContent();
+        const pageText=content.items.map(it=>it.str).join(' ');
+        fullText+=pageText+'\n\n';
+      }
+      tradFileText=fullText.trim();
+      if(!tradFileText){throw new Error('No se pudo extraer texto. ¿Es un PDF escaneado como imagen?');}
+    }else{
+      tradFileText=await file.text();
+    }
+    const wordCount=tradFileText.split(/\s+/).filter(Boolean).length;
+    info.innerHTML=`✅ <strong>${file.name}</strong> · ${wordCount.toLocaleString()} palabras detectadas`;
+    checkTradReady();
+  }catch(e){
+    info.innerHTML=`<span style="color:#ef4444">✕ Error: ${e.message}</span>`;
+    tradFile=null;tradFileText='';
+    document.getElementById('trad-go-btn').disabled=true;
+  }
+}
+
+function selectTradLang(btn,lang){
+  document.querySelectorAll('.trad-lang-chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  tradLang=lang;
+  checkTradReady();
+}
+
+function checkTradReady(){
+  document.getElementById('trad-go-btn').disabled=!(tradFile&&tradLang&&tradFileText);
+}
+
+// Trocea texto en chunks respetando saltos de línea (para no cortar palabras a la mitad)
+function trocearTexto(texto,maxChars=8000){
+  if(texto.length<=maxChars)return [texto];
+  const chunks=[];
+  let cur='';
+  const lineas=texto.split('\n');
+  for(const linea of lineas){
+    if((cur+linea+'\n').length>maxChars&&cur){
+      chunks.push(cur);
+      cur=linea+'\n';
+    }else{
+      cur+=linea+'\n';
+    }
+  }
+  if(cur.trim())chunks.push(cur);
+  return chunks;
+}
+
+async function startTraduccion(){
+  if(!tradFileText||!tradLang)return;
+  const wrap=document.getElementById('trad-progress-wrap');
+  wrap.style.display='block';
+  const chunks=trocearTexto(tradFileText,8000);
+  const totalChunks=chunks.length;
+  wrap.innerHTML=`
+    <div class="trad-progress">
+      <div class="trad-progress-text">
+        <span>🌍 Traduciendo... <strong id="trad-current">0</strong> / <strong>${totalChunks}</strong> bloques</span>
+        <span id="trad-pct">0%</span>
+      </div>
+      <div class="trad-progress-bar"><div class="trad-progress-fill" id="trad-fill"></div></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem">⏳ Esto puede tardar de 30 segundos a 3 minutos según el largo</div>
+    </div>`;
+  document.getElementById('trad-go-btn').disabled=true;
+  const traducciones=[];
+  try{
+    for(let i=0;i<chunks.length;i++){
+      const res=await fetch('/api/traducir',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({texto:chunks[i],idioma_destino:tradLang}),
+      });
+      const json=await res.json();
+      if(json.error)throw new Error(json.error);
+      traducciones.push(json.texto_traducido||'');
+      const done=i+1;
+      const pct=Math.round((done/totalChunks)*100);
+      document.getElementById('trad-current').textContent=done;
+      document.getElementById('trad-pct').textContent=pct+'%';
+      document.getElementById('trad-fill').style.width=pct+'%';
+    }
+    const textoFinal=traducciones.join('\n');
+    const idiomaNombres={es:'Espanol',en:'English',pt:'Portugues',it:'Italiano',fr:'Francais'};
+    const sufijo=idiomaNombres[tradLang]||tradLang;
+    let blob,nombreSalida;
+    if(tradFileIsHtml){
+      blob=new Blob([textoFinal],{type:'text/html'});
+      const baseName=tradFileName.replace(/\.[^.]+$/,'');
+      nombreSalida=`${baseName}_${sufijo}.html`;
+    }else{
+      const htmlSimple=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${tradFileName} - ${sufijo}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Sora',sans-serif;background:#0f0f14;color:#e8e8f0;padding:60px 10%;line-height:1.7;-webkit-print-color-adjust:exact}p{margin-bottom:1rem;font-size:.95rem;color:#c8c8d8}.fab{position:fixed;bottom:2rem;right:2rem;z-index:9999}.fab button{padding:.85rem 1.5rem;background:linear-gradient(135deg,#ff006e,#7c3aed);color:#fff;border:none;border-radius:100px;font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}@media print{.fab{display:none!important}}</style></head><body>${textoFinal.split('\n').map(l=>l.trim()?`<p>${l.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`:'').join('')}<div class="fab"><button onclick="window.print()">🖨️ Descargar PDF</button></div></body></html>`;
+      blob=new Blob([htmlSimple],{type:'text/html'});
+      const baseName=tradFileName.replace(/\.[^.]+$/,'');
+      nombreSalida=`${baseName}_${sufijo}.html`;
+    }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=nombreSalida;a.click();
+    URL.revokeObjectURL(url);
+    wrap.innerHTML=`
+      <div class="trad-progress" style="border-color:var(--success);background:rgba(16,185,129,.05)">
+        <div style="display:flex;align-items:center;gap:.6rem;color:var(--success);font-weight:700;font-size:.95rem">
+          ✅ ¡Traducción lista! Se descargó <strong>${nombreSalida}</strong>
+        </div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem">💡 Abrilo en Chrome → tocá el botón rosa 🖨️ Descargar PDF</div>
+      </div>`;
+    document.getElementById('trad-go-btn').disabled=false;
+    document.getElementById('trad-go-btn').textContent='🔄 Traducir otro';
+    toast('¡Traducción descargada! 🌍','ok');
+  }catch(e){
+    wrap.innerHTML=`<div class="trad-progress" style="border-color:#ef4444"><div style="color:#ef4444;font-weight:700">✕ Error: ${e.message}</div></div>`;
+    document.getElementById('trad-go-btn').disabled=false;
+    toast('Error al traducir 😓','err');
+  }
+}
+
 </script>
 </body>
 </html>
