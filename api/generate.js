@@ -239,18 +239,64 @@ SOLO JSON puro:
   "valor_total": "USD 138",
   "frase_remate": "frase poderosa máximo 10 palabras"
 }`,
+
         copies: `Copywriter AIDA experto en español para: Producto: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
 1. 5 emails de lanzamiento completos
 2. 5 posts Instagram con hashtags
 3. 7 scripts de stories
 4. 3 anuncios Facebook/Instagram
 5. 2 mensajes WhatsApp`,
-        creativos: `Director creativo para: ${data.product}.
-1. Brief portada ebook completo
-2. Brief banner 1080x1080 y 1080x1920
-3. 6 slides carrusel descripción detallada
-4. Paleta de marca HEX + tipografías
-5. 5 prompts Midjourney/DALL-E listos para usar`,
+
+        creativos: `Eres un director creativo experto en publicidad digital para LATAM. Generá 3 anuncios publicitarios para este producto. Devuelve SOLO JSON puro sin markdown:
+
+Producto: ${data.product}
+Público: ${data.audience}
+Precio: ${data.price}
+Transformación: ${data.transformation}
+
+{
+  "anuncios": [
+    {
+      "id": 1,
+      "estilo": "urgencia",
+      "titulo": "TÍTULO IMPACTANTE EN MAYÚSCULAS máximo 5 palabras",
+      "subtitulo": "frase que complementa el título máximo 8 palabras",
+      "cuerpo": "beneficio principal en 1 línea corta",
+      "cta": "texto del botón máximo 4 palabras",
+      "precio": "${data.price}",
+      "precio_tachado": "${data.oldprice || ''}",
+      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual premium sin texto, relacionado al producto, estilo publicitario profesional, dark moody background, cinematic lighting, no text no words no people no faces"
+    },
+    {
+      "id": 2,
+      "estilo": "aspiracional",
+      "titulo": "TÍTULO ASPIRACIONAL EN MAYÚSCULAS máximo 5 palabras",
+      "subtitulo": "frase emotiva que conecta con el sueño del público",
+      "cuerpo": "transformación que logra el producto en 1 línea",
+      "cta": "texto del botón máximo 4 palabras",
+      "precio": "${data.price}",
+      "precio_tachado": "${data.oldprice || ''}",
+      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual lifestyle premium sin texto, estilo aspiracional, beautiful lighting, professional photography aesthetic, no text no words no people no faces"
+    },
+    {
+      "id": 3,
+      "estilo": "oferta",
+      "titulo": "TÍTULO DE OFERTA EN MAYÚSCULAS máximo 5 palabras",
+      "subtitulo": "frase de escasez o tiempo limitado",
+      "cuerpo": "qué incluye el paquete en 1 línea",
+      "cta": "texto del botón máximo 4 palabras",
+      "precio": "${data.price}",
+      "precio_tachado": "${data.oldprice || ''}",
+      "prompt_fondo": "prompt en inglés para DALL-E 3: fondo visual premium de producto digital, dark luxury background, gold accents, no text no words no people no faces"
+    }
+  ],
+  "paleta": {
+    "primario": "#color hex que va con el producto",
+    "secundario": "#color hex complementario",
+    "acento": "#color hex para CTAs y precios"
+  }
+}`,
+
         trafico: `Experto en tráfico digital para: ${data.product}, Público: ${data.audience}, Precio: ${data.price}.
 1. Plan orgánico 30 días detallado
 2. Estrategia Facebook/Instagram Ads con presupuesto
@@ -302,6 +348,16 @@ SOLO JSON puro:
       try {
         text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         const parsed = JSON.parse(text);
+        return res.status(200).json({ content: parsed, step, isJson: true });
+      } catch(e) {
+        return res.status(200).json({ content: text, step, isJson: false });
+      }
+    }
+
+    if (step === 'creativos') {
+      try {
+        const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const parsed = JSON.parse(clean);
         return res.status(200).json({ content: parsed, step, isJson: true });
       } catch(e) {
         return res.status(200).json({ content: text, step, isJson: false });
