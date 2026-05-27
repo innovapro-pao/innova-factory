@@ -196,6 +196,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .creativo-foto-field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;color:var(--text);font-family:var(--font-b);font-size:.78rem;outline:none;resize:vertical;min-height:60px;transition:border-color .2s}
 .creativo-foto-field textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .creativo-foto-hint{font-size:.66rem;color:var(--muted);margin-top:.3rem;line-height:1.4}
+.creativo-texto-edit{margin:.25rem 0 .75rem;padding:.85rem;background:rgba(255,0,110,.04);border:1px solid rgba(255,0,110,.15);border-radius:12px}
+.creativo-texto-edit .edit-title{font-size:.68rem;color:var(--fuchsia2);font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:.35rem}
+.creativo-texto-edit .edit-row{margin-bottom:.55rem}
+.creativo-texto-edit .edit-row:last-child{margin-bottom:0}
+.creativo-texto-edit label{display:block;font-size:.64rem;color:var(--muted);margin-bottom:.25rem;font-weight:600;letter-spacing:.02em}
+.creativo-texto-edit input,.creativo-texto-edit textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.5rem .65rem;color:var(--text);font-family:var(--font-b);font-size:.78rem;outline:none;transition:border-color .2s}
+.creativo-texto-edit input:focus,.creativo-texto-edit textarea:focus{border-color:var(--fuchsia);box-shadow:0 0 0 3px rgba(255,0,110,.1)}
+.creativo-texto-edit textarea{resize:vertical;min-height:42px;line-height:1.4}
+.creativo-texto-edit .edit-2col{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -459,8 +468,8 @@ function renderCreativosPanel(data){
   const c2=curProject.ebook_color2||'#ff006e';
   document.getElementById('r-body').innerHTML=`
     <div style="margin-bottom:1.2rem;padding:.9rem 1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.82rem;color:var(--muted);line-height:1.6">
-      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Describí la <strong style="color:var(--fuchsia2)">foto de fondo</strong> que querés en cada anuncio.<br>
-      <strong style="color:var(--violet2)">Paso 2:</strong> Click en <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong> para crear la imagen con IA.<br>
+      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Editá el <strong style="color:var(--fuchsia2)">texto</strong> que querés que diga el anuncio (se actualiza al instante en la vista previa).<br>
+      <strong style="color:var(--violet2)">Paso 2:</strong> Describí la <strong style="color:var(--fuchsia2)">foto de fondo</strong> y tocá <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong>.<br>
       <strong style="color:var(--violet2)">Paso 3:</strong> Elegí el tamaño (Stories/Post/Banner) y descargá como PNG listo para publicar.
     </div>
     <div class="creativos-grid" id="creativos-grid"></div>`;
@@ -481,12 +490,35 @@ function renderCreativosPanel(data){
       </div>
       <div id="preview-wrap-${i}">${buildAdPreview(a,c1,c2,'stories',i)}</div>
       <div class="creativo-body">
-        <div class="creativo-titulo">${a.titulo}</div>
-        <div class="creativo-sub">${a.subtitulo}</div>
+        <div class="creativo-texto-edit">
+          <div class="edit-title">✏️ Editá el texto del anuncio</div>
+          <div class="edit-row">
+            <label>Título grande</label>
+            <textarea oninput="updateCreativoTexto(${i},'titulo',this.value)" placeholder="Título del anuncio">${a.titulo||''}</textarea>
+          </div>
+          <div class="edit-row">
+            <label>Subtítulo</label>
+            <input type="text" oninput="updateCreativoTexto(${i},'subtitulo',this.value)" placeholder="Subtítulo" value="${(a.subtitulo||'').replace(/"/g,'&quot;')}">
+          </div>
+          <div class="edit-row">
+            <label>Texto / descripción corta</label>
+            <input type="text" oninput="updateCreativoTexto(${i},'cuerpo',this.value)" placeholder="Una frase corta" value="${(a.cuerpo||'').replace(/"/g,'&quot;')}">
+          </div>
+          <div class="edit-2col">
+            <div class="edit-row">
+              <label>Precio tachado</label>
+              <input type="text" oninput="updateCreativoTexto(${i},'precio_tachado',this.value)" placeholder="Ej: USD 197" value="${(a.precio_tachado||'').replace(/"/g,'&quot;')}">
+            </div>
+            <div class="edit-row">
+              <label>Precio</label>
+              <input type="text" oninput="updateCreativoTexto(${i},'precio',this.value)" placeholder="Ej: USD 97" value="${(a.precio||'').replace(/"/g,'&quot;')}">
+            </div>
+          </div>
+        </div>
         <div class="creativo-foto-field">
           <label>📸 Describí la foto de fondo de este anuncio</label>
           <textarea id="foto-desc-${i}" placeholder="Ej: una mujer emprendedora sonriendo frente a su notebook en un café luminoso">${fotoSugerida}</textarea>
-          <div class="creativo-foto-hint">💡 Cuanto más detallada la descripción, mejor queda la foto. La IA NO escribe texto en la imagen — el texto lo pone la app encima.</div>
+          <div class="creativo-foto-hint">💡 Cuanto más detallada la descripción, mejor queda la foto. La IA NO escribe texto en la imagen — el texto lo ponés vos arriba.</div>
         </div>
         <div class="creativo-actions">
           <button class="creativo-btn gen-img" id="gen-btn-${i}" onclick="generateFondoCreativo(${i})">✨ Generar fondo</button>
@@ -495,6 +527,17 @@ function renderCreativosPanel(data){
         <div class="creativo-status" id="status-${i}">Describí la foto y generá el fondo primero</div>
       </div>
     </div>`;}).join('');
+}
+
+// updateCreativoTexto: actualiza el texto del anuncio en vivo y refresca el preview (edición de texto a mano)
+function updateCreativoTexto(idx,campo,valor){
+  if(!creativosData||!creativosData.anuncios[idx])return;
+  creativosData.anuncios[idx][campo]=valor;
+  const size=creativoSizes[idx]||'stories';
+  const c1=curProject.ebook_color1||'#7c3aed';
+  const c2=curProject.ebook_color2||'#ff006e';
+  const wrap=document.getElementById(`preview-wrap-${idx}`);
+  if(wrap)wrap.innerHTML=buildAdPreview(creativosData.anuncios[idx],c1,c2,size,idx);
 }
 
 // buildAdPreview: usa aspect-ratio REAL (cambio 1) y SIN CTA en la imagen (cambio 4)
