@@ -1,18 +1,16 @@
 // api/video.js
-// Genera un video con avatar usando HeyGen API
-// Patrón: pedir video → esperar (polling) → devolver URL del video
+// Genera un video completo (multi-escena) usando HeyGen Video Agent
+// El Video Agent recibe un prompt grande y arma escenas + B-roll + voz + música solo
 
 export default async function handler(req, res) {
-  // Solo aceptar POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Solo se acepta POST' });
   }
 
-  // Datos que envía el usuario desde el navegador
-  const { script } = req.body;
+  const { prompt } = req.body;
 
-  if (!script || script.trim().length === 0) {
-    return res.status(400).json({ error: 'Falta el guion del video (script)' });
+  if (!prompt || prompt.trim().length === 0) {
+    return res.status(400).json({ error: 'Falta el prompt del video' });
   }
 
   const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
@@ -23,103 +21,105 @@ export default async function handler(req, res) {
 
   try {
     // ============================================================
-    // PASO 1: Pedirle a HeyGen que genere el video
+    // PASO 1: Crear sesion de Video Agent y mandar el prompt
     // ============================================================
-    const generateResponse = await fetch('https://api.heygen.com/v2/video/generate', {
+    const createResponse = await fetch('https://api.heygen.com/v3/video-agents', {
       method: 'POST',
       headers: {
         'X-Api-Key': HEYGEN_API_KEY,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        video_inputs: [
-          {
-            character: {
-              type: 'avatar',
-              avatar_id: 'Daisy-inskirt-20220818', // Avatar gratis por defecto
-              avatar_style: 'normal',
-            },
-            voice: {
-              type: 'text',
-              input_text: script,
-              voice_id: '2d5b0e6cf36f460aa7fc47e3eee4ba54', // Voz en español
-            },
-          },
-        ],
-        dimension: {
-          width: 720,
-          height: 1280, // Vertical 9:16 (formato Reels)
-        },
+        prompt: prompt,
       }),
     });
 
-    const generateData = await generateResponse.json();
+    const createData = await createResponse.json();
 
-    if (!generateResponse.ok || !generateData.data?.video_id) {
-      console.error('Error al generar video:', generateData);
+    if (!createResponse.ok) {
+      console.error('Error al crear Video Agent:', createData);
       return res.status(500).json({
-        error: 'HeyGen rechazó el pedido',
-        detalle: generateData,
+        error: 'HeyGen rechazo el pedido',
+        detalle: createData,
       });
     }
 
-    const videoId = generateData.data.video_id;
-    console.log('Video ID recibido:', videoId);
+    // El Video Agent puede devolver session_id o video_id segun la version
+    const sessionId = createData.data?.session_id || createData.session_id;
+    const videoId = createData.data?.video_id || createData.video_id;
+    const idParaConsultar = videoId || sessionId;
+
+    if (!idParaConsultar) {
+      return res.status(500).json({
+        error: 'HeyGen no devolvio un ID para consultar',
+        detalle: createData,
+      });
+    }
+
+    console.log('Video Agent iniciado, ID:', idParaConsultar);
 
     // ============================================================
-    // PASO 2: Esperar a que HeyGen termine de generar (polling)
+    // PASO 2: Esperar a que el Video Agent termine (polling)
+    // El Video Agent tarda mas que avatar simple: 3 a 8 minutos tipico
     // ============================================================
     let videoUrl = null;
     let intentos = 0;
-    const maxIntentos = 60; // Hasta 5 minutos esperando (5 seg x 60)
+    const maxIntentos = 120; // Hasta 10 minutos (5 seg x 120)
 
     while (intentos < maxIntentos) {
-      // Esperar 5 segundos antes de preguntar otra vez
       await new Promise((resolve) => setTimeout(resolve, 5000));
       intentos++;
 
-      const statusResponse = await fetch(
-        `https://api.heygen.com/v1/video_status.get?video_id=${videoId}`,
+      // Probamos primero el endpoint v3 de video agent
+      let statusResponse = await fetch(
+        `https://api.heygen.com/v3/video-agents/${idParaConsultar}`,
         {
-          headers: {
-            'X-Api-Key': HEYGEN_API_KEY,
-          },
+          headers: { 'X-Api-Key': HEYGEN_API_KEY },
         }
       );
 
+      // Si v3 no devuelve, probamos el endpoint clasico de video_status
+      if (!statusResponse.ok) {
+        statusResponse = await fetch(
+          `https://api.heygen.com/v1/video_status.get?video_id=${idParaConsultar}`,
+          {
+            headers: { 'X-Api-Key': HEYGEN_API_KEY },
+          }
+        );
+      }
+
       const statusData = await statusResponse.json();
-      const status = statusData.data?.status;
+      const status = statusData.data?.status || statusData.status;
+      const url = statusData.data?.video_url || statusData.video_url || statusData.data?.url;
 
       console.log(`Intento ${intentos}: estado = ${status}`);
 
-      if (status === 'completed') {
-        videoUrl = statusData.data.video_url;
-        break;
+      if (status === 'completed' || status === 'success' || url) {
+        videoUrl = url || statusData.data?.video_url;
+        if (videoUrl) break;
       }
 
-      if (status === 'failed') {
+      if (status === 'failed' || status === 'error') {
         return res.status(500).json({
           error: 'HeyGen no pudo generar el video',
           detalle: statusData,
         });
       }
-
-      // Si está 'processing' o 'pending', seguimos esperando
     }
 
     if (!videoUrl) {
       return res.status(504).json({
-        error: 'El video tardó demasiado en generarse (más de 5 minutos)',
+        error: 'El video tardo demasiado (mas de 10 minutos). HeyGen puede seguir generandolo - revisa tu cuenta de HeyGen en unos minutos.',
       });
     }
 
     // ============================================================
-    // PASO 3: Devolver la URL del video al navegador
+    // PASO 3: Devolver la URL del video
     // ============================================================
     return res.status(200).json({
       success: true,
       video_url: videoUrl,
-      video_id: videoId,
+      video_id: idParaConsultar,
     });
   } catch (error) {
     console.error('Error general:', error);
