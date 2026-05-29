@@ -27,9 +27,10 @@ export default async function handler(req, res) {
 
   // Validar parametros
   const validAspectRatios = ['16:9', '9:16'];
-  const validDurations = [4, 5, 6, 7, 8];
   const finalAspect = validAspectRatios.includes(aspect_ratio) ? aspect_ratio : '9:16';
-  const finalDuration = validDurations.includes(parseInt(duration_seconds)) ? parseInt(duration_seconds) : 8;
+  // Veo 3.1 Fast en preview SOLO acepta durationSeconds: 8 (valor fijo)
+  // Los rangos 4-8 son del modelo Standard, no del Fast
+  const finalDuration = 8;
 
   try {
     const response = await fetch(ENDPOINT, {
