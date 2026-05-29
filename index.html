@@ -1750,239 +1750,280 @@ async function descargarConMarca(videoUrl, fileName) {
   }
 }
 
+
 // ============================================================
-// MÓDULO CREATIVOS (sin cambios)
+// MÓDULO CREATIVOS — v2.0 (prompt libre + GPT-Image-1)
 // ============================================================
-function adDims(size){
-  const map={
-    stories:{w:1080,h:1920,ar:'9/16',label:'1080x1920'},
-    post:{w:1080,h:1080,ar:'1/1',label:'1080x1080'},
-    banner:{w:1200,h:628,ar:'1200/628',label:'1200x628'},
-  };
-  return map[size]||map.post;
-}
+// Ya no genera copies + HTML superpuesto.
+// Ahora: el usuario escribe un prompt libre (estilo ChatGPT)
+// y GPT-Image-1 genera la imagen ENTERA con texto incluido.
+// ============================================================
+
+let creativosImages = []; // array de {prompt, url, size, quality, timestamp}
 
 async function generateCreativos(){
   curMod='creativos';
-  setModStatus('creativos','running','⟳ Generando...');
-  setLoading(true,'🎨 Creando anuncios con IA...');
   document.getElementById('result-panel').style.display='block';
   document.getElementById('r-title').textContent='🎨 Creativos con Imágenes';
   document.getElementById('r-acts').innerHTML='';
-  document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="spinner"></div><div>Generando copies y briefs...</div></div>`;
-  try{
-    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'creativos',data:curProject})});
-    const json=await res.json();
-    if(json.error)throw new Error(json.error);
-    let parsed=json.content;
-    if(typeof parsed==='string'){try{parsed=JSON.parse(parsed.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());}catch(e){}}
-    if(!parsed||!parsed.anuncios)throw new Error('No se pudo parsear la respuesta');
-    creativosData=parsed;
-    creativoSizes={};
-    setModStatus('creativos','done','✓ Listo');
-    setLoading(false);
-    renderCreativosPanel(parsed);
-    toast('¡Copies generados! Ahora describí y generá los fondos 🎨','ok');
-  }catch(e){
-    setModStatus('creativos','pending','✕ Error');
-    setLoading(false);
-    document.getElementById('r-body').innerHTML=`<div class="placeholder"><div class="big">❌</div><div>${e.message}</div></div>`;
-    toast('Error: '+e.message,'err');
+  renderCreativosPanel();
+  setModStatus('creativos','done','✓ Listo');
+}
+
+function renderCreativosPanel(){
+  const ejemplos = [
+    {
+      icon: '📱',
+      label: 'Story de evento',
+      prompt: 'Banner para Instagram Stories formato vertical. Texto en grande "MEGA EVENTO DE MARKETING GRATIS" en 3D con efecto neón dorado y violeta. Fondo galaxia oscura con estrellas y destellos. Mujer profesional sonriente a la derecha mirando a cámara. Globo terráqueo neón fucsia y azul. Estilo cinematográfico premium, alta calidad publicitaria.'
+    },
+    {
+      icon: '🛒',
+      label: 'Banner de venta',
+      prompt: 'Banner publicitario premium tipo poster. Texto principal "GRAN LANZAMIENTO" en cinta roja arriba. Título "PASTAS KETO" en letras 3D doradas con brillo. Subtítulo "SIN HARINAS, MISMO SABOR" en cinta verde. Pack de productos al centro: libro 3D, etiquetas BONUS, fotos de pastas apetitosas. Sello dorado "MÁS DE 50 RECETAS". Precio destacado abajo. Fondo oscuro premium con destellos.'
+    },
+    {
+      icon: '📚',
+      label: 'Mockup de ebook',
+      prompt: 'Mockup 3D ultra realista de ebook con tapa dura premium. Título "[TU TÍTULO]" en letras doradas con efecto metálico brillante. Fondo violeta oscuro con destellos. Ángulo lateral mostrando profundidad. Iluminación cinematográfica suave. Estilo editorial profesional.'
+    },
+    {
+      icon: '🎁',
+      label: 'Promo / oferta',
+      prompt: 'Banner de promoción tipo Black Friday. Fondo negro con destellos dorados. Texto principal "OFERTA EXCLUSIVA" con efecto neón fucsia. Porcentaje de descuento "50% OFF" gigante en 3D dorado. Productos flotantes alrededor. Countdown visible. Estilo lujo premium.'
+    },
+    {
+      icon: '👤',
+      label: 'Personaje animado',
+      prompt: 'Personaje animado estilo Pixar/Disney 3D. Chef sonriente con gorro blanco. Cocina moderna de fondo, luz cálida natural. Expresión amigable y profesional. Iluminación cinemática suave. Calidad de animación profesional.'
+    },
+    {
+      icon: '🌟',
+      label: 'Testimonio visual',
+      prompt: 'Diseño tipo testimonial premium. Foto circular de mujer feliz a la izquierda. Texto a la derecha "GRACIAS AL PROGRAMA BAJÉ 12KG EN 3 MESES" en tipografía elegante. 5 estrellas doradas. Marco con borde dorado sutil. Fondo gradiente violeta a fucsia. Estilo Instagram premium.'
+    },
+  ];
+
+  const ejemplosHTML = ejemplos.map((e,i) => `
+    <button onclick="usarEjemploCreativo(${i})" class="ejemplo-creativo" id="ej-${i}">
+      <span style="font-size:1.4rem">${e.icon}</span>
+      <span style="font-size:.78rem;font-weight:700">${e.label}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('r-body').innerHTML = `
+    <style>
+      .ej-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;margin-top:.5rem}
+      .ejemplo-creativo{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.85rem .6rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:12px;color:var(--text);cursor:pointer;transition:all .2s;text-align:center}
+      .ejemplo-creativo:hover{background:rgba(255,0,110,.15);border-color:var(--fuchsia2);transform:translateY(-2px)}
+      .cr-section{margin-bottom:1.2rem}
+      .cr-label{display:block;font-size:.78rem;font-weight:700;color:var(--fuchsia2);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem}
+      .cr-textarea{width:100%;min-height:140px;padding:.9rem 1rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(124,58,237,.25);border-radius:12px;color:var(--text);font-size:.92rem;font-family:inherit;line-height:1.5;resize:vertical;transition:border-color .2s}
+      .cr-textarea:focus{outline:none;border-color:var(--fuchsia2);background:rgba(255,255,255,.06)}
+      .cr-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}
+      @media (max-width: 600px){.cr-row{grid-template-columns:1fr}}
+      .cr-pill-group{display:flex;gap:.4rem;flex-wrap:wrap}
+      .cr-pill{padding:.55rem .9rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(124,58,237,.25);border-radius:20px;color:var(--text);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s}
+      .cr-pill.active{background:linear-gradient(135deg,var(--fuchsia2),var(--violet2));border-color:transparent;color:#fff}
+      .cr-pill:hover:not(.active){background:rgba(124,58,237,.15)}
+      .cr-gen-btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--fuchsia2),var(--violet2));border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all .2s;box-shadow:0 4px 20px rgba(255,0,110,.3)}
+      .cr-gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 28px rgba(255,0,110,.5)}
+      .cr-gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+      .cr-result-card{margin-top:1.5rem;background:rgba(255,255,255,.03);border:1px solid rgba(124,58,237,.2);border-radius:16px;padding:1rem;animation:fadeIn .4s ease}
+      .cr-result-img{width:100%;border-radius:12px;display:block;background:#0a0a0a}
+      .cr-result-actions{display:flex;gap:.6rem;margin-top:.8rem;flex-wrap:wrap}
+      .cr-result-btn{flex:1;min-width:120px;padding:.7rem 1rem;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:10px;color:var(--text);cursor:pointer;font-weight:600;font-size:.85rem;transition:all .2s}
+      .cr-result-btn:hover{background:rgba(255,0,110,.2);border-color:var(--fuchsia2)}
+      .cr-result-meta{font-size:.72rem;color:var(--muted);margin-top:.6rem;text-align:center}
+      .cr-spinner-big{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:.4rem}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    </style>
+
+    <div style="padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(255,0,110,.08),rgba(124,58,237,.08));border:1px solid rgba(255,0,110,.2);border-radius:14px;margin-bottom:1.2rem">
+      <div style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.3rem">✨ Generador de Anuncios con IA</div>
+      <div style="font-size:.82rem;color:var(--muted);line-height:1.55">
+        Describí <strong style="color:var(--fuchsia2)">exactamente</strong> la imagen que querés (incluí textos, colores, estilo, todo). La IA va a generar la imagen completa lista para publicar.
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <label class="cr-label">💡 Ideas rápidas (tocá para usar como base)</label>
+      <div class="ej-grid">${ejemplosHTML}</div>
+    </div>
+
+    <div class="cr-section">
+      <label class="cr-label">📝 Describí tu anuncio (sé específica)</label>
+      <textarea id="cr-prompt" class="cr-textarea" placeholder="Ej: Banner para Instagram Stories con fondo galaxia neón. Texto principal 'MEGA EVENTO GRATIS' en 3D dorado. Fechas 9, 10 y 12 de junio. Mujer profesional con notebook a la derecha. Logo YouTube. Estilo cinematográfico premium."></textarea>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.5">
+        💡 <strong>Tip:</strong> mientras más detalle (textos exactos, colores, composición, estilo), mejor sale la imagen.
+      </div>
+    </div>
+
+    <div class="cr-row">
+      <div>
+        <label class="cr-label">📐 Tamaño</label>
+        <div class="cr-pill-group">
+          <button class="cr-pill" data-size="1024x1024" onclick="seleccionarSizeCreativo(this,'1024x1024')">⬛ Cuadrado</button>
+          <button class="cr-pill active" data-size="1024x1536" onclick="seleccionarSizeCreativo(this,'1024x1536')">📱 Vertical</button>
+          <button class="cr-pill" data-size="1536x1024" onclick="seleccionarSizeCreativo(this,'1536x1024')">📺 Horizontal</button>
+        </div>
+      </div>
+      <div>
+        <label class="cr-label">💎 Calidad</label>
+        <div class="cr-pill-group">
+          <button class="cr-pill" data-quality="medium" onclick="seleccionarQualityCreativo(this,'medium')">⚡ Rápida</button>
+          <button class="cr-pill active" data-quality="high" onclick="seleccionarQualityCreativo(this,'high')">✨ Premium</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="cr-gen-btn" id="cr-gen-btn" onclick="generarImagenCreativa()">
+      ✨ Generar imagen
+    </button>
+
+    <div id="cr-resultados" style="margin-top:1.5rem"></div>
+  `;
+
+  // valores por defecto
+  window._crSize = '1024x1536';
+  window._crQuality = 'high';
+
+  // re-renderizar resultados anteriores si los hay
+  if (creativosImages.length > 0) {
+    renderResultadosCreativos();
   }
 }
 
-function renderCreativosPanel(data){
-  const estiloClass={urgencia:'estilo-urgencia',aspiracional:'estilo-aspiracional',oferta:'estilo-oferta'};
-  const c1=curProject.ebook_color1||'#7c3aed';
-  const c2=curProject.ebook_color2||'#ff006e';
-  document.getElementById('r-body').innerHTML=`
-    <div style="margin-bottom:1.2rem;padding:.9rem 1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.82rem;color:var(--muted);line-height:1.6">
-      💡 <strong style="color:var(--violet2)">Paso 1:</strong> Editá el <strong style="color:var(--fuchsia2)">texto</strong> que querés que diga el anuncio (se actualiza al instante en la vista previa).<br>
-      <strong style="color:var(--violet2)">Paso 2:</strong> Describí la <strong style="color:var(--fuchsia2)">foto de fondo</strong> y tocá <strong style="color:var(--fuchsia2)">✨ Generar fondo</strong>.<br>
-      <strong style="color:var(--violet2)">Paso 3:</strong> Elegí el tamaño (Stories/Post/Banner) y descargá como PNG listo para publicar.
-    </div>
-    <div class="creativos-grid" id="creativos-grid"></div>`;
-  const grid=document.getElementById('creativos-grid');
-  grid.innerHTML=data.anuncios.map((a,i)=>{
-    creativoSizes[i]='stories';
-    const fotoSugerida=a.foto_sugerida||a.prompt_fondo||'';
-    return `
-    <div class="creativo-card" id="creativo-${i}">
-      <div class="creativo-header">
-        <span class="creativo-estilo ${estiloClass[a.estilo]||'estilo-urgencia'}">${a.estilo.toUpperCase()}</span>
-        <span style="font-size:.7rem;color:var(--muted)">Anuncio ${i+1}</span>
-      </div>
-      <div class="creativo-size-tabs">
-        <button class="size-tab active" onclick="switchSize(${i},'stories')" id="tab-${i}-stories">📱 Stories</button>
-        <button class="size-tab" onclick="switchSize(${i},'post')" id="tab-${i}-post">⬛ Post</button>
-        <button class="size-tab" onclick="switchSize(${i},'banner')" id="tab-${i}-banner">📺 Banner</button>
-      </div>
-      <div id="preview-wrap-${i}">${buildAdPreview(a,c1,c2,'stories',i)}</div>
-      <div class="creativo-body">
-        <div class="creativo-texto-edit">
-          <div class="edit-title">✏️ Editá el texto del anuncio</div>
-          <div class="edit-row">
-            <label>Título grande</label>
-            <textarea oninput="updateCreativoTexto(${i},'titulo',this.value)" placeholder="Título del anuncio">${a.titulo||''}</textarea>
-          </div>
-          <div class="edit-row">
-            <label>Subtítulo</label>
-            <input type="text" oninput="updateCreativoTexto(${i},'subtitulo',this.value)" placeholder="Subtítulo" value="${(a.subtitulo||'').replace(/"/g,'&quot;')}">
-          </div>
-          <div class="edit-row">
-            <label>Texto / descripción corta</label>
-            <input type="text" oninput="updateCreativoTexto(${i},'cuerpo',this.value)" placeholder="Una frase corta" value="${(a.cuerpo||'').replace(/"/g,'&quot;')}">
-          </div>
-          <div class="edit-2col">
-            <div class="edit-row">
-              <label>Precio tachado</label>
-              <input type="text" oninput="updateCreativoTexto(${i},'precio_tachado',this.value)" placeholder="Ej: USD 197" value="${(a.precio_tachado||'').replace(/"/g,'&quot;')}">
-            </div>
-            <div class="edit-row">
-              <label>Precio</label>
-              <input type="text" oninput="updateCreativoTexto(${i},'precio',this.value)" placeholder="Ej: USD 97" value="${(a.precio||'').replace(/"/g,'&quot;')}">
-            </div>
-          </div>
-        </div>
-        <div class="creativo-foto-field">
-          <label>📸 Describí la foto de fondo de este anuncio</label>
-          <textarea id="foto-desc-${i}" placeholder="Ej: una mujer emprendedora sonriendo frente a su notebook en un café luminoso">${fotoSugerida}</textarea>
-          <div class="creativo-foto-hint">💡 Cuanto más detallada la descripción, mejor queda la foto. La IA NO escribe texto en la imagen — el texto lo ponés vos arriba.</div>
-        </div>
-        <div class="creativo-actions">
-          <button class="creativo-btn gen-img" id="gen-btn-${i}" onclick="generateFondoCreativo(${i})">✨ Generar fondo</button>
-          <button class="creativo-btn dl-btn" id="dl-btn-${i}" onclick="descargarAnuncio(${i})" disabled>📥 Descargar PNG</button>
-        </div>
-        <div class="creativo-status" id="status-${i}">Describí la foto y generá el fondo primero</div>
-      </div>
-    </div>`;}).join('');
-}
-
-function updateCreativoTexto(idx,campo,valor){
-  if(!creativosData||!creativosData.anuncios[idx])return;
-  creativosData.anuncios[idx][campo]=valor;
-  const size=creativoSizes[idx]||'stories';
-  const c1=curProject.ebook_color1||'#7c3aed';
-  const c2=curProject.ebook_color2||'#ff006e';
-  const wrap=document.getElementById(`preview-wrap-${idx}`);
-  if(wrap)wrap.innerHTML=buildAdPreview(creativosData.anuncios[idx],c1,c2,size,idx);
-}
-
-function buildAdPreview(a,c1,c2,size,idx){
-  const d=adDims(size);
-  const bgUrl=(creativosData&&creativosData._fondos&&creativosData._fondos[idx])?`url('${creativosData._fondos[idx]}')`:'none';
-  const ts={stories:'1.3rem',post:'1.15rem',banner:'1rem'}[size]||'1.15rem';
-  const ss={stories:'.82rem',post:'.78rem',banner:'.72rem'}[size]||'.78rem';
-  const pd={stories:'1.4rem',post:'1.2rem',banner:'1rem'}[size]||'1.2rem';
-  return `<div style="width:100%;aspect-ratio:${d.ar};position:relative;overflow:hidden;background:#111">
-    <div style="position:absolute;inset:0;background:${bgUrl};background-size:cover;background-position:center"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.15) 100%)"></div>
-    <div style="position:absolute;inset:0;padding:${pd};display:flex;flex-direction:column;justify-content:flex-end;z-index:2">
-      <div style="font-family:'Syne',sans-serif;font-size:${ts};font-weight:800;color:#fff;text-transform:uppercase;line-height:1.1;margin-bottom:.3rem">${a.titulo}</div>
-      <div style="font-size:${ss};color:rgba(255,255,255,.85);line-height:1.4;margin-bottom:.35rem">${a.subtitulo}</div>
-      <div style="font-size:${ss};color:rgba(255,255,255,.65);margin-bottom:.5rem">${a.cuerpo}</div>
-      ${a.precio_tachado?`<div style="font-size:.6rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:.15rem">${a.precio_tachado}</div>`:''}
-      <div style="font-size:.9rem;font-weight:800;color:${c2}">${a.precio}</div>
-    </div>
-  </div>`;
-}
-
-function switchSize(idx,size){
-  creativoSizes[idx]=size;
-  ['stories','post','banner'].forEach(s=>{const t=document.getElementById(`tab-${idx}-${s}`);if(t)t.classList.toggle('active',s===size);});
-  const wrap=document.getElementById(`preview-wrap-${idx}`);
-  if(!wrap||!creativosData)return;
-  const a=creativosData.anuncios[idx];
-  const c1=curProject.ebook_color1||'#7c3aed';
-  const c2=curProject.ebook_color2||'#ff006e';
-  wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
-}
-
-async function generateFondoCreativo(idx){
-  if(!creativosData||!creativosData.anuncios[idx])return;
-  const a=creativosData.anuncios[idx];
-  const btn=document.getElementById(`gen-btn-${idx}`);
-  const status=document.getElementById(`status-${idx}`);
-  const descEl=document.getElementById(`foto-desc-${idx}`);
-  const userDesc=(descEl&&descEl.value.trim())?descEl.value.trim():(a.prompt_fondo||a.foto_sugerida||'');
-  if(!userDesc){status.innerHTML=`<span style="color:#ef4444">Describí primero la foto de fondo 😊</span>`;if(descEl)descEl.focus();return;}
-  const size=creativoSizes[idx]||'stories';
-  const d=adDims(size);
-  btn.disabled=true;btn.textContent='⟳ Generando...';
-  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Generando con IA... (~20 seg)</span>`;
-  try{
-    const res=await fetch('/api/creativos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:userDesc,size:d.label})});
-    const json=await res.json();
-    if(json.error)throw new Error(json.error);
-    if(!creativosData._fondos)creativosData._fondos={};
-    creativosData._fondos[idx]=json.url;
-    const c1=curProject.ebook_color1||'#7c3aed';
-    const c2=curProject.ebook_color2||'#ff006e';
-    const wrap=document.getElementById(`preview-wrap-${idx}`);
-    wrap.innerHTML=buildAdPreview(a,c1,c2,size,idx);
-    btn.textContent='🔄 Regenerar';btn.disabled=false;
-    const dlBtn=document.getElementById(`dl-btn-${idx}`);
-    if(dlBtn)dlBtn.disabled=false;
-    status.innerHTML=`<span style="color:var(--success)">✓ Fondo listo — elegí tamaño y descargá como PNG</span>`;
-    toast(`Anuncio ${idx+1} con fondo listo 🎨`,'ok');
-  }catch(e){
-    btn.disabled=false;btn.textContent='✨ Generar fondo';
-    status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;
-    toast('Error al generar imagen 😓','err');
+function usarEjemploCreativo(idx){
+  const ejemplos = [
+    'Banner para Instagram Stories formato vertical. Texto en grande "MEGA EVENTO DE MARKETING GRATIS" en 3D con efecto neón dorado y violeta. Fondo galaxia oscura con estrellas y destellos. Mujer profesional sonriente a la derecha mirando a cámara. Globo terráqueo neón fucsia y azul. Estilo cinematográfico premium, alta calidad publicitaria.',
+    'Banner publicitario premium tipo poster. Texto principal "GRAN LANZAMIENTO" en cinta roja arriba. Título "PASTAS KETO" en letras 3D doradas con brillo. Subtítulo "SIN HARINAS, MISMO SABOR" en cinta verde. Pack de productos al centro: libro 3D, etiquetas BONUS, fotos de pastas apetitosas. Sello dorado "MÁS DE 50 RECETAS". Precio destacado abajo. Fondo oscuro premium con destellos.',
+    'Mockup 3D ultra realista de ebook con tapa dura premium. Título "[TU TÍTULO]" en letras doradas con efecto metálico brillante. Fondo violeta oscuro con destellos. Ángulo lateral mostrando profundidad. Iluminación cinematográfica suave. Estilo editorial profesional.',
+    'Banner de promoción tipo Black Friday. Fondo negro con destellos dorados. Texto principal "OFERTA EXCLUSIVA" con efecto neón fucsia. Porcentaje de descuento "50% OFF" gigante en 3D dorado. Productos flotantes alrededor. Countdown visible. Estilo lujo premium.',
+    'Personaje animado estilo Pixar/Disney 3D. Chef sonriente con gorro blanco. Cocina moderna de fondo, luz cálida natural. Expresión amigable y profesional. Iluminación cinemática suave. Calidad de animación profesional.',
+    'Diseño tipo testimonial premium. Foto circular de mujer feliz a la izquierda. Texto a la derecha "GRACIAS AL PROGRAMA BAJÉ 12KG EN 3 MESES" en tipografía elegante. 5 estrellas doradas. Marco con borde dorado sutil. Fondo gradiente violeta a fucsia. Estilo Instagram premium.',
+  ];
+  const ta = document.getElementById('cr-prompt');
+  if (ta) {
+    ta.value = ejemplos[idx] || '';
+    ta.focus();
+    ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
-async function descargarAnuncio(idx){
-  if(!creativosData||!creativosData.anuncios[idx])return;
-  const a=creativosData.anuncios[idx];
-  const fondoUrl=creativosData._fondos&&creativosData._fondos[idx];
-  const c1=curProject.ebook_color1||'#7c3aed';
-  const c2=curProject.ebook_color2||'#ff006e';
-  const sizeKey=creativoSizes[idx]||'stories';
-  const dim=adDims(sizeKey);
-  const status=document.getElementById(`status-${idx}`);
-  status.innerHTML=`<span style="display:inline-flex;align-items:center;gap:.4rem"><span class="img-spin"></span> Preparando PNG...</span>`;
-  try{
-    const canvas=document.createElement('canvas');
-    canvas.width=dim.w;canvas.height=dim.h;
-    const ctx=canvas.getContext('2d');
-    if(fondoUrl){
-      const img=new Image();img.crossOrigin='anonymous';
-      await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=fondoUrl;});
-      const ir=img.width/img.height;const cr=dim.w/dim.h;
-      let sx=0,sy=0,sw=img.width,sh=img.height;
-      if(ir>cr){sw=img.height*cr;sx=(img.width-sw)/2;}
-      else{sh=img.width/cr;sy=(img.height-sh)/2;}
-      ctx.drawImage(img,sx,sy,sw,sh,0,0,dim.w,dim.h);
-    }else{ctx.fillStyle='#111111';ctx.fillRect(0,0,dim.w,dim.h);}
-    const grad=ctx.createLinearGradient(0,0,0,dim.h);
-    grad.addColorStop(0,'rgba(0,0,0,0.1)');grad.addColorStop(0.45,'rgba(0,0,0,0.45)');grad.addColorStop(1,'rgba(0,0,0,0.93)');
-    ctx.fillStyle=grad;ctx.fillRect(0,0,dim.w,dim.h);
-    const pad=Math.round(dim.w*0.08);
-    const titleSize=Math.round(dim.h*(sizeKey==='banner'?0.085:0.062));
-    const subSize=Math.round(dim.h*(sizeKey==='banner'?0.055:0.034));
-    let y=Math.round(dim.h*(sizeKey==='banner'?0.42:0.55));
-    ctx.fillStyle='#ffffff';ctx.font=`800 ${titleSize}px sans-serif`;ctx.textBaseline='top';
-    const titleWords=a.titulo.split(' ');let line='';
-    for(const w of titleWords){const test=line+w+' ';if(ctx.measureText(test).width>dim.w-pad*2&&line){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);line=w+' ';}else line=test;}
-    if(line.trim()){ctx.fillText(line.trim(),pad,y);y+=Math.round(titleSize*1.18);}
-    y+=Math.round(subSize*0.4);
-    ctx.fillStyle='rgba(255,255,255,0.88)';ctx.font=`400 ${subSize}px sans-serif`;
-    ctx.fillText(a.subtitulo.substring(0,60),pad,y);y+=Math.round(subSize*1.6);
-    ctx.fillStyle='rgba(255,255,255,0.62)';ctx.font=`300 ${Math.round(subSize*0.85)}px sans-serif`;
-    ctx.fillText(a.cuerpo.substring(0,70),pad,y);y+=Math.round(subSize*1.8);
-    if(a.precio_tachado){ctx.fillStyle='rgba(255,255,255,0.38)';ctx.font=`400 ${Math.round(subSize*0.78)}px sans-serif`;ctx.fillText(a.precio_tachado,pad,y);y+=Math.round(subSize*1.2);}
-    ctx.fillStyle=c2;ctx.font=`800 ${Math.round(subSize*1.4)}px sans-serif`;
-    ctx.fillText(a.precio,pad,y);
-    canvas.toBlob(blob=>{
-      const url=URL.createObjectURL(blob);
-      const link=document.createElement('a');link.href=url;
-      link.download=`anuncio_${idx+1}_${a.estilo}_${dim.label}.png`;link.click();
-      URL.revokeObjectURL(url);
-      status.innerHTML=`<span style="color:var(--success)">✓ Descargado: anuncio_${idx+1}_${a.estilo}_${dim.label}.png</span>`;
-      toast(`Anuncio ${idx+1} descargado 📥`,'ok');
-    },'image/png');
-  }catch(e){status.innerHTML=`<span style="color:#ef4444">Error: ${e.message}</span>`;toast('Error al descargar 😓','err');}
+function seleccionarSizeCreativo(btn, size){
+  document.querySelectorAll('.cr-pill[data-size]').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  window._crSize = size;
+}
+
+function seleccionarQualityCreativo(btn, quality){
+  document.querySelectorAll('.cr-pill[data-quality]').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  window._crQuality = quality;
+}
+
+async function generarImagenCreativa(){
+  const prompt = document.getElementById('cr-prompt').value.trim();
+  if (!prompt) {
+    toast('Describí primero qué imagen querés 😊', 'err');
+    document.getElementById('cr-prompt').focus();
+    return;
+  }
+  const size = window._crSize || '1024x1536';
+  const quality = window._crQuality || 'high';
+  const btn = document.getElementById('cr-gen-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="cr-spinner-big"></span> Generando imagen... (~30 seg)';
+
+  try {
+    const res = await fetch('/api/gpt-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, size, quality })
+    });
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+    if (!json.url) throw new Error('Sin URL en respuesta');
+
+    creativosImages.unshift({
+      prompt,
+      url: json.url,
+      size,
+      quality,
+      timestamp: Date.now()
+    });
+
+    renderResultadosCreativos();
+    toast('¡Imagen lista! 🎨', 'ok');
+  } catch (e) {
+    console.error('[Creativos]', e);
+    toast('Error: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✨ Generar imagen';
+  }
+}
+
+function renderResultadosCreativos(){
+  const cont = document.getElementById('cr-resultados');
+  if (!cont) return;
+  if (creativosImages.length === 0) {
+    cont.innerHTML = '';
+    return;
+  }
+  cont.innerHTML = creativosImages.map((img, i) => `
+    <div class="cr-result-card">
+      <img src="${img.url}" class="cr-result-img" alt="Anuncio generado">
+      <div class="cr-result-actions">
+        <button class="cr-result-btn" onclick="descargarImagenCreativa(${i})">📥 Descargar PNG</button>
+        <button class="cr-result-btn" onclick="regenerarImagenCreativa(${i})">🔄 Regenerar similar</button>
+        <button class="cr-result-btn" onclick="copiarPromptCreativo(${i})">📋 Copiar prompt</button>
+      </div>
+      <div class="cr-result-meta">
+        ${img.size} · ${img.quality === 'high' ? '✨ Premium' : '⚡ Rápida'} · ${new Date(img.timestamp).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}
+      </div>
+    </div>
+  `).join('');
+}
+
+function descargarImagenCreativa(idx){
+  const img = creativosImages[idx];
+  if (!img) return;
+  const a = document.createElement('a');
+  a.href = img.url;
+  a.download = `innova-anuncio-${Date.now()}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Descargando PNG 📥', 'ok');
+}
+
+function regenerarImagenCreativa(idx){
+  const img = creativosImages[idx];
+  if (!img) return;
+  document.getElementById('cr-prompt').value = img.prompt;
+  document.querySelectorAll('.cr-pill[data-size]').forEach(p => {
+    p.classList.toggle('active', p.dataset.size === img.size);
+  });
+  document.querySelectorAll('.cr-pill[data-quality]').forEach(p => {
+    p.classList.toggle('active', p.dataset.quality === img.quality);
+  });
+  window._crSize = img.size;
+  window._crQuality = img.quality;
+  document.getElementById('cr-prompt').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => generarImagenCreativa(), 500);
+}
+
+function copiarPromptCreativo(idx){
+  const img = creativosImages[idx];
+  if (!img) return;
+  navigator.clipboard.writeText(img.prompt).then(() => {
+    toast('Prompt copiado 📋', 'ok');
+  }).catch(() => {
+    toast('No se pudo copiar', 'err');
+  });
 }
 
 // ============================================================
@@ -2113,10 +2154,10 @@ function goLC3(){lcConfig.urgency=[...selectedUrgency];lcConfig.badge1=document.
 function goLC4(){lcConfig.guarantee=document.getElementById('lc-guarantee').value;lcConfig.guaranteeType=document.getElementById('lc-guarantee-type').value;lcConfig.testimonials=testimonials.filter(t=>t.name.trim());showLCStep(4);}
 function goLC5(){lcConfig.sections=[...selectedSections];lcConfig.cta=document.getElementById('lc-cta').value;lcConfig.url=document.getElementById('lc-url').value;lcConfig.extra=document.getElementById('lc-extra').value;showLCStep(5);renderLC5();}
 function renderLC5(){const mockupGrid=document.getElementById('img-mockup-grid');mockupGrid.innerHTML=`<div class="img-gen-card"><div class="img-gen-preview" id="imgprev-mockup"><div class="img-placeholder-inner" id="imgph-mockup"><div class="ph-icon">📦</div><div class="ph-text">Mockup</div></div><img id="imgel-mockup" src="" alt="Mockup" onload="onImgLoad('mockup')"></div><div class="img-gen-body"><div class="img-gen-title">Mockup del Producto</div><div class="img-gen-actions"><button class="img-gen-btn generate" id="imgbtn-mockup" onclick="generateImage('mockup')">✨ Generar</button><button class="img-gen-btn regen" id="imgrebtn-mockup" onclick="generateImage('mockup')" style="display:none">🔄 Regen</button></div><div class="img-gen-status" id="imgstatus-mockup"></div></div></div>`;const bonosDiv=document.getElementById('bonos-preview-lc5');const bonos=curProject.bonos||[];if(bonos.length){bonosDiv.innerHTML=`<div class="bonos-preview">${bonos.map((b,i)=>`<div class="bono-preview-card"><div class="bono-preview-img">${b.emoji||'🎁'}</div><div class="bono-preview-nombre">BONO ${i+1}: ${b.nombre}</div><div class="bono-preview-gratis">HOY GRATIS</div><button class="bono-gen-btn" id="bono-btn-${i}" onclick="generateBonoImage(${i})">✨ Mockup</button><div style="font-size:.65rem;color:var(--muted);margin-top:.3rem" id="bono-status-${i}"></div></div>`).join('')}</div>`;}else{bonosDiv.innerHTML=`<p style="font-size:.82rem;color:var(--muted);padding:1rem;text-align:center">No generaste bonos aún.</p>`;}}
-async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando...`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,prompt:`${curProject.product} - ${curProject.audience} - ${lcConfig.promise||curProject.transformation}`})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl)imgEl.src=json.url;if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;toast('Error 😓','err');}}
-async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div>`;try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Premium 3D hardcover book mockup, black cover with gold ornaments, NO text NO words, dark background. Topic: ${bono.nombre}`})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;status.innerHTML=`<span style="color:var(--success)">✓</span>`;btn.textContent='🔄';btn.disabled=false;toast(`Mockup ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">Error</span>`;btn.disabled=false;}}
+async function generateImage(type){const btn=document.getElementById(`imgbtn-${type}`);const rebtn=document.getElementById(`imgrebtn-${type}`);const status=document.getElementById(`imgstatus-${type}`);const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(btn)btn.disabled=true;if(ph)ph.innerHTML=`<div class="spinner"></div>`;if(status)status.innerHTML=`<div class="img-spin"></div> Generando con IA premium...`;try{const sizeMap={hero:'1536x1024',mockup:'1024x1536',producto:'1024x1024'};const promptMap={hero:`Cinematic hero shot for landing page. Professional product photography. Scene: ${curProject.product}. Audience: ${curProject.audience}. Promise: ${lcConfig.promise||curProject.transformation}. Premium lighting, dark elegant background, professional editorial style. NO embedded text or words.`,mockup:`Ultra-realistic 3D mockup of premium hardcover ebook. Title displayed cleanly on cover: "${curProject.product}". Elegant typography, premium materials, dark studio background with subtle lighting. Editorial book design.`,producto:`Professional product photography of: ${curProject.product}. Premium magazine style, dark moody background, cinematic lighting. NO embedded text.`};const size=sizeMap[type]||'1024x1024';const prompt=promptMap[type]||`Professional ${type} image for: ${curProject.product}`;const res=await fetch('/api/gpt-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,size,quality:'high'})});const json=await res.json();if(json.error)throw new Error(json.error);generatedImages[type]=json.url;if(imgEl)imgEl.src=json.url;if(status)status.innerHTML=`<span style="color:var(--success)">✓ Lista</span>`;if(btn)btn.style.display='none';if(rebtn){rebtn.style.display='inline-flex';rebtn.disabled=false;}toast('Imagen generada 🎨','ok');}catch(e){if(ph)ph.innerHTML=`<div class="ph-icon">❌</div>`;if(status)status.innerHTML=`<span style="color:#ef4444">${e.message}</span>`;if(btn)btn.disabled=false;toast('Error 😓','err');}}
+async function generateBonoImage(idx){const bono=curProject.bonos[idx];if(!bono)return;const btn=document.getElementById(`bono-btn-${idx}`);const status=document.getElementById(`bono-status-${idx}`);btn.disabled=true;status.innerHTML=`<div class="img-spin" style="display:inline-block"></div>`;try{const res=await fetch('/api/gpt-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:`Ultra-realistic 3D mockup of premium hardcover bonus book. Title on cover: "${bono.nombre}". Dark background with subtle golden ornaments. Elegant editorial typography. Premium book design, cinematic lighting.`,size:'1024x1024',quality:'high'})});const json=await res.json();if(json.error)throw new Error(json.error);bonoImages[idx]=json.url;status.innerHTML=`<span style="color:var(--success)">✓</span>`;btn.textContent='🔄';btn.disabled=false;toast(`Mockup ${idx+1} listo 🎁`,'ok');}catch(e){status.innerHTML=`<span style="color:#ef4444">Error</span>`;btn.disabled=false;}}
 function onImgLoad(type){const ph=document.getElementById(`imgph-${type}`);const imgEl=document.getElementById(`imgel-${type}`);if(ph)ph.style.display='none';if(imgEl)imgEl.classList.add('loaded');}
-async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const descs=[document.getElementById('hero-desc-1').value.trim(),document.getElementById('hero-desc-2').value.trim(),document.getElementById('hero-desc-3').value.trim()];if(!descs.some(d=>d)){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Foto ${i+1}/3...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/images',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'custom',prompt:`Professional product photography, dark moody background, cinematic lighting. NO text, NO books. Scene: ${descs[i]}.`})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev)prev.src=json.url;if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos listas! 🌟','ok');}
+async function generateAllHero(){const btn=document.getElementById('hero-gen-all-btn');const status=document.getElementById('hero-status');const descs=[document.getElementById('hero-desc-1').value.trim(),document.getElementById('hero-desc-2').value.trim(),document.getElementById('hero-desc-3').value.trim()];if(!descs.some(d=>d)){toast('Describí al menos una foto 😊','err');return;}btn.disabled=true;heroImages=[];for(let i=0;i<3;i++){if(!descs[i])continue;status.innerHTML=`<div class="img-spin"></div> Foto ${i+1}/3 con IA premium...`;const prev=document.getElementById(`hero-prev-${i+1}`);const ph=document.getElementById(`hero-ph-${i+1}`);try{const res=await fetch('/api/gpt-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:`Cinematic landing page hero photograph. Professional editorial style, dark moody atmosphere, premium lighting. Scene: ${descs[i]}. Magazine-quality composition. NO embedded text or written words.`,size:'1536x1024',quality:'high'})});const json=await res.json();if(json.error)throw new Error(json.error);heroImages.push(json.url);if(prev)prev.src=json.url;if(ph)ph.style.display='none';}catch(e){toast(`Error foto ${i+1} 😓`,'err');}}btn.disabled=false;status.innerHTML=`<span style="color:var(--success)">✓ ${heroImages.length} fotos listas</span>`;toast('¡Fotos listas! 🌟','ok');}
 
 async function generateLanding(){const heroImgsLocal=[...heroImages];const bonoImgsLocal=[...bonoImages];const generatedImgsLocal={...generatedImages};lcConfig.images={};lcConfig.heroImages=[];lcConfig.bonoImages=[];curMod='landing';setModStatus('landing','running','⟳ Generando...');setLoading(true,'🚀 Generando landing...');
 try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({step:'landing',data:curProject,landingConfig:lcConfig})});const json=await res.json();if(json.error)throw new Error(json.error);lcConfig.heroImages=heroImgsLocal;lcConfig.bonoImages=bonoImgsLocal;lcConfig.images=generatedImgsLocal;const htmlFinal=buildPremiumLanding(lcConfig,curProject,json.content);curResult=htmlFinal;setModStatus('landing','done','✓ Lista');curProject.hasLanding=true;saveCur();document.getElementById('landing-config').style.display='none';showModulesPanel();document.getElementById('result-panel').style.display='block';document.getElementById('r-title').textContent='🌐 Landing Page Pro';document.getElementById('r-acts').innerHTML=`<button class="act-btn act-html" onclick="doDownloadHtml()">🌐 Descargar HTML</button><button class="act-btn act-copy" onclick="doCopy()">📋 Copiar</button>`;document.getElementById('r-body').innerHTML=`<div style="padding:.75rem 1rem;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);border-radius:10px;font-size:.82rem;color:var(--cyan)">🌐 <strong>Landing generada</strong> — Descargá el HTML.</div>`;setLoading(false);toast('¡Landing generada! 🎉','ok');}catch(e){setLoading(false);toast('Error: '+e.message,'err');}}
