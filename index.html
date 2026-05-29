@@ -254,6 +254,25 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .av-video-loading .av-title{font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:#fff}
 .av-video-loading .av-sub{font-size:.85rem;color:var(--muted);max-width:380px;line-height:1.6}
 .av-video-loading .av-progress{font-size:.78rem;color:var(--fuchsia2);font-weight:600;letter-spacing:1px}
+/* === VIDEO CINEMATOGRÁFICO === */
+.vc-section-num{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--violet2);font-weight:600;letter-spacing:.05em;margin-bottom:.5rem;text-transform:uppercase}
+.vc-section-num-badge{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;display:grid;place-items:center;font-size:.6rem;font-weight:800}
+.vc-template-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.55rem;margin-top:.4rem}
+.vc-template-card{padding:.85rem .7rem;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.3rem;font-family:var(--font-b)}
+.vc-template-card:hover{border-color:rgba(255,0,110,.5);background:rgba(255,0,110,.05);transform:translateY(-2px)}
+.vc-template-card.on{background:rgba(255,0,110,.1);border-color:var(--fuchsia);box-shadow:0 0 0 2px rgba(255,0,110,.15)}
+.vc-template-emoji{font-size:1.4rem}
+.vc-template-name{font-size:.72rem;font-weight:600}
+.vc-prompt-prefix{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:8px 8px 0 0;padding:.5rem .75rem;font-size:.72rem;color:var(--violet2);font-weight:500;border-bottom:none;line-height:1.5}
+.vc-prompt-prefix strong{color:var(--violet2)}
+.vc-prompt-area{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:.75rem;color:var(--text);font-family:var(--font-b);font-size:.85rem;outline:none;resize:vertical;min-height:140px;line-height:1.6;transition:border-color .2s}
+.vc-prompt-area:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.vc-advanced-toggle{background:rgba(124,58,237,.05);border:1px dashed rgba(124,58,237,.3);border-radius:10px;padding:.7rem .9rem;font-size:.78rem;color:var(--violet2);line-height:1.5;text-align:center;cursor:pointer;transition:all .2s;margin-top:.5rem}
+.vc-advanced-toggle:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.5)}
+.vc-advanced-toggle strong{text-decoration:underline}
+.vc-advanced-panel{margin-top:.75rem;padding:1rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px}
+.vc-tip-yellow{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:.7rem 1rem;font-size:.78rem;color:#fbbf24;line-height:1.5;margin-top:1rem}
+.vc-tip-yellow strong{color:#fcd34d}
 #loading{position:fixed;inset:0;background:rgba(5,5,10,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:999}
 #loading.on{display:flex}
 .ld-spinner{width:60px;height:60px;border:4px solid rgba(255,0,110,.2);border-top-color:var(--fuchsia);border-radius:50%;animation:spin 1s linear infinite}
@@ -418,6 +437,113 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div>
     </div>
   </div>
+  <div id="video-config" style="display:none">
+    <div class="wiz-wrap" style="max-width:760px">
+      <div class="wiz-card">
+        <h2>🎬 Video Cinematográfico</h2>
+        <p class="sub">Anuncio multi-escena con avatar + b-roll + textos + CTAs</p>
+
+        <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--violet2);line-height:1.6">
+          💡 HeyGen analiza tu pedido y arma <strong>TODO</strong> solo: avatar, escenas, textos en pantalla y CTAs. Tarda 5-15 min.
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">1</span>🌐 Idioma del video</div>
+          <div class="av-lang-row" id="vc-lang-row">
+            <div class="av-pill on" data-lang-key="spanish" data-lang-label="español neutro" onclick="selectVCLang(this)">🇪🇸 Español</div>
+            <div class="av-pill" data-lang-key="english" data-lang-label="inglés con acento americano neutro" onclick="selectVCLang(this)">🇬🇧 Inglés</div>
+            <div class="av-pill" data-lang-key="portuguese" data-lang-label="portugués brasileño" onclick="selectVCLang(this)">🇧🇷 Portugués</div>
+            <div class="av-pill" data-lang-key="italian" data-lang-label="italiano" onclick="selectVCLang(this)">🇮🇹 Italiano</div>
+            <div class="av-pill" data-lang-key="french" data-lang-label="francés" onclick="selectVCLang(this)">🇫🇷 Francés</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">2</span>🏷️ Tu marca / producto <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:.3rem">(opcional)</span></div>
+          <input type="text" id="vc-marca" placeholder="Ej: INNOVA FACTORY — Curso de repostería keto para mujeres emprendedoras" oninput="updateVCPrompt()">
+          <div class="field-hint">💡 Si lo completás, HeyGen lo usa como contexto para personalizar el video</div>
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">3</span>🎁 Plantillas listas <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:.3rem">(opcional)</span></div>
+          <div class="vc-template-grid" id="vc-template-grid">
+            <div class="vc-template-card" data-template="reposteria" onclick="loadVCTemplate('reposteria')">
+              <div class="vc-template-emoji">🍰</div>
+              <div class="vc-template-name">Repostería</div>
+            </div>
+            <div class="vc-template-card" data-template="lanzamiento" onclick="loadVCTemplate('lanzamiento')">
+              <div class="vc-template-emoji">📘</div>
+              <div class="vc-template-name">Lanzamiento</div>
+            </div>
+            <div class="vc-template-card" data-template="promo" onclick="loadVCTemplate('promo')">
+              <div class="vc-template-emoji">🎯</div>
+              <div class="vc-template-name">Promo Descuento</div>
+            </div>
+            <div class="vc-template-card" data-template="hook" onclick="loadVCTemplate('hook')">
+              <div class="vc-template-emoji">💡</div>
+              <div class="vc-template-name">Hook Viral</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">4</span>📝 Prompt cinematográfico</div>
+          <div class="vc-prompt-prefix" id="vc-prompt-prefix">
+            <strong>IDIOMA:</strong> español neutro, voz femenina cálida.
+          </div>
+          <textarea class="vc-prompt-area" id="vc-prompt" placeholder="Escribí tu pedido o tocá una plantilla arriba. Cuanto más detallado el prompt, mejor sale el video..."></textarea>
+          <div class="field-hint">💡 La línea del idioma de arriba se agrega automáticamente al enviar.</div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <div class="vc-section-num"><span class="vc-section-num-badge">5</span>⏱️ Duración</div>
+            <div class="av-pill-row" id="vc-duration-row">
+              <div class="av-pill" data-val="15" onclick="selectVCPill('duration',this)">15s</div>
+              <div class="av-pill on" data-val="30" onclick="selectVCPill('duration',this)">30s</div>
+              <div class="av-pill" data-val="60" onclick="selectVCPill('duration',this)">60s</div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="vc-section-num"><span class="vc-section-num-badge">6</span>📐 Formato</div>
+            <div class="av-pill-row" id="vc-format-row">
+              <div class="av-pill on" data-val="vertical" onclick="selectVCPill('format',this)">9:16</div>
+              <div class="av-pill" data-val="square" onclick="selectVCPill('format',this)">1:1</div>
+              <div class="av-pill" data-val="horizontal" onclick="selectVCPill('format',this)">16:9</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vc-advanced-toggle" id="vc-adv-toggle" onclick="toggleVCAdvanced()">
+          🎭 Por defecto HeyGen elige el avatar ideal. <strong>¿Querés elegirlo vos? Tocá acá →</strong>
+        </div>
+        <div class="vc-advanced-panel" id="vc-adv-panel" style="display:none">
+          <div class="vc-section-num">🎭 Forzar avatar específico</div>
+          <div class="field" style="margin-bottom:.5rem">
+            <label style="font-size:.7rem">Género preferido del avatar</label>
+            <div class="av-pill-row">
+              <div class="av-pill" data-val="" onclick="selectVCPill('gender',this)">Cualquiera</div>
+              <div class="av-pill on" data-val="female" onclick="selectVCPill('gender',this)">Femenino</div>
+              <div class="av-pill" data-val="male" onclick="selectVCPill('gender',this)">Masculino</div>
+            </div>
+          </div>
+          <div class="av-avatar-grid" id="vc-avatar-grid"></div>
+          <div style="text-align:center;margin-top:.75rem">
+            <button class="add-btn" onclick="toggleVCAdvanced()" style="margin:0">↩ Volver a automático</button>
+          </div>
+        </div>
+
+        <div class="vc-tip-yellow">
+          💡 <strong>¿No te gustó la voz que salió?</strong> Después podés cambiarla gratis desde <strong>heygen.com</strong> abriendo tu video y eligiendo otra voz.
+        </div>
+
+        <div class="wiz-btns" style="margin-top:1.5rem">
+          <button class="btn btn-ghost" onclick="cancelVCConfig()">← Volver</button>
+          <button class="btn btn-primary" onclick="generateVCVideo()">🚀 Generar video cinematográfico</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="landing-config" style="display:none">
     <div class="wiz-wrap" style="max-width:800px">
       <div id="lc1"><div class="wiz-card">
@@ -541,6 +667,7 @@ const MODS=[
   {id:'landing',icon:'🌐',name:'Landing Page Pro',desc:'HTML espectacular listo para usar',special:true},
   {id:'copies',icon:'✍️',name:'Copys para Publicidad',desc:'Posts, stories y ads listos para publicar'},
   {id:'creativos',icon:'🎨',name:'Creativos con Imágenes',desc:'3 anuncios en 3 tamaños listos para publicar'},
+  {id:'video_cinema',icon:'🎬',name:'Video Cinematográfico',desc:'Anuncio multi-escena con b-roll, textos y CTAs'},
   {id:'video_avatar',icon:'🎤',name:'Video con Avatar',desc:'Avatar IA que habla tu guion'},
 ];
 
@@ -599,13 +726,13 @@ function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.
 function renderDash(){document.getElementById('s-total').textContent=projects.length;document.getElementById('s-ebooks').textContent=projects.filter(p=>p.hasEbook).length;document.getElementById('s-landings').textContent=projects.filter(p=>p.hasLanding).length;const g=document.getElementById('projects-grid');if(!projects.length){g.innerHTML=`<div class="empty-state"><div class="big">🚀</div><p>No tenés proyectos aún.</p></div>`;return;}g.innerHTML=projects.map((p,i)=>`<div class="proj-card" onclick="openProject(${i})"><h3>${p.product}</h3><div class="meta">${p.audience}</div><div class="meta">Precio: ${p.price}</div><div class="proj-badge">✓ Activo</div><div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div></div>`).join('');}
 function openProject(i){curProject={...projects[i]};document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();showView('generator');renderMods();}
 function startNew(){['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget','f-contenido'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('f-platform').selectedIndex=0;showStep(1);showView('generator');}
-function showStep(n){['step1','step2','modules-panel','landing-config','avatar-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
+function showStep(n){['step1','step2','modules-panel','landing-config','avatar-config','video-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
 function goStep1(){showStep(1);}
 function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;curProject.ebook_color1=document.getElementById('ebook-color1').value;curProject.ebook_color2=document.getElementById('ebook-color2').value;curProject.items_parsed=parsearItems(curProject.contenido_especifico);showStep(2);}
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
-function showModulesPanel(){['step1','step2','landing-config','avatar-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
+function showModulesPanel(){['step1','step2','landing-config','avatar-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
-function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='video_avatar')startAvatarConfig();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='video_avatar')startAvatarConfig();else if(id==='video_cinema')startVCConfig();else generate(id);}
 
 function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
 
@@ -615,7 +742,7 @@ function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={r
 
 function startAvatarConfig(){
   curMod='video_avatar';
-  ['step1','step2','modules-panel','landing-config'].forEach(id=>document.getElementById(id).style.display='none');
+  ['step1','step2','modules-panel','landing-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('avatar-config').style.display='block';
   document.getElementById('avatar-config').scrollIntoView({behavior:'smooth',block:'start'});
   loadAvatarConfigUI();
@@ -801,6 +928,317 @@ async function generateAvatarVideo(){
         <div style="font-weight:600;color:#ef4444;margin-bottom:.5rem">No se pudo generar el video</div>
         <div style="font-size:.82rem;color:var(--muted);max-width:480px">${e.message}</div>
         <button class="btn btn-primary" onclick="startAvatarConfig()" style="margin-top:1rem">🔄 Reintentar</button>
+      </div>`;
+    toast('Error: '+e.message,'err');
+    console.error(e);
+  }
+}
+
+// ============================================================
+// MÓDULO VIDEO CINEMATOGRÁFICO — NUEVO (multi-escena con HeyGen Video Agent)
+// ============================================================
+
+// Estado del módulo Video Cinematográfico
+let vcState={
+  lang_key:'spanish',
+  lang_label:'español neutro',
+  duration:'30',
+  format:'vertical',
+  gender:'female',
+  selected_avatar_id:'',
+  marca:'',
+  template_id:'',
+  advanced_open:false,
+};
+
+// Plantillas pre-armadas (NEUTRAS en idioma, se completa después)
+const VC_TEMPLATES={
+  reposteria:`Crea un video publicitario vertical de 25 segundos.
+
+HOOK (3 seg): Una mujer profesional sonriente con saco blanco mira a cámara con expresión cálida y dice una frase corta de enganche relacionada a hornear y emprender. Texto en pantalla con la pregunta.
+
+ESCENAS CENTRALES (15 seg):
+- Manos con guantes negros decorando un cheesecake con frutos rojos en cámara lenta
+- Primer plano de masa siendo amasada con ingredientes alrededor
+- Una emprendedora orgullosa mostrando cajas de cupcakes recién horneados
+- Pasteles decorados con flores comestibles en cámara lenta
+
+ESTILO VISUAL: cinematográfico, cálido, paleta de tonos dorados y rojos, luz natural elegante, calidad editorial de revista de cocina.
+
+CTA FINAL (5 seg): La mujer del inicio aparece de nuevo. Texto grande en pantalla: frase aspiracional arriba y botón "¡Inscríbete ya!" abajo.
+
+MÚSICA: indie pop suave con cuerdas elegantes, energía aspiracional.`,
+
+  lanzamiento:`Crea un video publicitario vertical de 30 segundos para el lanzamiento de un curso.
+
+HOOK (3 seg): Avatar femenina profesional, primer plano, mirando a cámara: frase de impacto sobre transformación. Texto en pantalla con prueba social (ej: "500+ MUJERES YA LO LOGRARON").
+
+PROBLEMA (5 seg): Escenas de mujeres frustradas trabajando en oficina, mirando el reloj, agobiadas. Texto: pregunta que conecta con el dolor.
+
+TRANSFORMACIÓN (10 seg):
+- Mujer trabajando feliz desde casa con su laptop
+- Notificaciones de pagos llegando al celular
+- Una emprendedora abriendo el laptop con café, sonriendo
+- Mujer celebrando con los brazos arriba
+
+BENEFICIOS (7 seg): textos animados con tipografía moderna mostrando 3 beneficios clave (ej: "Sin experiencia previa", "En menos de 30 días", "Desde tu casa").
+
+CTA FINAL (5 seg): Avatar volviendo a cámara con frase final motivadora. Texto grande: "RESERVÁ TU LUGAR" + botón "¡Quiero empezar!".
+
+ESTILO: moderno, energético, paleta púrpura y rosa fucsia, transiciones rápidas.
+MÚSICA: electrónica motivadora con beat creciente.`,
+
+  promo:`Crea un video publicitario vertical de 15 segundos para una promo con descuento.
+
+HOOK (3 seg): Avatar mirando a cámara con expresión de "secreto revelado": frase corta con urgencia. Texto rojo pulsante: "¡SOLO HOY!".
+
+OFERTA (7 seg):
+- Primer plano del producto con efecto zoom in
+- Texto grande en pantalla: precio tachado original → precio promocional
+- Animación de "% OFF" apareciendo con efecto explosión
+- Reloj de cuenta regresiva mostrando "23:59:59" en rojo
+
+URGENCIA (3 seg): Texto en pantalla con tipografía bold:
+- "QUEDAN POCAS HORAS"
+- "OFERTA POR TIEMPO LIMITADO"
+- Imágenes de gente comprando en el celular
+
+CTA FINAL (2 seg): Texto enorme: "COMPRÁ AHORA" con flecha animada apuntando hacia abajo + "Link en bio".
+
+ESTILO: alto contraste, rojo y negro, urgente, dinámico, cortes rápidos.
+MÚSICA: trap o beat moderno con sonido de "cash register" al final.`,
+
+  hook:`Crea un video viral vertical de 10 segundos para Instagram Reels.
+
+HOOK INMEDIATO (2 seg): Primer plano de avatar femenina con expresión de sorpresa: frase que detiene el scroll (ej: "Esperá, ¿sabías esto?"). Texto grande pulsante con emoji de alerta.
+
+REVELACIÓN (5 seg):
+- Escenas rápidas y atractivas relacionadas al tema
+- Texto en pantalla con datos que sorprendan (cifras, estadísticas, comparativas)
+- Cortes rápidos cada 1 segundo
+- Zoom in dramático en momentos clave
+
+ENGANCHE FINAL (3 seg): Avatar mirando a cámara con frase de cierre que invite a guardar el video. Texto grande: "GUARDÁ ESTE VIDEO ↗" + emoji de marcador.
+
+ESTILO: nativo de TikTok/Reels, vibrante, colorido, energético, zoom dinámico, cortes rápidos tipo capcut viral.
+MÚSICA: trending pop instrumental con beat marcado, energía alta.`,
+};
+
+function startVCConfig(){
+  curMod='video_cinema';
+  ['step1','step2','modules-panel','landing-config','avatar-config'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('video-config').style.display='block';
+  document.getElementById('video-config').scrollIntoView({behavior:'smooth',block:'start'});
+  // Si entra por primera vez y NO hay prompt, dejamos vacío esperando que toque una plantilla
+  updateVCPromptPrefix();
+}
+
+function cancelVCConfig(){
+  document.getElementById('video-config').style.display='none';
+  showModulesPanel();
+}
+
+function selectVCLang(el){
+  vcState.lang_key=el.dataset.langKey;
+  vcState.lang_label=el.dataset.langLabel;
+  document.querySelectorAll('#vc-lang-row .av-pill').forEach(p=>{
+    p.classList.toggle('on',p===el);
+  });
+  updateVCPromptPrefix();
+}
+
+function selectVCPill(group,el){
+  const value=el.dataset.val;
+  if(group==='duration'){
+    vcState.duration=value;
+    document.querySelectorAll('#vc-duration-row .av-pill').forEach(p=>p.classList.toggle('on',p===el));
+  }else if(group==='format'){
+    vcState.format=value;
+    document.querySelectorAll('#vc-format-row .av-pill').forEach(p=>p.classList.toggle('on',p===el));
+  }else if(group==='gender'){
+    vcState.gender=value;
+    document.querySelectorAll('#vc-adv-panel .av-pill[data-val=""], #vc-adv-panel .av-pill[data-val="female"], #vc-adv-panel .av-pill[data-val="male"]').forEach(p=>p.classList.toggle('on',p===el));
+  }
+}
+
+function loadVCTemplate(templateId){
+  const template=VC_TEMPLATES[templateId];
+  if(!template)return;
+  vcState.template_id=templateId;
+  document.getElementById('vc-prompt').value=template;
+  // Visual: marcar la card seleccionada
+  document.querySelectorAll('#vc-template-grid .vc-template-card').forEach(c=>{
+    c.classList.toggle('on',c.dataset.template===templateId);
+  });
+  toast(`Plantilla "${templateId}" cargada — editá lo que quieras ✏️`,'ok');
+}
+
+function updateVCPrompt(){
+  // Para cuando cambia la marca (no hace falta hacer nada visual ahora, solo guardar)
+  vcState.marca=document.getElementById('vc-marca').value.trim();
+}
+
+function updateVCPromptPrefix(){
+  // Actualiza la "cajita violeta" arriba del prompt mostrando idioma (y marca si la hay)
+  const prefix=document.getElementById('vc-prompt-prefix');
+  if(!prefix)return;
+  const marca=document.getElementById('vc-marca')?.value.trim()||'';
+  let html=`<strong>IDIOMA:</strong> ${vcState.lang_label}, voz femenina cálida.`;
+  if(marca){
+    html+=`<br><strong>MARCA:</strong> ${marca}.`;
+  }
+  prefix.innerHTML=html;
+}
+
+function toggleVCAdvanced(){
+  vcState.advanced_open=!vcState.advanced_open;
+  document.getElementById('vc-adv-toggle').style.display=vcState.advanced_open?'none':'block';
+  document.getElementById('vc-adv-panel').style.display=vcState.advanced_open?'block':'none';
+  if(vcState.advanced_open){
+    renderVCAvatarGrid();
+  }
+}
+
+function renderVCAvatarGrid(){
+  // Filtrar avatares por género si está seteado
+  let filtered=CURATED_AVATARS;
+  if(vcState.gender==='female'){
+    // Heurística: los primeros 4 son femeninos por nombre (Abigail, Aubrey, Bahar, Shirley)
+    filtered=CURATED_AVATARS.slice(0,4);
+  }else if(vcState.gender==='male'){
+    filtered=CURATED_AVATARS.slice(4,8);
+  }
+  const grid=document.getElementById('vc-avatar-grid');
+  if(!grid)return;
+  grid.innerHTML=filtered.map(a=>`
+    <div class="av-avatar-card ${a.avatar_id===vcState.selected_avatar_id?'on':''}" data-avatar="${a.avatar_id}" onclick="selectVCAvatar('${a.avatar_id}')">
+      <img src="${a.preview_image_url}" alt="${a.name}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#ff006e22,#7c3aed22)'">
+      <div class="av-avatar-name">${a.name}</div>
+    </div>`).join('');
+}
+
+function selectVCAvatar(avatarId){
+  vcState.selected_avatar_id=avatarId;
+  document.querySelectorAll('#vc-avatar-grid .av-avatar-card').forEach(c=>{
+    c.classList.toggle('on',c.dataset.avatar===avatarId);
+  });
+}
+
+async function generateVCVideo(){
+  // 1. Tomar el prompt del usuario
+  const userPrompt=document.getElementById('vc-prompt').value.trim();
+  if(!userPrompt||userPrompt.length<30){
+    toast('El prompt está muy corto. Tocá una plantilla o escribí más detalles 😊','err');
+    document.getElementById('vc-prompt').focus();
+    return;
+  }
+
+  // 2. Armar el prompt FINAL con prefijos de idioma + marca + ajustes
+  const marca=document.getElementById('vc-marca')?.value.trim()||'';
+  const formatoLabel={vertical:'vertical 9:16 (Reels/Stories)',square:'cuadrado 1:1',horizontal:'horizontal 16:9 (YouTube)'}[vcState.format]||'vertical 9:16';
+  const durationLabel=`${vcState.duration} segundos`;
+
+  let finalPrompt=`IDIOMA: ${vcState.lang_label}. Todo el audio del avatar debe estar en este idioma SI O SI, sin importar lo que diga el resto del prompt.\n`;
+  if(marca){
+    finalPrompt+=`MARCA / CONTEXTO DEL NEGOCIO: ${marca}\n`;
+  }
+  finalPrompt+=`FORMATO: ${formatoLabel}\n`;
+  finalPrompt+=`DURACIÓN: ${durationLabel}\n`;
+  if(vcState.advanced_open&&vcState.selected_avatar_id){
+    const avatarInfo=CURATED_AVATARS.find(a=>a.avatar_id===vcState.selected_avatar_id);
+    if(avatarInfo){
+      finalPrompt+=`AVATAR ESPECÍFICO REQUERIDO: usar el avatar de HeyGen con ID "${vcState.selected_avatar_id}" (${avatarInfo.name})\n`;
+    }
+  }else if(vcState.advanced_open&&vcState.gender){
+    finalPrompt+=`GÉNERO DEL AVATAR: ${vcState.gender==='female'?'femenino':'masculino'}\n`;
+  }
+  finalPrompt+=`\n--- PEDIDO DEL USUARIO ---\n\n${userPrompt}`;
+
+  // 3. Marcar módulo como running y mostrar pantalla de loading
+  setModStatus('video_cinema','running','⟳ Generando...');
+  document.getElementById('video-config').style.display='none';
+  document.getElementById('modules-panel').style.display='block';
+  const panel=document.getElementById('result-panel');
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('r-title').textContent='🎬 Video Cinematográfico';
+  document.getElementById('r-acts').innerHTML='';
+  document.getElementById('r-body').innerHTML=`
+    <div class="av-video-loading">
+      <div class="av-orb"></div>
+      <div class="av-title">Generando tu video cinematográfico</div>
+      <div class="av-sub">HeyGen está analizando tu pedido, eligiendo avatar, armando escenas con b-roll y agregando textos. <strong>Tarda entre 5 y 15 minutos</strong>, no cierres la pestaña.</div>
+      <div class="av-progress" id="vc-progress-text">⏳ Iniciando...</div>
+      <div style="font-size:.72rem;color:var(--muted);max-width:380px;text-align:center;margin-top:.5rem">Tip: si querés, podés cerrar la pestaña y abrir <strong>heygen.com</strong> después — tu video va a estar ahí también.</div>
+    </div>`;
+
+  // 4. Contador de tiempo
+  let segundos=0;
+  const interval=setInterval(()=>{
+    segundos++;
+    const m=Math.floor(segundos/60);
+    const s=segundos%60;
+    const el=document.getElementById('vc-progress-text');
+    if(el)el.textContent=`⏱️ Tiempo transcurrido: ${m}m ${String(s).padStart(2,'0')}s`;
+  },1000);
+
+  // 5. Llamar al backend
+  try{
+    const res=await fetch('/api/video',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:finalPrompt}),
+    });
+    const json=await res.json();
+    clearInterval(interval);
+
+    if(!res.ok||json.error){
+      const detalle=json.respuesta_heygen||json.detalle||'';
+      // Caso especial: si el polling expiró pero el video puede estar listo en HeyGen
+      if(json.ver_en_heygen){
+        document.getElementById('r-body').innerHTML=`
+          <div style="padding:1.2rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;color:#fbbf24;font-size:.9rem;line-height:1.7">
+            ⏳ <strong>El video está tardando más de lo normal</strong><br>
+            Probablemente ya esté listo o casi listo en tu cuenta de HeyGen. Tocá el botón de abajo para verlo.
+            <div style="margin-top:1rem;text-align:center">
+              <a href="${json.ver_en_heygen}" target="_blank" class="act-btn act-html" style="text-decoration:none;display:inline-flex">🔗 Ver en HeyGen</a>
+            </div>
+          </div>`;
+        setModStatus('video_cinema','pending','⏳ En proceso');
+        toast('El video se está tardando — chequeá HeyGen 🔗','err');
+        return;
+      }
+      throw new Error((json.error||'Error al generar')+(detalle?' — '+JSON.stringify(detalle).substring(0,200):''));
+    }
+    if(!json.video_url)throw new Error('HeyGen no devolvió URL del video');
+
+    // 6. ¡ÉXITO! Mostrar video
+    setModStatus('video_cinema','done','✓ Listo');
+    const maxWidth=vcState.format==='vertical'?'380px':(vcState.format==='horizontal'?'640px':'500px');
+    document.getElementById('r-body').innerHTML=`
+      <div style="padding:1rem 1.2rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;margin-bottom:1.5rem;color:var(--success);font-size:.9rem">
+        ✅ <strong>¡Video cinematográfico listo!</strong> Multi-escena con b-roll, textos y CTAs. Mirá el resultado abajo.
+      </div>
+      <video src="${json.video_url}" controls style="width:100%;max-width:${maxWidth};border-radius:16px;display:block;margin:0 auto;background:#000"></video>
+      <div style="text-align:center;margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+        <a href="${json.video_url}" download="innova_cinema_${Date.now()}.mp4" class="act-btn act-html" style="text-decoration:none;display:inline-flex">📥 Descargar MP4</a>
+        ${json.video_page_url?`<a href="${json.video_page_url}" target="_blank" class="act-btn act-copy" style="text-decoration:none;display:inline-flex">🔗 Editar en HeyGen</a>`:''}
+        <button class="act-btn act-copy" onclick="startVCConfig()">🔄 Generar otro</button>
+      </div>
+      ${json.duration?`<div style="text-align:center;margin-top:.8rem;font-size:.78rem;color:var(--muted)">Duración: ${json.duration}s</div>`:''}
+      <div style="text-align:center;margin-top:.8rem;padding:.7rem 1rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.78rem;color:#fbbf24;line-height:1.5;max-width:520px;margin-left:auto;margin-right:auto">
+        💡 <strong>¿Querés cambiar la voz?</strong> Tocá "Editar en HeyGen" y elegí otra voz desde el editor. La re-renderización es gratis.
+      </div>`;
+    toast('¡Video cinematográfico generado! 🎬','ok');
+  }catch(e){
+    clearInterval(interval);
+    setModStatus('video_cinema','pending','✕ Error');
+    document.getElementById('r-body').innerHTML=`
+      <div class="placeholder">
+        <div class="big">❌</div>
+        <div style="font-weight:600;color:#ef4444;margin-bottom:.5rem">No se pudo generar el video</div>
+        <div style="font-size:.82rem;color:var(--muted);max-width:480px">${e.message}</div>
+        <button class="btn btn-primary" onclick="startVCConfig()" style="margin-top:1rem">🔄 Reintentar</button>
       </div>`;
     toast('Error: '+e.message,'err');
     console.error(e);
@@ -1161,7 +1599,7 @@ function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);con
 // ============================================================
 // MÓDULO LANDING (sin cambios)
 // ============================================================
-function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','avatar-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
+function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','avatar-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
 function goLC1(){showLCStep(1);}
