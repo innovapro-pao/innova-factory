@@ -544,6 +544,69 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
       </div>
     </div>
   </div>
+  <div id="veo-config" style="display:none">
+    <div class="wiz-wrap" style="max-width:760px">
+      <div class="wiz-card">
+        <h2>🎥 Clip Cinematográfico Veo 3</h2>
+        <p class="sub">Clip de 5-8 segundos con audio · Calidad cine premium</p>
+
+        <div style="background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.2);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.5rem;font-size:.82rem;color:#ff006e;line-height:1.6">
+          ⚠️ <strong>Costo por clip: ~$1.20 USD (8 seg)</strong> · Usa tu cuenta Google Cloud · Hace falta facturación activa
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">1</span>🎁 Plantillas listas <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:.3rem">(opcional)</span></div>
+          <div class="vc-template-grid" id="veo-template-grid">
+            <div class="vc-template-card" onclick="loadVeoTemplate('producto')">
+              <div class="vc-template-emoji">🛍️</div>
+              <div class="vc-template-name">Producto Hero</div>
+            </div>
+            <div class="vc-template-card" onclick="loadVeoTemplate('food')">
+              <div class="vc-template-emoji">🍰</div>
+              <div class="vc-template-name">Food Cinema</div>
+            </div>
+            <div class="vc-template-card" onclick="loadVeoTemplate('hook')">
+              <div class="vc-template-emoji">💥</div>
+              <div class="vc-template-name">Hook Viral</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="vc-section-num"><span class="vc-section-num-badge">2</span>📝 Describí tu clip</div>
+          <textarea class="vc-prompt-area" id="veo-prompt" placeholder="Ej: Una torta de chocolate cayendo en cámara lenta sobre frutos rojos, luz dorada cinematográfica, partículas de polvo de cacao volando, estilo film comercial premium..." style="min-height:140px"></textarea>
+          <div class="field-hint">💡 Cuanto más visual y detallado el prompt, mejor el clip.</div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <div class="vc-section-num"><span class="vc-section-num-badge">3</span>⏱️ Duración</div>
+            <div class="av-pill-row" id="veo-duration-row">
+              <div class="av-pill" data-val="5" onclick="selectVeoPill('duration',this)">5 seg</div>
+              <div class="av-pill on" data-val="8" onclick="selectVeoPill('duration',this)">8 seg</div>
+            </div>
+            <div class="field-hint">5 seg = $0.75 · 8 seg = $1.20</div>
+          </div>
+          <div class="field">
+            <div class="vc-section-num"><span class="vc-section-num-badge">4</span>📐 Formato</div>
+            <div class="av-pill-row" id="veo-format-row">
+              <div class="av-pill on" data-val="9:16" onclick="selectVeoPill('aspect',this)">9:16 Vertical</div>
+              <div class="av-pill" data-val="16:9" onclick="selectVeoPill('aspect',this)">16:9 Horizontal</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vc-tip-yellow">
+          💡 <strong>Tip:</strong> los clips de Veo 3 son únicos (UN escenario, sin cortes). Para anuncios multi-escena con avatar, usá <strong>Video Cinematográfico</strong>.
+        </div>
+
+        <div class="wiz-btns" style="margin-top:1.5rem">
+          <button class="btn btn-ghost" onclick="cancelVeoConfig()">← Volver</button>
+          <button class="btn btn-primary" onclick="generateVeoClip()">🚀 Generar clip ($1.20)</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="landing-config" style="display:none">
     <div class="wiz-wrap" style="max-width:800px">
       <div id="lc1"><div class="wiz-card">
@@ -668,6 +731,7 @@ const MODS=[
   {id:'copies',icon:'✍️',name:'Copys para Publicidad',desc:'Posts, stories y ads listos para publicar'},
   {id:'creativos',icon:'🎨',name:'Creativos con Imágenes',desc:'3 anuncios en 3 tamaños listos para publicar'},
   {id:'video_cinema',icon:'🎬',name:'Video Cinematográfico',desc:'Anuncio multi-escena con b-roll, textos y CTAs'},
+  {id:'video_veo',icon:'🎥',name:'Clip Cinematográfico Veo 3',desc:'Clip de 5-8 seg con audio, calidad cine premium'},
   {id:'video_avatar',icon:'🎤',name:'Video con Avatar',desc:'Avatar IA que habla tu guion'},
 ];
 
@@ -726,13 +790,13 @@ function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.
 function renderDash(){document.getElementById('s-total').textContent=projects.length;document.getElementById('s-ebooks').textContent=projects.filter(p=>p.hasEbook).length;document.getElementById('s-landings').textContent=projects.filter(p=>p.hasLanding).length;const g=document.getElementById('projects-grid');if(!projects.length){g.innerHTML=`<div class="empty-state"><div class="big">🚀</div><p>No tenés proyectos aún.</p></div>`;return;}g.innerHTML=projects.map((p,i)=>`<div class="proj-card" onclick="openProject(${i})"><h3>${p.product}</h3><div class="meta">${p.audience}</div><div class="meta">Precio: ${p.price}</div><div class="proj-badge">✓ Activo</div><div class="meta" style="margin-top:.5rem;font-size:.75rem">${p.date||''}</div></div>`).join('');}
 function openProject(i){curProject={...projects[i]};document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();showView('generator');renderMods();}
 function startNew(){['f-product','f-audience','f-problem','f-transform','f-price','f-oldprice','f-cuotas','f-budget','f-contenido'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('f-platform').selectedIndex=0;showStep(1);showView('generator');}
-function showStep(n){['step1','step2','modules-panel','landing-config','avatar-config','video-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
+function showStep(n){['step1','step2','modules-panel','landing-config','avatar-config','video-config','veo-config'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById(`step${n}`).style.display='block';}
 function goStep1(){showStep(1);}
 function goStep2(){const product=document.getElementById('f-product').value.trim();const audience=document.getElementById('f-audience').value.trim();if(!product||!audience){toast('Completá el producto y el público 😊','err');return;}curProject.product=product;curProject.audience=audience;curProject.problem=document.getElementById('f-problem').value;curProject.transformation=document.getElementById('f-transform').value;curProject.contenido_especifico=document.getElementById('f-contenido').value;curProject.ebook_color1=document.getElementById('ebook-color1').value;curProject.ebook_color2=document.getElementById('ebook-color2').value;curProject.items_parsed=parsearItems(curProject.contenido_especifico);showStep(2);}
 function goModules(){const price=document.getElementById('f-price').value.trim();if(!price){toast('Ingresá el precio 😊','err');return;}curProject.price=price;curProject.oldprice=document.getElementById('f-oldprice').value;curProject.cuotas=document.getElementById('f-cuotas').value;curProject.budget=document.getElementById('f-budget').value;curProject.platform=document.getElementById('f-platform').value;curProject.date=new Date().toLocaleDateString('es-AR');const exists=projects.findIndex(p=>p.product===curProject.product);if(exists>=0)projects[exists]=curProject;else projects.unshift(curProject);localStorage.setItem('innova_projects',JSON.stringify(projects));renderDash();document.getElementById('prod-name').textContent=curProject.product;showModulesPanel();toast('¡Proyecto guardado! 🎉','ok');}
-function showModulesPanel(){['step1','step2','landing-config','avatar-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
+function showModulesPanel(){['step1','step2','landing-config','avatar-config','video-config','veo-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('modules-panel').style.display='block';document.getElementById('result-panel').style.display='none';renderMods();}
 function renderMods(){const g=document.getElementById('mods-grid');if(!g)return;const hasBonos=!!(curProject.bonos&&curProject.bonos.length);g.innerHTML=MODS.map(m=>{const needsBonos=m.id==='landing'&&!hasBonos;return`<div class="mod-card ${m.special?'landing-mod':''} ${needsBonos?'locked':''}" id="mc-${m.id}" onclick="${needsBonos?"toast('Generá los Bonos primero 🎁','err')":`clickMod('${m.id}')`}"><div class="mod-icon">${m.icon}</div><div class="mod-name">${m.name}</div><div class="mod-desc">${needsBonos?'⚠️ Generá los Bonos primero':m.desc}</div><div class="mod-status s-pending" id="ms-${m.id}">· Pendiente</div></div>`;}).join('');}
-function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='video_avatar')startAvatarConfig();else if(id==='video_cinema')startVCConfig();else generate(id);}
+function clickMod(id){if(id==='landing')startLandingConfig();else if(id==='ebook')generateEbook();else if(id==='bonos')generateBonos();else if(id==='creativos')generateCreativos();else if(id==='video_avatar')startAvatarConfig();else if(id==='video_cinema')startVCConfig();else if(id==='video_veo')startVeoConfig();else generate(id);}
 
 function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={receta:'receta',recetas:'receta',técnica:'técnica',tecnica:'técnica',técnicas:'técnica',tecnicas:'técnica',ejercicio:'ejercicio',ejercicios:'ejercicio',guía:'guía',guia:'guía',guías:'guía',guias:'guía',tip:'tip',tips:'tip',módulo:'módulo',modulo:'módulo',plantilla:'plantilla',plantillas:'plantilla',estrategia:'estrategia',estrategias:'estrategia',lección:'lección',leccion:'lección',lecciones:'lección'};const items=[];let contador=1;const partes=texto.split(',').map(p=>p.trim()).filter(Boolean);for(const parte of partes){const match=parte.match(/^(\d+)\s+(\w+)\s+(.+)$/i)||parte.match(/^(\d+)\s+(\w+)$/i);if(match){const cantidad=parseInt(match[1]);const tipoRaw=match[2].toLowerCase();const descripcion=match[3]||parte;const tipo=tiposMap[tipoRaw]||tipoRaw;for(let i=1;i<=Math.min(cantidad,20);i++){items.push({numero:contador++,tipo,titulo:`${tipo.charAt(0).toUpperCase()+tipo.slice(1)} ${i} — ${descripcion}`,contexto:descripcion,indice:i,total:cantidad});}}else{items.push({numero:contador++,tipo:'contenido',titulo:parte,contexto:parte,indice:1,total:1});}}return items;}
 
@@ -742,7 +806,7 @@ function parsearItems(texto){if(!texto||!texto.trim())return[];const tiposMap={r
 
 function startAvatarConfig(){
   curMod='video_avatar';
-  ['step1','step2','modules-panel','landing-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');
+  ['step1','step2','modules-panel','landing-config','video-config','veo-config'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('avatar-config').style.display='block';
   document.getElementById('avatar-config').scrollIntoView({behavior:'smooth',block:'start'});
   loadAvatarConfigUI();
@@ -1026,7 +1090,7 @@ MÚSICA: trending pop instrumental con beat marcado, energía alta.`,
 
 function startVCConfig(){
   curMod='video_cinema';
-  ['step1','step2','modules-panel','landing-config','avatar-config'].forEach(id=>document.getElementById(id).style.display='none');
+  ['step1','step2','modules-panel','landing-config','avatar-config','veo-config'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('video-config').style.display='block';
   document.getElementById('video-config').scrollIntoView({behavior:'smooth',block:'start'});
   // Si entra por primera vez y NO hay prompt, dejamos vacío esperando que toque una plantilla
@@ -1277,6 +1341,191 @@ async function generateVCVideo(){
 
   // Arrancar el primer check después de 8 segundos (le damos tiempo a HeyGen)
   setTimeout(checkearVideo,8000);
+}
+
+// ============================================================
+// MÓDULO CLIP CINEMATOGRÁFICO VEO 3 — NUEVO
+// ============================================================
+
+let veoState = {
+  duration: 8,
+  aspect: '9:16',
+};
+
+const VEO_TEMPLATES = {
+  producto: `Cinematic product hero shot of a premium luxury item rotating slowly on a marble pedestal. Soft golden hour lighting from the left side casts dramatic shadows. The background is a blurred elegant studio with bokeh light reflections. Camera slowly pushes in to reveal intricate details of the product surface. Particles of golden dust float in the air. Audio: a sophisticated swelling cinematic score with a subtle beat drop. Color grading: warm golden tones with deep blacks. Film grain texture. Premium commercial aesthetic similar to luxury brand campaigns.`,
+
+  food: `Macro cinematic shot of a decadent chocolate cake being decorated by hands in black gloves. Red berries cascade in slow motion onto the surface. Glossy chocolate ganache drips down the sides while gold leaf flakes shimmer in the warm light. The background is a soft-focus elegant kitchen. Camera pulls back slowly to reveal the full creation. Audio: gentle indie pop with subtle ASMR food sounds — drips, sprinkles, soft crunches. Editorial food photography style with warm golden lighting, rich amber and ruby tones. Magazine quality food cinema.`,
+
+  hook: `Fast-paced viral vertical video opening: a woman with intense eyes looks directly at camera with a shocked expression, then quickly turns her head to reveal a stunning transformation behind her. Dynamic zoom in on her face, then quick whip-pan to reveal a surprise element. Text overlay appears in bold animated typography: "WAIT FOR IT". Colorful neon lighting with pink and purple tones. Audio: trending instrumental pop with a dramatic bass drop and impact sound effect. TikTok and Reels native aesthetic. High energy editing with fast cuts simulated within a single shot.`,
+};
+
+function startVeoConfig() {
+  curMod = 'video_veo';
+  ['step1', 'step2', 'modules-panel', 'landing-config', 'avatar-config', 'video-config'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('veo-config').style.display = 'block';
+  document.getElementById('veo-config').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelVeoConfig() {
+  document.getElementById('veo-config').style.display = 'none';
+  showModulesPanel();
+}
+
+function selectVeoPill(group, el) {
+  const value = el.dataset.val;
+  if (group === 'duration') {
+    veoState.duration = parseInt(value);
+    document.querySelectorAll('#veo-duration-row .av-pill').forEach(p => p.classList.toggle('on', p === el));
+  } else if (group === 'aspect') {
+    veoState.aspect = value;
+    document.querySelectorAll('#veo-format-row .av-pill').forEach(p => p.classList.toggle('on', p === el));
+  }
+}
+
+function loadVeoTemplate(templateId) {
+  const template = VEO_TEMPLATES[templateId];
+  if (!template) return;
+  document.getElementById('veo-prompt').value = template;
+  toast(`Plantilla "${templateId}" cargada — editá lo que quieras ✏️`, 'ok');
+}
+
+async function generateVeoClip() {
+  const prompt = document.getElementById('veo-prompt').value.trim();
+  if (!prompt || prompt.length < 30) {
+    toast('El prompt está muy corto. Describí mejor o tocá una plantilla 😊', 'err');
+    document.getElementById('veo-prompt').focus();
+    return;
+  }
+
+  const costo = veoState.duration === 5 ? '0.75' : '1.20';
+
+  // Confirmación de cobro (importante!)
+  if (!confirm(`⚠️ Vas a generar un clip Veo 3.\n\nCosto aproximado: $${costo} USD\nDuración: ${veoState.duration} segundos\nFormato: ${veoState.aspect}\n\n¿Confirmás generar?`)) {
+    return;
+  }
+
+  // Mostrar loading
+  setModStatus('video_veo', 'running', '⟳ Generando...');
+  document.getElementById('veo-config').style.display = 'none';
+  document.getElementById('modules-panel').style.display = 'block';
+  const panel = document.getElementById('result-panel');
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('r-title').textContent = '🎥 Clip Cinematográfico Veo 3';
+  document.getElementById('r-acts').innerHTML = '';
+  document.getElementById('r-body').innerHTML = `
+    <div class="av-video-loading">
+      <div class="av-orb"></div>
+      <div class="av-title">Generando tu clip con Veo 3</div>
+      <div class="av-sub">La IA está creando un clip cinematográfico de ${veoState.duration} segundos con audio. <strong>Tarda entre 1 y 3 minutos.</strong></div>
+      <div class="av-progress" id="veo-progress-text">⏳ Iniciando...</div>
+    </div>`;
+
+  // Contador
+  let segundos = 0;
+  const interval = setInterval(() => {
+    segundos++;
+    const m = Math.floor(segundos / 60);
+    const s = segundos % 60;
+    const el = document.getElementById('veo-progress-text');
+    if (el) el.textContent = `⏱️ Tiempo transcurrido: ${m}m ${String(s).padStart(2, '0')}s`;
+  }, 1000);
+
+  // 1. Iniciar generación
+  let operationName;
+  try {
+    const startRes = await fetch('/api/clip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: prompt,
+        aspect_ratio: veoState.aspect,
+        duration_seconds: veoState.duration,
+      }),
+    });
+    const startJson = await startRes.json();
+    if (!startRes.ok || startJson.error || !startJson.operation_name) {
+      throw new Error(startJson.error || 'No se pudo iniciar el clip');
+    }
+    operationName = startJson.operation_name;
+    console.log('Veo operation:', operationName);
+  } catch (e) {
+    clearInterval(interval);
+    setModStatus('video_veo', 'pending', '✕ Error');
+    document.getElementById('r-body').innerHTML = `
+      <div class="placeholder">
+        <div class="big">❌</div>
+        <div style="font-weight:600;color:#ef4444;margin-bottom:.5rem">No se pudo iniciar el clip</div>
+        <div style="font-size:.82rem;color:var(--muted);max-width:480px">${e.message}</div>
+        <button class="btn btn-primary" onclick="startVeoConfig()" style="margin-top:1rem">🔄 Reintentar</button>
+      </div>`;
+    toast('Error: ' + e.message, 'err');
+    return;
+  }
+
+  // 2. Polling
+  let checks = 0;
+  const maxChecks = 60; // 60 x 5 seg = 5 minutos
+  const checkear = async () => {
+    if (checks >= maxChecks) {
+      clearInterval(interval);
+      setModStatus('video_veo', 'pending', '✕ Timeout');
+      document.getElementById('r-body').innerHTML = `
+        <div class="placeholder">
+          <div class="big">⏱️</div>
+          <div style="font-weight:600;color:#fbbf24;margin-bottom:.5rem">El clip está tardando demasiado</div>
+          <div style="font-size:.82rem;color:var(--muted);max-width:480px">Reintentá. Si vuelve a pasar, simplificá el prompt.</div>
+          <button class="btn btn-primary" onclick="startVeoConfig()" style="margin-top:1rem">🔄 Reintentar</button>
+        </div>`;
+      return;
+    }
+    checks++;
+    try {
+      const checkRes = await fetch(`/api/clip-check?operation_name=${encodeURIComponent(operationName)}`);
+      const checkJson = await checkRes.json();
+      console.log(`Check ${checks}: status=${checkJson.status}`);
+
+      if (checkJson.status === 'completed' && checkJson.video_url) {
+        clearInterval(interval);
+        setModStatus('video_veo', 'done', '✓ Listo');
+        const maxWidth = veoState.aspect === '9:16' ? '380px' : '640px';
+        document.getElementById('r-body').innerHTML = `
+          <div style="padding:1rem 1.2rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;margin-bottom:1.5rem;color:var(--success);font-size:.9rem">
+            ✅ <strong>¡Clip Veo 3 listo!</strong> Calidad cinematográfica con audio.
+          </div>
+          <video src="${checkJson.video_url}" controls autoplay style="width:100%;max-width:${maxWidth};border-radius:16px;display:block;margin:0 auto;background:#000"></video>
+          <div style="text-align:center;margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+            <a href="${checkJson.video_url}" download="innova_veo_${Date.now()}.mp4" class="act-btn act-html" style="text-decoration:none;display:inline-flex">📥 Descargar MP4</a>
+            <button class="act-btn act-copy" onclick="startVeoConfig()">🔄 Generar otro</button>
+          </div>
+          <div style="text-align:center;margin-top:.8rem;font-size:.78rem;color:var(--muted)">${veoState.duration}s · ${veoState.aspect} · Veo 3.1 Fast</div>`;
+        toast('¡Clip generado! 🎬', 'ok');
+        return;
+      }
+
+      if (checkJson.status === 'failed') {
+        clearInterval(interval);
+        setModStatus('video_veo', 'pending', '✕ Error');
+        document.getElementById('r-body').innerHTML = `
+          <div class="placeholder">
+            <div class="big">❌</div>
+            <div style="font-weight:600;color:#ef4444;margin-bottom:.5rem">No se pudo generar el clip</div>
+            <div style="font-size:.82rem;color:var(--muted);max-width:480px">${checkJson.error || 'Error desconocido'}</div>
+            <button class="btn btn-primary" onclick="startVeoConfig()" style="margin-top:1rem">🔄 Reintentar</button>
+          </div>`;
+        return;
+      }
+
+      // Sigue procesando — esperar y reintentar
+      setTimeout(checkear, 5000);
+    } catch (e) {
+      console.error('Error chequeando:', e);
+      setTimeout(checkear, 5000);
+    }
+  };
+
+  setTimeout(checkear, 10000); // primer check a los 10 seg
 }
 
 // ============================================================
@@ -1633,7 +1882,7 @@ function setModStatus(id,cls,txt){const el=document.getElementById('ms-'+id);con
 // ============================================================
 // MÓDULO LANDING (sin cambios)
 // ============================================================
-function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','avatar-config','video-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
+function startLandingConfig(){lcConfig={};testimonials=[];generatedImages={};heroImages=[];bonoImages=[];selectedUrgency=new Set();['step1','step2','modules-panel','avatar-config','video-config','veo-config'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('landing-config').style.display='block';showLCStep(1);initTestimonials();document.querySelectorAll('#sections-chips .chip').forEach(c=>{if(['benefits','bonos','faq','cta_multiple'].includes(c.dataset.val))c.classList.add('on');else c.classList.remove('on');});selectedSections=new Set(['benefits','bonos','faq','cta_multiple']);}
 function showLCStep(n){[1,2,3,4,5].forEach(i=>{const el=document.getElementById(`lc${i}`);if(el)el.style.display=i===n?'block':'none';});}
 function cancelLanding(){document.getElementById('landing-config').style.display='none';showModulesPanel();}
 function goLC1(){showLCStep(1);}
