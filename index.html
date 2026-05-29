@@ -1542,18 +1542,25 @@ async function loadFFmpeg(onProgress) {
   _ffmpegLoading = true;
 
   try {
+    console.log('[Watermark] Iniciando carga de FFmpeg...');
     onProgress && onProgress('Cargando motor de video (1 vez, ~25MB)...');
 
-    // Cargar FFmpeg.wasm desde CDN
+    // Cargar FFmpeg.wasm desde CDN (jsdelivr es más confiable que unpkg)
     if (!window.FFmpegWASM) {
-      await loadScript('https://unpkg.com/@ffmpeg/[email protected]/dist/umd/ffmpeg.js');
-      await loadScript('https://unpkg.com/@ffmpeg/[email protected]/dist/umd/util.js');
+      console.log('[Watermark] Cargando scripts desde jsdelivr...');
+      await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/[email protected]/dist/umd/ffmpeg.js');
+      await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/[email protected]/dist/umd/util.js');
+      console.log('[Watermark] Scripts cargados OK');
+    }
+
+    if (!window.FFmpegWASM || !window.FFmpegUtil) {
+      throw new Error('FFmpegWASM o FFmpegUtil no se cargaron correctamente');
     }
 
     const { FFmpeg } = window.FFmpegWASM;
     const { toBlobURL } = window.FFmpegUtil;
 
-    const baseURL = 'https://unpkg.com/@ffmpeg/[email protected]/dist/umd';
+    const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/[email protected]/dist/umd';
     const ffmpeg = new FFmpeg();
 
     ffmpeg.on('progress', ({ progress }) => {
@@ -1565,20 +1572,26 @@ async function loadFFmpeg(onProgress) {
       }
     });
 
-    onProgress && onProgress('Cargando motor de video...');
+    ffmpeg.on('log', ({ message }) => {
+      console.log('[FFmpeg]', message);
+    });
+
+    console.log('[Watermark] Cargando core de FFmpeg (~25MB)...');
+    onProgress && onProgress('Cargando motor de video (descargando ~25MB, 1ra vez tarda)...');
 
     await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
       wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
     });
 
+    console.log('[Watermark] FFmpeg cargado y listo ✓');
     _ffmpegInstance = ffmpeg;
     _ffmpegLoading = false;
     return ffmpeg;
   } catch (e) {
     _ffmpegLoading = false;
-    console.error('Error cargando FFmpeg:', e);
-    throw e;
+    console.error('[Watermark] Error cargando FFmpeg:', e);
+    throw new Error('No se pudo cargar el motor de video: ' + (e.message || 'error desconocido'));
   }
 }
 
@@ -1605,23 +1618,33 @@ function base64ToBytes(base64) {
 // FUNCIÓN PRINCIPAL: descarga video, le agrega marca, devuelve Blob URL
 async function aplicarMarcaDeAgua(videoUrl, onProgress) {
   try {
+    console.log('[Watermark] Descargando video original desde:', videoUrl);
     onProgress && onProgress('Descargando video original...');
 
-    // Descargar video
+    // Descargar video (puede ser path relativo /api/... o URL completa)
     const videoRes = await fetch(videoUrl);
-    if (!videoRes.ok) throw new Error('No se pudo descargar el video');
+    if (!videoRes.ok) {
+      throw new Error(`Error descargando video: HTTP ${videoRes.status}`);
+    }
     const videoBytes = new Uint8Array(await videoRes.arrayBuffer());
+    console.log('[Watermark] Video descargado:', videoBytes.length, 'bytes');
+
+    if (videoBytes.length < 1000) {
+      throw new Error('El video descargado es muy chico, posible error de servidor');
+    }
 
     onProgress && onProgress('Preparando motor de video...');
 
     // Cargar FFmpeg
     const ffmpeg = await loadFFmpeg(onProgress);
 
+    console.log('[Watermark] Escribiendo archivos en filesystem virtual...');
     // Escribir archivos en el filesystem virtual de FFmpeg
     await ffmpeg.writeFile('input.mp4', videoBytes);
     await ffmpeg.writeFile('logo.png', base64ToBytes(INNOVA_LOGO_BASE64));
 
     onProgress && onProgress('Aplicando marca de agua: 0%');
+    console.log('[Watermark] Ejecutando FFmpeg...');
 
     // Comando FFmpeg: superponer logo abajo a la derecha
     // - scale logo a ~22% del ancho del video
@@ -1639,11 +1662,13 @@ async function aplicarMarcaDeAgua(videoUrl, onProgress) {
     ]);
 
     onProgress && onProgress('Finalizando...');
+    console.log('[Watermark] FFmpeg terminó, leyendo resultado...');
 
     // Leer el resultado
     const outputData = await ffmpeg.readFile('output.mp4');
     const blob = new Blob([outputData.buffer], { type: 'video/mp4' });
     const url = URL.createObjectURL(blob);
+    console.log('[Watermark] ✓ Video final:', blob.size, 'bytes');
 
     // Limpiar archivos del FS virtual
     try {
@@ -1654,7 +1679,7 @@ async function aplicarMarcaDeAgua(videoUrl, onProgress) {
 
     return url;
   } catch (e) {
-    console.error('Error aplicando marca de agua:', e);
+    console.error('[Watermark] Error aplicando marca de agua:', e);
     throw e;
   }
 }
@@ -1673,8 +1698,11 @@ async function descargarConMarca(videoUrl, fileName) {
     btn.innerHTML = '⏳ Preparando descarga...';
   }
 
+  console.log('[Watermark] Iniciando descarga con marca de agua para:', videoUrl);
+
   try {
     const watermarkedUrl = await aplicarMarcaDeAgua(videoUrl, (msg) => {
+      console.log('[Watermark]', msg);
       if (btn) btn.innerHTML = `⏳ ${msg}`;
     });
 
@@ -1700,13 +1728,17 @@ async function descargarConMarca(videoUrl, fileName) {
 
     toast('¡Video con marca de agua descargado! 🎬', 'ok');
   } catch (e) {
-    console.error(e);
+    console.error('[Watermark] ERROR:', e);
+    const errorMsg = e.message || 'Error desconocido';
+
     if (btn) {
       btn.innerHTML = originalText;
       btn.style.pointerEvents = '';
       btn.style.opacity = '';
     }
-    toast('No se pudo procesar la marca de agua. Descargando original...', 'err');
+
+    // Mostrar error detallado al usuario por 6 seg
+    toast(`Marca de agua no disponible: ${errorMsg.substring(0, 100)}. Descargando original...`, 'err');
 
     // Fallback: descargar el original sin marca
     const a = document.createElement('a');
