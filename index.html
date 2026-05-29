@@ -1193,49 +1193,7 @@ async function generateVCVideo(){
     clearInterval(interval);
 
     if(!res.ok||json.error){
-      const detalle=json.respuesta_heygen||json.detalle||'';
-      // Caso especial: si el polling expiró pero el video puede estar listo
-      if(json.ver_en_heygen){
-        document.getElementById('r-body').innerHTML=`
-          <div style="padding:1.2rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;color:#fbbf24;font-size:.9rem;line-height:1.7">
-            ⏳ <strong>El video está tardando más de lo normal</strong><br>
-            Probablemente ya esté listo o casi listo. Tocá el botón de abajo para ver los detalles.
-            <div style="margin-top:1rem;text-align:center">
-              <a href="${json.ver_en_heygen}" target="_blank" class="act-btn act-html" style="text-decoration:none;display:inline-flex">🔗 Ver detalles del video</a>
-            </div>
-          </div>`;
-        setModStatus('video_cinema','pending','⏳ En proceso');
-        toast('El video se está tardando 🔗','err');
-        return;
-      }
-      throw new Error((json.error||'Error al generar')+(detalle?' — '+JSON.stringify(detalle).substring(0,200):''));
-    }
-    // NUEVO: Caso "still_processing" - video sigue generándose
-    if(json.still_processing&&json.ver_en_heygen){
-      setModStatus('video_cinema','done','✓ Procesándose');
-      document.getElementById('r-body').innerHTML=`
-        <div style="padding:1.2rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;color:var(--success);font-size:.9rem;line-height:1.7;margin-bottom:1rem">
-          ✅ <strong>¡Tu video se está generando!</strong><br>
-          <span style="color:#c8c8d8">${json.mensaje||'Está procesándose en este momento.'}</span>
-        </div>
-        <div style="padding:1.2rem;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;font-size:.85rem;color:#c8c8d8;line-height:1.7">
-          <strong style="color:var(--violet2);font-size:.9rem">📋 Próximos pasos:</strong>
-          <ol style="margin:.6rem 0 .3rem 1.3rem;padding:0">
-            <li style="margin-bottom:.3rem">Tocá el botón de abajo para ver los detalles del video</li>
-            <li style="margin-bottom:.3rem">Esperá a que termine (1-3 min más generalmente)</li>
-            <li style="margin-bottom:.3rem">Descargá el video en MP4</li>
-            <li>Si querés ajustar la voz, podés editarlo desde ahí</li>
-          </ol>
-        </div>
-        <div style="text-align:center;margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
-          <a href="${json.ver_en_heygen}" target="_blank" class="act-btn act-html" style="text-decoration:none;display:inline-flex;background:linear-gradient(135deg,var(--fuchsia),var(--violet));color:#fff;border:none;padding:.85rem 1.5rem;font-weight:600">🎬 Ver detalles del video →</a>
-          <button class="act-btn act-copy" onclick="startVCConfig()">🔄 Generar otro</button>
-        </div>
-        <div style="text-align:center;margin-top:.8rem;padding:.7rem 1rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.78rem;color:#fbbf24;line-height:1.5;max-width:520px;margin-left:auto;margin-right:auto">
-          💡 <strong>Tip:</strong> también vas a recibir un email cuando termine el video.
-        </div>`;
-      toast('¡Video procesándose! 🎬','ok');
-      return;
+      throw new Error(json.error||'No se pudo generar el video');
     }
     if(!json.video_url)throw new Error('No se pudo recuperar la URL del video');
 
@@ -1249,13 +1207,9 @@ async function generateVCVideo(){
       <video src="${json.video_url}" controls style="width:100%;max-width:${maxWidth};border-radius:16px;display:block;margin:0 auto;background:#000"></video>
       <div style="text-align:center;margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
         <a href="${json.video_url}" download="innova_cinema_${Date.now()}.mp4" class="act-btn act-html" style="text-decoration:none;display:inline-flex">📥 Descargar MP4</a>
-        ${json.video_page_url?`<a href="${json.video_page_url}" target="_blank" class="act-btn act-copy" style="text-decoration:none;display:inline-flex">🔗 Ver detalles del video</a>`:''}
         <button class="act-btn act-copy" onclick="startVCConfig()">🔄 Generar otro</button>
       </div>
-      ${json.duration?`<div style="text-align:center;margin-top:.8rem;font-size:.78rem;color:var(--muted)">Duración: ${json.duration}s</div>`:''}
-      <div style="text-align:center;margin-top:.8rem;padding:.7rem 1rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.78rem;color:#fbbf24;line-height:1.5;max-width:520px;margin-left:auto;margin-right:auto">
-        💡 <strong>¿Querés ajustar algo?</strong> Tocá "Ver detalles del video" para acceder a opciones avanzadas de edición.
-      </div>`;
+      ${json.duration?`<div style="text-align:center;margin-top:.8rem;font-size:.78rem;color:var(--muted)">Duración: ${json.duration}s</div>`:''}`;
     toast('¡Video cinematográfico generado! 🎬','ok');
   }catch(e){
     clearInterval(interval);
