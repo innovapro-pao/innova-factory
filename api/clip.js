@@ -48,7 +48,6 @@ export default async function handler(req, res) {
           aspectRatio: finalAspect,
           durationSeconds: finalDuration,
           personGeneration: 'allow_all',
-          generateAudio: true,
         },
       }),
     });
