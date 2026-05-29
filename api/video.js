@@ -2,6 +2,9 @@
 // Genera un video completo (multi-escena) usando HeyGen Video Agent
 // Endpoint creacion: POST /v3/video-agents
 // Endpoint polling:  GET  /v3/videos/{video_id}
+//
+// VERSION ROBUSTA: maneja respuestas no-JSON de HeyGen durante polling
+// y devuelve link a HeyGen si tarda mas de 4 minutos (en vez de fallar)
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -57,9 +60,9 @@ export default async function handler(req, res) {
     }
 
     if (!createParsed.ok) {
-      console.error('Respuesta no es JSON:', createParsed.raw);
+      console.error('Respuesta de creacion no es JSON:', createParsed.raw);
       return res.status(500).json({
-        error: 'HeyGen devolvio una respuesta que no es JSON',
+        error: 'HeyGen devolvio una respuesta que no es JSON al crear',
         respuesta_heygen: createParsed.raw.substring(0, 500),
       });
     }
@@ -79,32 +82,70 @@ export default async function handler(req, res) {
     console.log('Video Agent iniciado. video_id:', videoId, 'session_id:', sessionId);
 
     // ============================================================
-    // PASO 2: Polling al endpoint correcto /v3/videos/{video_id}
+    // PASO 2: Polling robusto al endpoint /v3/videos/{video_id}
     // ============================================================
     let videoUrl = null;
     let videoPageUrl = null;
     let thumbnailUrl = null;
     let duration = null;
     let intentos = 0;
-    const maxIntentos = 90; // 90 intentos x 10seg = 15 min max
+    // Vercel free tier corta a los 5 minutos. Hacemos polling por max 4 minutos
+    // y si no termino, devolvemos link a HeyGen para que el usuario lo abra ahi
+    const maxIntentos = 24; // 24 intentos x 10seg = 4 min max
+
+    let errorPollingCount = 0;
+    const maxErroresPolling = 5; // si fallan 5 polls seguidos, devolvemos link a HeyGen
 
     while (intentos < maxIntentos) {
       await new Promise((resolve) => setTimeout(resolve, 10000)); // esperar 10 seg
       intentos++;
 
-      const statusResponse = await fetch(
-        `https://api.heygen.com/v3/videos/${videoId}`,
-        {
-          headers: { 'X-Api-Key': HEYGEN_API_KEY },
+      let statusResponse;
+      try {
+        statusResponse = await fetch(
+          `https://api.heygen.com/v3/videos/${videoId}`,
+          {
+            headers: { 'X-Api-Key': HEYGEN_API_KEY },
+          }
+        );
+      } catch (fetchErr) {
+        console.log(`Intento ${intentos}: error de red, reintento`);
+        errorPollingCount++;
+        if (errorPollingCount >= maxErroresPolling) {
+          // Demasiados errores seguidos - devolvemos link a HeyGen
+          return res.status(202).json({
+            success: true,
+            still_processing: true,
+            video_id: videoId,
+            ver_en_heygen: `https://app.heygen.com/videos/${videoId}`,
+            mensaje: 'El video sigue procesandose. Abrilo en HeyGen cuando este listo.',
+          });
         }
-      );
+        continue;
+      }
 
       const statusParsed = await safeJson(statusResponse);
 
+      // Si la respuesta NO es JSON, no rompemos: contamos como error suave
       if (!statusParsed.ok) {
-        console.log(`Intento ${intentos}: respuesta no-JSON, sigo esperando`);
+        console.log(`Intento ${intentos}: respuesta no-JSON, sigo. Raw: ${statusParsed.raw.substring(0, 100)}`);
+        errorPollingCount++;
+        if (errorPollingCount >= maxErroresPolling) {
+          // HeyGen esta devolviendo basura repetidamente - asumimos que el video se esta
+          // generando igual, devolvemos link
+          return res.status(202).json({
+            success: true,
+            still_processing: true,
+            video_id: videoId,
+            ver_en_heygen: `https://app.heygen.com/videos/${videoId}`,
+            mensaje: 'HeyGen esta tardando en responder pero el video sigue en proceso.',
+          });
+        }
         continue;
       }
+
+      // Si llego aca, hubo respuesta JSON valida - reseteamos contador de errores
+      errorPollingCount = 0;
 
       const statusData = statusParsed.data;
       const status = statusData.data?.status || statusData.status;
@@ -132,11 +173,13 @@ export default async function handler(req, res) {
     }
 
     if (!videoUrl) {
-      // Aunque expire el polling, el video puede seguir generandose en HeyGen
-      return res.status(504).json({
-        error: 'El video tarda mas de 15 minutos. Probablemente ya este listo en tu cuenta de HeyGen.',
+      // Llegamos al maximo de intentos sin video listo - devolvemos link a HeyGen
+      return res.status(202).json({
+        success: true,
+        still_processing: true,
         video_id: videoId,
         ver_en_heygen: `https://app.heygen.com/videos/${videoId}`,
+        mensaje: 'El video tarda mas de 4 minutos. Probablemente ya este casi listo en tu cuenta de HeyGen.',
       });
     }
 
