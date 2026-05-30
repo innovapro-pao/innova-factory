@@ -1752,11 +1752,13 @@ async function descargarConMarca(videoUrl, fileName) {
 
 
 // ============================================================
-// MÓDULO CREATIVOS — v2.0 (prompt libre + GPT-Image-1)
+// MÓDULO CREATIVOS — v3.0 (prompt mejorado con Claude + GPT-Image-1)
 // ============================================================
-// Ya no genera copies + HTML superpuesto.
-// Ahora: el usuario escribe un prompt libre (estilo ChatGPT)
-// y GPT-Image-1 genera la imagen ENTERA con texto incluido.
+// Flow:
+//   1. Usuario escribe prompt simple en cuadro 1
+//   2. Toca "✨ Mejorar con IA" → Claude enriquece → aparece en cuadro 2
+//   3. Usuario PUEDE EDITAR el prompt mejorado
+//   4. Toca "🎨 Generar imagen" → GPT-Image-1 genera con el prompt PRO
 // ============================================================
 
 let creativosImages = []; // array de {prompt, url, size, quality, timestamp}
@@ -1772,36 +1774,12 @@ async function generateCreativos(){
 
 function renderCreativosPanel(){
   const ejemplos = [
-    {
-      icon: '📱',
-      label: 'Story de evento',
-      prompt: 'Banner para Instagram Stories formato vertical. Texto en grande "MEGA EVENTO DE MARKETING GRATIS" en 3D con efecto neón dorado y violeta. Fondo galaxia oscura con estrellas y destellos. Mujer profesional sonriente a la derecha mirando a cámara. Globo terráqueo neón fucsia y azul. Estilo cinematográfico premium, alta calidad publicitaria.'
-    },
-    {
-      icon: '🛒',
-      label: 'Banner de venta',
-      prompt: 'Banner publicitario premium tipo poster. Texto principal "GRAN LANZAMIENTO" en cinta roja arriba. Título "PASTAS KETO" en letras 3D doradas con brillo. Subtítulo "SIN HARINAS, MISMO SABOR" en cinta verde. Pack de productos al centro: libro 3D, etiquetas BONUS, fotos de pastas apetitosas. Sello dorado "MÁS DE 50 RECETAS". Precio destacado abajo. Fondo oscuro premium con destellos.'
-    },
-    {
-      icon: '📚',
-      label: 'Mockup de ebook',
-      prompt: 'Mockup 3D ultra realista de ebook con tapa dura premium. Título "[TU TÍTULO]" en letras doradas con efecto metálico brillante. Fondo violeta oscuro con destellos. Ángulo lateral mostrando profundidad. Iluminación cinematográfica suave. Estilo editorial profesional.'
-    },
-    {
-      icon: '🎁',
-      label: 'Promo / oferta',
-      prompt: 'Banner de promoción tipo Black Friday. Fondo negro con destellos dorados. Texto principal "OFERTA EXCLUSIVA" con efecto neón fucsia. Porcentaje de descuento "50% OFF" gigante en 3D dorado. Productos flotantes alrededor. Countdown visible. Estilo lujo premium.'
-    },
-    {
-      icon: '👤',
-      label: 'Personaje animado',
-      prompt: 'Personaje animado estilo Pixar/Disney 3D. Chef sonriente con gorro blanco. Cocina moderna de fondo, luz cálida natural. Expresión amigable y profesional. Iluminación cinemática suave. Calidad de animación profesional.'
-    },
-    {
-      icon: '🌟',
-      label: 'Testimonio visual',
-      prompt: 'Diseño tipo testimonial premium. Foto circular de mujer feliz a la izquierda. Texto a la derecha "GRACIAS AL PROGRAMA BAJÉ 12KG EN 3 MESES" en tipografía elegante. 5 estrellas doradas. Marco con borde dorado sutil. Fondo gradiente violeta a fucsia. Estilo Instagram premium.'
-    },
+    { icon: '📱', label: 'Story de evento', prompt: 'banner para Instagram Stories anunciando mi evento gratis de marketing los días 9, 10 y 12 de junio a las 20hs argentina por youtube. fondo galaxia neón fucsia y violeta. mujer profesional a la derecha. globo terráqueo neón al lado.' },
+    { icon: '🛒', label: 'Banner de venta', prompt: 'banner publicitario de lanzamiento de mi producto pastas keto sin harinas. mostrar el libro 3d, 3 bonos extra, sello dorado de más de 50 recetas. precio $15.999 destacado. fondo oscuro premium con fotos de pastas apetitosas.' },
+    { icon: '📚', label: 'Mockup de ebook', prompt: 'mockup 3d realista de mi ebook titulado "mi título acá" con tapa dura premium, letras doradas brillantes, fondo violeta oscuro con destellos, ángulo lateral.' },
+    { icon: '🎁', label: 'Promo / oferta', prompt: 'banner black friday con descuento 50% off de mi curso de marketing digital. fondo negro premium con detalles dorados. urgencia "solo hoy". countdown visible.' },
+    { icon: '👤', label: 'Personaje animado', prompt: 'personaje animado estilo pixar/disney 3d de una chef sonriente con gorro blanco en una cocina moderna con luz cálida.' },
+    { icon: '🌟', label: 'Testimonio visual', prompt: 'diseño tipo testimonial premium. foto circular de mujer feliz a la izquierda. texto "gracias al programa bajé 12kg en 3 meses" a la derecha. 5 estrellas doradas. fondo gradiente violeta a fucsia.' },
   ];
 
   const ejemplosHTML = ejemplos.map((e,i) => `
@@ -1811,6 +1789,9 @@ function renderCreativosPanel(){
     </button>
   `).join('');
 
+  // Guardamos los ejemplos globalmente para que usarEjemploCreativo los lea
+  window._crEjemplos = ejemplos;
+
   document.getElementById('r-body').innerHTML = `
     <style>
       .ej-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;margin-top:.5rem}
@@ -1818,17 +1799,25 @@ function renderCreativosPanel(){
       .ejemplo-creativo:hover{background:rgba(255,0,110,.15);border-color:var(--fuchsia2);transform:translateY(-2px)}
       .cr-section{margin-bottom:1.2rem}
       .cr-label{display:block;font-size:.78rem;font-weight:700;color:var(--fuchsia2);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem}
-      .cr-textarea{width:100%;min-height:140px;padding:.9rem 1rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(124,58,237,.25);border-radius:12px;color:var(--text);font-size:.92rem;font-family:inherit;line-height:1.5;resize:vertical;transition:border-color .2s}
+      .cr-label-pro{color:#fbbf24}
+      .cr-textarea{width:100%;padding:.9rem 1rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(124,58,237,.25);border-radius:12px;color:var(--text);font-size:.92rem;font-family:inherit;line-height:1.5;resize:vertical;transition:border-color .2s}
       .cr-textarea:focus{outline:none;border-color:var(--fuchsia2);background:rgba(255,255,255,.06)}
+      .cr-textarea-simple{min-height:110px}
+      .cr-textarea-pro{min-height:200px;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.03)}
+      .cr-textarea-pro:focus{border-color:#fbbf24;background:rgba(251,191,36,.05)}
+      .cr-textarea-pro:disabled{opacity:.5;background:rgba(255,255,255,.02)}
       .cr-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}
       @media (max-width: 600px){.cr-row{grid-template-columns:1fr}}
       .cr-pill-group{display:flex;gap:.4rem;flex-wrap:wrap}
       .cr-pill{padding:.55rem .9rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(124,58,237,.25);border-radius:20px;color:var(--text);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s}
       .cr-pill.active{background:linear-gradient(135deg,var(--fuchsia2),var(--violet2));border-color:transparent;color:#fff}
       .cr-pill:hover:not(.active){background:rgba(124,58,237,.15)}
+      .cr-improve-btn{width:100%;padding:.9rem;background:linear-gradient(135deg,#fbbf24,#f59e0b);border:none;border-radius:12px;color:#000;font-size:.92rem;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:all .2s;box-shadow:0 4px 16px rgba(251,191,36,.25);margin:.8rem 0}
+      .cr-improve-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 22px rgba(251,191,36,.4)}
+      .cr-improve-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
       .cr-gen-btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--fuchsia2),var(--violet2));border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all .2s;box-shadow:0 4px 20px rgba(255,0,110,.3)}
       .cr-gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 28px rgba(255,0,110,.5)}
-      .cr-gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+      .cr-gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
       .cr-result-card{margin-top:1.5rem;background:rgba(255,255,255,.03);border:1px solid rgba(124,58,237,.2);border-radius:16px;padding:1rem;animation:fadeIn .4s ease}
       .cr-result-img{width:100%;border-radius:12px;display:block;background:#0a0a0a}
       .cr-result-actions{display:flex;gap:.6rem;margin-top:.8rem;flex-wrap:wrap}
@@ -1836,6 +1825,12 @@ function renderCreativosPanel(){
       .cr-result-btn:hover{background:rgba(255,0,110,.2);border-color:var(--fuchsia2)}
       .cr-result-meta{font-size:.72rem;color:var(--muted);margin-top:.6rem;text-align:center}
       .cr-spinner-big{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:.4rem}
+      .cr-spinner-dark{border:2.5px solid rgba(0,0,0,.2);border-top-color:#000}
+      .cr-info-tip{font-size:.75rem;color:var(--muted);margin-top:.5rem;line-height:1.55;background:rgba(124,58,237,.05);padding:.6rem .8rem;border-radius:10px;border-left:3px solid var(--violet2)}
+      .cr-info-tip strong{color:var(--fuchsia2)}
+      .cr-step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--fuchsia2),var(--violet2));color:#fff;font-size:.78rem;font-weight:800;margin-right:.5rem}
+      .cr-step-num-gold{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000}
+      .cr-step-num-pink{background:linear-gradient(135deg,var(--fuchsia2),#ec4899);color:#fff}
       @keyframes spin{to{transform:rotate(360deg)}}
       @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
     </style>
@@ -1843,7 +1838,7 @@ function renderCreativosPanel(){
     <div style="padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(255,0,110,.08),rgba(124,58,237,.08));border:1px solid rgba(255,0,110,.2);border-radius:14px;margin-bottom:1.2rem">
       <div style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.3rem">✨ Generador de Anuncios con IA</div>
       <div style="font-size:.82rem;color:var(--muted);line-height:1.55">
-        Describí <strong style="color:var(--fuchsia2)">exactamente</strong> la imagen que querés (incluí textos, colores, estilo, todo). La IA va a generar la imagen completa lista para publicar.
+        Sistema en <strong style="color:#fbbf24">2 pasos</strong>: escribís simple → la IA mejora tu prompt → generamos imagen nivel ChatGPT. <strong style="color:var(--fuchsia2)">Vos controlás cada paso.</strong>
       </div>
     </div>
 
@@ -1853,10 +1848,22 @@ function renderCreativosPanel(){
     </div>
 
     <div class="cr-section">
-      <label class="cr-label">📝 Describí tu anuncio (sé específica)</label>
-      <textarea id="cr-prompt" class="cr-textarea" placeholder="Ej: Banner para Instagram Stories con fondo galaxia neón. Texto principal 'MEGA EVENTO GRATIS' en 3D dorado. Fechas 9, 10 y 12 de junio. Mujer profesional con notebook a la derecha. Logo YouTube. Estilo cinematográfico premium."></textarea>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.5">
-        💡 <strong>Tip:</strong> mientras más detalle (textos exactos, colores, composición, estilo), mejor sale la imagen.
+      <label class="cr-label"><span class="cr-step-num">1</span>📝 Tu idea (escribí simple, en tus palabras)</label>
+      <textarea id="cr-prompt-simple" class="cr-textarea cr-textarea-simple" placeholder="Ej: banner para Instagram Stories anunciando mi evento gratis de marketing el 15 de mayo. mi cara a la derecha. fondo galaxia neón."></textarea>
+      <div class="cr-info-tip">
+        💡 No te preocupes por escribir "profesional". Escribí lo que querés con tus palabras. La IA va a mejorarlo en el siguiente paso.
+      </div>
+    </div>
+
+    <button class="cr-improve-btn" id="cr-improve-btn" onclick="mejorarPromptCreativo()">
+      ✨ Mejorar prompt con IA
+    </button>
+
+    <div class="cr-section">
+      <label class="cr-label cr-label-pro"><span class="cr-step-num cr-step-num-gold">2</span>🚀 Prompt PRO (editá si querés, antes de generar)</label>
+      <textarea id="cr-prompt-pro" class="cr-textarea cr-textarea-pro" placeholder="Acá va a aparecer tu prompt mejorado en inglés con todos los detalles técnicos. Podés editarlo libremente antes de generar la imagen." disabled></textarea>
+      <div class="cr-info-tip">
+        💡 <strong>Sos libre de editar este prompt</strong>. Si querés cambiar colores, agregar elementos o personalizar, hacelo acá antes de generar.
       </div>
     </div>
 
@@ -1878,8 +1885,8 @@ function renderCreativosPanel(){
       </div>
     </div>
 
-    <button class="cr-gen-btn" id="cr-gen-btn" onclick="generarImagenCreativa()">
-      ✨ Generar imagen
+    <button class="cr-gen-btn" id="cr-gen-btn" onclick="generarImagenCreativa()" disabled>
+      <span class="cr-step-num cr-step-num-pink">3</span>🎨 Generar imagen
     </button>
 
     <div id="cr-resultados" style="margin-top:1.5rem"></div>
@@ -1896,17 +1903,12 @@ function renderCreativosPanel(){
 }
 
 function usarEjemploCreativo(idx){
-  const ejemplos = [
-    'Banner para Instagram Stories formato vertical. Texto en grande "MEGA EVENTO DE MARKETING GRATIS" en 3D con efecto neón dorado y violeta. Fondo galaxia oscura con estrellas y destellos. Mujer profesional sonriente a la derecha mirando a cámara. Globo terráqueo neón fucsia y azul. Estilo cinematográfico premium, alta calidad publicitaria.',
-    'Banner publicitario premium tipo poster. Texto principal "GRAN LANZAMIENTO" en cinta roja arriba. Título "PASTAS KETO" en letras 3D doradas con brillo. Subtítulo "SIN HARINAS, MISMO SABOR" en cinta verde. Pack de productos al centro: libro 3D, etiquetas BONUS, fotos de pastas apetitosas. Sello dorado "MÁS DE 50 RECETAS". Precio destacado abajo. Fondo oscuro premium con destellos.',
-    'Mockup 3D ultra realista de ebook con tapa dura premium. Título "[TU TÍTULO]" en letras doradas con efecto metálico brillante. Fondo violeta oscuro con destellos. Ángulo lateral mostrando profundidad. Iluminación cinematográfica suave. Estilo editorial profesional.',
-    'Banner de promoción tipo Black Friday. Fondo negro con destellos dorados. Texto principal "OFERTA EXCLUSIVA" con efecto neón fucsia. Porcentaje de descuento "50% OFF" gigante en 3D dorado. Productos flotantes alrededor. Countdown visible. Estilo lujo premium.',
-    'Personaje animado estilo Pixar/Disney 3D. Chef sonriente con gorro blanco. Cocina moderna de fondo, luz cálida natural. Expresión amigable y profesional. Iluminación cinemática suave. Calidad de animación profesional.',
-    'Diseño tipo testimonial premium. Foto circular de mujer feliz a la izquierda. Texto a la derecha "GRACIAS AL PROGRAMA BAJÉ 12KG EN 3 MESES" en tipografía elegante. 5 estrellas doradas. Marco con borde dorado sutil. Fondo gradiente violeta a fucsia. Estilo Instagram premium.',
-  ];
-  const ta = document.getElementById('cr-prompt');
+  const ejemplos = window._crEjemplos || [];
+  const ej = ejemplos[idx];
+  if (!ej) return;
+  const ta = document.getElementById('cr-prompt-simple');
   if (ta) {
-    ta.value = ejemplos[idx] || '';
+    ta.value = ej.prompt;
     ta.focus();
     ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -1924,11 +1926,54 @@ function seleccionarQualityCreativo(btn, quality){
   window._crQuality = quality;
 }
 
+async function mejorarPromptCreativo(){
+  const promptSimple = document.getElementById('cr-prompt-simple').value.trim();
+  if (!promptSimple) {
+    toast('Escribí primero tu idea en el paso 1 😊', 'err');
+    document.getElementById('cr-prompt-simple').focus();
+    return;
+  }
+  const btnImprove = document.getElementById('cr-improve-btn');
+  const taPro = document.getElementById('cr-prompt-pro');
+  const btnGen = document.getElementById('cr-gen-btn');
+
+  btnImprove.disabled = true;
+  btnImprove.innerHTML = '<span class="cr-spinner-big cr-spinner-dark"></span> Mejorando con IA... (~3 seg)';
+  taPro.disabled = true;
+  taPro.value = '';
+  taPro.placeholder = 'Generando prompt PRO...';
+
+  try {
+    const res = await fetch('/api/gpt-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'improve', prompt: promptSimple })
+    });
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+    if (!json.improved_prompt) throw new Error('Sin prompt mejorado en respuesta');
+
+    taPro.value = json.improved_prompt;
+    taPro.disabled = false;
+    btnGen.disabled = false;
+    toast('✨ Prompt mejorado, editá si querés y generá la imagen', 'ok');
+    taPro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (e) {
+    console.error('[Mejorar prompt]', e);
+    toast('Error mejorando prompt: ' + e.message, 'err');
+    taPro.disabled = false;
+    taPro.placeholder = 'Acá va a aparecer tu prompt mejorado...';
+  } finally {
+    btnImprove.disabled = false;
+    btnImprove.innerHTML = '✨ Mejorar prompt con IA';
+  }
+}
+
 async function generarImagenCreativa(){
-  const prompt = document.getElementById('cr-prompt').value.trim();
-  if (!prompt) {
-    toast('Describí primero qué imagen querés 😊', 'err');
-    document.getElementById('cr-prompt').focus();
+  const promptPro = document.getElementById('cr-prompt-pro').value.trim();
+  const promptSimple = document.getElementById('cr-prompt-simple').value.trim();
+  if (!promptPro) {
+    toast('Primero mejorá el prompt en el paso 2 😊', 'err');
     return;
   }
   const size = window._crSize || '1024x1536';
@@ -1941,14 +1986,15 @@ async function generarImagenCreativa(){
     const res = await fetch('/api/gpt-image', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, size, quality })
+      body: JSON.stringify({ mode: 'generate', prompt: promptPro, size, quality })
     });
     const json = await res.json();
     if (json.error) throw new Error(json.error);
     if (!json.url) throw new Error('Sin URL en respuesta');
 
     creativosImages.unshift({
-      prompt,
+      prompt: promptPro,
+      promptSimple: promptSimple,
       url: json.url,
       size,
       quality,
@@ -1962,7 +2008,7 @@ async function generarImagenCreativa(){
     toast('Error: ' + e.message, 'err');
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '✨ Generar imagen';
+    btn.innerHTML = '<span class="cr-step-num cr-step-num-pink">3</span>🎨 Generar imagen';
   }
 }
 
@@ -1978,7 +2024,7 @@ function renderResultadosCreativos(){
       <img src="${img.url}" class="cr-result-img" alt="Anuncio generado">
       <div class="cr-result-actions">
         <button class="cr-result-btn" onclick="descargarImagenCreativa(${i})">📥 Descargar PNG</button>
-        <button class="cr-result-btn" onclick="regenerarImagenCreativa(${i})">🔄 Regenerar similar</button>
+        <button class="cr-result-btn" onclick="regenerarImagenCreativa(${i})">🔄 Generar similar</button>
         <button class="cr-result-btn" onclick="copiarPromptCreativo(${i})">📋 Copiar prompt</button>
       </div>
       <div class="cr-result-meta">
@@ -2003,7 +2049,11 @@ function descargarImagenCreativa(idx){
 function regenerarImagenCreativa(idx){
   const img = creativosImages[idx];
   if (!img) return;
-  document.getElementById('cr-prompt').value = img.prompt;
+  // Cargo prompt simple y prompt pro
+  document.getElementById('cr-prompt-simple').value = img.promptSimple || '';
+  document.getElementById('cr-prompt-pro').value = img.prompt;
+  document.getElementById('cr-prompt-pro').disabled = false;
+  document.getElementById('cr-gen-btn').disabled = false;
   document.querySelectorAll('.cr-pill[data-size]').forEach(p => {
     p.classList.toggle('active', p.dataset.size === img.size);
   });
@@ -2012,7 +2062,7 @@ function regenerarImagenCreativa(idx){
   });
   window._crSize = img.size;
   window._crQuality = img.quality;
-  document.getElementById('cr-prompt').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('cr-prompt-pro').scrollIntoView({ behavior: 'smooth', block: 'center' });
   setTimeout(() => generarImagenCreativa(), 500);
 }
 
