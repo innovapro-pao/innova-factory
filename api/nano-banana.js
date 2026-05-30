@@ -146,7 +146,7 @@ Always think: "What would a top-tier creative director write to get THIS exact i
     else if (['1K', '2K', '4K'].includes(quality)) finalImageSize = quality;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-3-pro-image:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent`,
       {
         method: 'POST',
         headers: {
@@ -160,12 +160,10 @@ Always think: "What would a top-tier creative director write to get THIS exact i
             ]
           }],
           generationConfig: {
-            responseModalities: ['IMAGE'],
-            responseFormat: {
-              image: {
-                aspectRatio: finalAspectRatio,
-                imageSize: finalImageSize,
-              }
+            responseModalities: ['TEXT', 'IMAGE'],
+            imageConfig: {
+              aspectRatio: finalAspectRatio,
+              imageSize: finalImageSize,
             }
           }
         }),
