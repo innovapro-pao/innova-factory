@@ -1,7 +1,9 @@
-// api/gpt-image.js — INNOVA FACTORY v2.0
+// api/gpt-image.js — INNOVA FACTORY v3.0
 // Endpoint dual:
-//   MODO "improve": mejora un prompt simple usando Claude → devuelve prompt PRO
+//   MODO "improve": mejora un prompt simple usando GPT-4o → devuelve prompt PRO
 //   MODO "generate" (default): genera imagen con GPT-Image-1 → devuelve URL
+//
+// Ambos modos usan OPENAI_API_KEY (mismo proveedor = mejor sinergia con gpt-image-1)
 //
 // Body params:
 //   { mode: "improve", prompt: "simple text" }              → { improved_prompt: "..." }
@@ -24,61 +26,72 @@ export default async function handler(req, res) {
     }
 
     // ============================================================
-    // MODO "IMPROVE" — mejora el prompt con Claude
+    // MODO "IMPROVE" — mejora el prompt con GPT-4o (mismo cerebro que ChatGPT)
     // ============================================================
     if (mode === 'improve') {
-      const anthropicKey = process.env.ANTHROPIC_API_KEY;
-      if (!anthropicKey) {
-        return res.status(500).json({ error: 'ANTHROPIC_API_KEY no configurada' });
+      const openaiKey = process.env.OPENAI_API_KEY;
+      if (!openaiKey) {
+        return res.status(500).json({ error: 'OPENAI_API_KEY no configurada' });
       }
 
-      const systemPrompt = `Sos un experto en prompt engineering para generación de imágenes con IA (modelo gpt-image-1 de OpenAI).
+      // System prompt INSPIRADO en el que ChatGPT usa internamente para hablarle a GPT-Image-1.
+      // GPT-4o es el modelo nativo de OpenAI entrenado para generar prompts óptimos para gpt-image-1.
+      const systemPrompt = `You are an expert prompt engineer for OpenAI's gpt-image-1 image generation model. You work the same way ChatGPT does internally when a user asks it to create an image.
 
-Tu tarea: tomar un prompt simple de usuario (en español o cualquier idioma) y convertirlo en un prompt PROFESIONAL en INGLÉS, detallado, estructurado, listo para producir banners publicitarios o imágenes premium nivel ChatGPT/agencia.
+YOUR JOB: take a simple user prompt (in any language, usually Spanish) and transform it into a professional, detailed English image-generation prompt that gpt-image-1 will interpret to produce magazine-quality, ChatGPT-level results.
 
-ESTRUCTURA OBLIGATORIA del prompt mejorado:
-1. Frase inicial con tipo de imagen, formato (vertical/horizontal/cuadrado), aspect ratio y estilo general
-2. COMPOSITION: layout, distribución de elementos
-3. Si hay TEXTO en el banner: indicar el texto EXACTO (literal entre comillas) + tipografía + colores + efectos (3D, neón, gradient, glow)
-4. ELEMENTOS visuales detallados (personas, productos, decoraciones)
-5. BACKGROUND: descripción del fondo con colores específicos (#hex si aplica)
-6. STYLE: referencia a estilos profesionales (Apple keynote, magazine cover, etc.)
-7. TECHNICAL: calidad (8K, sharp focus, etc.)
+CRITICAL RULES:
+1. Output ONLY the enhanced prompt in ENGLISH. No preamble, no quotes, no explanations.
+2. Length: 200-400 words.
+3. Be CONCRETE and VISUAL. Describe what should be SEEN, not abstract concepts.
+4. If user mentions specific TEXT (titles, prices, dates, names), include them LITERALLY in double quotes. Specify Spanish if the source was Spanish.
+5. NEVER invent texts that the user did not mention.
+6. Infer reasonable visual details (colors, composition, style) that match the user's intent.
+7. Structure with clear visual sections.
 
-REGLAS:
-- Siempre en INGLÉS (gpt-image-1 funciona mejor en inglés)
-- Mínimo 200 palabras, máximo 400
-- Estructurado con líneas en MAYÚSCULAS como secciones (COMPOSITION:, MAIN HEADLINE:, BACKGROUND:, etc.)
-- Si el usuario menciona textos específicos (títulos, fechas, precios), incluirlos LITERALMENTE entre comillas dobles
-- Usar terminología técnica de diseño: "extruded 3D typography", "neon glow", "volumetric lighting", "cinematic", "depth of field", "rim light", "magazine cover quality"
-- Para banners promocionales: aspecto urgente y aspiracional
-- Para fotos de producto: profesional, editorial
-- NUNCA inventes textos que el usuario no mencionó
-- NO incluyas explicaciones, devolvé SOLO el prompt mejorado
+STRUCTURE TO FOLLOW:
+- Opening line: image type + format (vertical/horizontal/square) + overall style
+- COMPOSITION: explicit layout (left/right/center, foreground/background)
+- KEY ELEMENTS: detailed description of main subjects (people, products, objects)
+- TEXT ON IMAGE (if any): exact text in quotes + typography style + color + effects
+- BACKGROUND: described with specific colors and atmosphere
+- LIGHTING: type, direction, mood
+- STYLE: reference professional aesthetics (editorial flat-lay, cinematic poster, Apple keynote, premium magazine cover, Etsy bestseller mockup, etc.)
+- COLOR PALETTE: specific color names or hex codes
+- TECHNICAL: camera lens (85mm, 50mm), depth of field, sharpness, quality (8K, photorealistic)
 
-Tu respuesta debe ser ÚNICAMENTE el prompt mejorado, sin preámbulo, sin comillas externas, sin explicación.`;
+TONE: write like a luxury commercial photographer briefing a designer. Use terms like:
+- "soft diffused lighting", "warm natural morning light", "shallow depth of field", "soft bokeh"
+- "premium hardcover", "matte finish", "metallic gold accents", "realistic textures"
+- "feminine aesthetic", "luxury ecommerce", "editorial product photography"
+- "centered composition", "rule of thirds", "negative space"
 
-      const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+EXAMPLE OUTPUT FORMAT:
+"Luxury [type] for [purpose]. [Format and style]. COMPOSITION: [layout]. KEY ELEMENTS: [details]. TEXT: 'EXACT TEXT' in [style]. BACKGROUND: [description with colors]. LIGHTING: [type]. STYLE: [references]. COLOR PALETTE: [colors]. TECHNICAL: [camera, quality]."
+
+Always think: "What would a top-tier creative director write to get THIS exact image?" That's your output.`;
+
+      const openaiPromptRes = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': anthropicKey,
-          'anthropic-version': '2023-06-01',
+          'Authorization': `Bearer ${openaiKey}`,
         },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1500,
-          system: systemPrompt,
+          model: 'gpt-4o',
           messages: [
-            { role: 'user', content: `Mejorá este prompt para generar una imagen profesional:\n\n${prompt.trim()}` }
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: `Enhance this prompt for gpt-image-1 image generation. Make it produce a ChatGPT-quality professional result:\n\n${prompt.trim()}` }
           ],
+          max_tokens: 1500,
+          temperature: 0.7,
         }),
       });
 
-      if (!claudeRes.ok) {
-        const errText = await claudeRes.text();
-        console.error('[improve-prompt] Claude error:', claudeRes.status, errText);
-        let errMsg = `Claude error ${claudeRes.status}`;
+      if (!openaiPromptRes.ok) {
+        const errText = await openaiPromptRes.text();
+        console.error('[improve-prompt] OpenAI error:', openaiPromptRes.status, errText);
+        let errMsg = `OpenAI error ${openaiPromptRes.status}`;
         try {
           const errJson = JSON.parse(errText);
           if (errJson.error && errJson.error.message) errMsg = errJson.error.message;
@@ -86,12 +99,12 @@ Tu respuesta debe ser ÚNICAMENTE el prompt mejorado, sin preámbulo, sin comill
         return res.status(500).json({ error: errMsg });
       }
 
-      const claudeData = await claudeRes.json();
-      if (!claudeData.content || !claudeData.content[0] || !claudeData.content[0].text) {
-        return res.status(500).json({ error: 'Respuesta inesperada de Claude' });
+      const openaiPromptData = await openaiPromptRes.json();
+      if (!openaiPromptData.choices || !openaiPromptData.choices[0] || !openaiPromptData.choices[0].message || !openaiPromptData.choices[0].message.content) {
+        return res.status(500).json({ error: 'Respuesta inesperada de GPT-4o' });
       }
 
-      const improvedPrompt = claudeData.content[0].text.trim();
+      const improvedPrompt = openaiPromptData.choices[0].message.content.trim();
       return res.status(200).json({
         improved_prompt: improvedPrompt,
         original_prompt: prompt.trim(),
