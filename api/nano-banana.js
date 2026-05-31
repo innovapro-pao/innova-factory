@@ -50,6 +50,7 @@ CRITICAL RULES FOR NANO BANANA PRO:
 6. NEVER invent texts that the user did not mention.
 7. Infer reasonable visual details (colors, composition, style) that match the user's intent.
 8. Structure with clear visual sections written as flowing prose.
+9. **MANDATORY PHOTOREALISM RULE — NON-NEGOTIABLE**: ALL elements in the image MUST be rendered as photorealistic professional studio photography. EVERY single object — including products, kitchen tools, machines, jars, accessories, props, decorative elements, gadgets — MUST look like a REAL photograph taken with a professional 85mm lens. ABSOLUTELY FORBIDDEN: 3D cartoon renders, illustrated icons, vector graphics, flat design, stylized drawings, anime style, infographic style, clipart, low-poly 3D, isometric illustrations. If the user mentions any object (e.g. pasta machine, grinder, jar), describe it AS A REAL PHYSICAL PHOTOGRAPHED OBJECT with realistic materials, shadows, reflections, textures. ALWAYS end the prompt with this exact line: "All elements rendered as photorealistic commercial product photography, NO illustrations, NO 3D cartoon renders, NO stylized graphics, real materials with realistic shadows, reflections, and textures, shot on professional camera with 85mm lens, premium magazine quality."
 
 STRUCTURE TO FOLLOW (as narrative prose):
 - Opening line: image type + format (vertical/horizontal/square) + overall style
@@ -156,7 +157,7 @@ Always think: "What would a top-tier creative director write to get THIS exact i
         body: JSON.stringify({
           contents: [{
             parts: [
-              { text: prompt.trim() }
+              { text: `IMPORTANT RENDERING RULE: All visual elements in this image must be rendered as photorealistic professional commercial photography. ABSOLUTELY NO illustrations, NO cartoon 3D renders, NO vector graphics, NO flat design icons, NO stylized drawings. Every object including products, tools, accessories, props must look like real physical objects photographed with an 85mm lens in a professional studio, with realistic materials, shadows, reflections and textures.\n\n${prompt.trim()}\n\nFINAL REMINDER: Render everything as a single cohesive photorealistic photograph, magazine quality. No mixed styles. No illustration elements.` }
             ]
           }],
           generationConfig: {
